@@ -22,6 +22,20 @@
         ok(pior===0,`${mid}, ${n} times: o VAR nunca piora quem chamou`);
       }
     }
+    // 1b. Calibração: o time mais forte pelo critério deve vencer na maioria das vezes, mas não sempre
+    for(const mid of Object.keys(MODES)){
+      S.modes=[mid];S.round=0;let soma=0;
+      for(const c of MODES[mid].crit){
+        W=c[2];const pool=fallbackPool(mid);
+        const rnd=()=>({name:'T',ps:MODES[mid].slots.map(s=>{const l=pool.filter(p=>p.pos===s);return l[Math.floor(Math.random()*l.length)]})});
+        let fw=0,dec=0;
+        for(let k=0;k<700;k++){const A=rnd(),B=rnd(),da=stats(A).base-stats(B).base;if(Math.abs(da)<1)continue;
+          const m=playMatch(A,B,0,0,(Math.random()*2147483647)|0);if(m.win==='d')continue;dec++;if((m.win==='a')===(da>0))fw++;}
+        soma+=fw/dec;
+      }
+      const media=soma/MODES[mid].crit.length;
+      ok(media>=.6&&media<=.8,`${mid}: o mais forte vence ${Math.round(media*100)}% (faixa esperada 60 a 80%)`);
+    }
     W=[.25,.25,.25,.25];
     // 2. Uma noite de 2 rodadas com 3 jogadores, sem IA
     S.chars={};S.draft=null;setup();await W8(()=>$('#p0'));
