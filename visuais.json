@@ -8,7 +8,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#2e9d4f",
-  "detalhe": "Loiro de cabelo curto com camisa de goleiro verde da Alemanha."
+  "detalhe": "Loiro de cabelo curto com camisa de goleiro verde da Alemanha.",
+  "grupo": [
+   "alemanha",
+   "bayern"
+  ],
+  "wiki": "Manuel Neuer"
  },
  "Buffon": {
   "pele": 1,
@@ -19,7 +24,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Cabelo médio castanho e barba rala, camisa de goleiro escura da Juventus/Itália."
+  "detalhe": "Cabelo médio castanho e barba rala, camisa de goleiro escura da Juventus/Itália.",
+  "grupo": [
+   "italia",
+   "juventus"
+  ],
+  "wiki": "Gianluigi Buffon"
  },
  "Taffarel": {
   "pele": 1,
@@ -30,7 +40,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1f4e9c",
-  "detalhe": "Cabelo curto castanho-claro, goleiro do tetra em 1994."
+  "detalhe": "Cabelo curto castanho-claro, goleiro do tetra em 1994.",
+  "grupo": [
+   "brasil"
+  ],
+  "wiki": "Taffarel"
  },
  "Dida": {
   "pele": 4,
@@ -41,7 +55,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#2a2a2a",
-  "detalhe": "Cabeça raspada, goleiro alto do Milan e da Seleção."
+  "detalhe": "Cabeça raspada, goleiro alto do Milan e da Seleção.",
+  "grupo": [
+   "brasil",
+   "milan"
+  ],
+  "wiki": "Dida (futebolista)"
  },
  "Marcos": {
   "pele": 1,
@@ -52,7 +71,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#006437",
-  "detalhe": "São Marcos do penta, cabelo curto e barba por fazer, verde do Palmeiras."
+  "detalhe": "São Marcos do penta, cabelo curto e barba por fazer, verde do Palmeiras.",
+  "grupo": [
+   "brasil"
+  ],
+  "wiki": "Marcos Roberto Silveira Reis"
  },
  "Maldini": {
   "pele": 1,
@@ -63,7 +86,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#c8102e",
-  "detalhe": "Cabelo médio jogado para trás, rubro-negro do Milan."
+  "detalhe": "Cabelo médio jogado para trás, rubro-negro do Milan.",
+  "grupo": [
+   "italia",
+   "milan"
+  ],
+  "wiki": "Paolo Maldini"
  },
  "Beckenbauer": {
   "pele": 0,
@@ -74,7 +102,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffffff",
-  "detalhe": "O Kaiser dos anos 70, cabelo médio castanho e camisa branca da Alemanha."
+  "detalhe": "O Kaiser dos anos 70, cabelo médio castanho e camisa branca da Alemanha.",
+  "grupo": [
+   "alemanha",
+   "bayern"
+  ],
+  "wiki": "Franz Beckenbauer"
  },
  "Cafu": {
   "pele": 4,
@@ -85,7 +118,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffdc02",
-  "detalhe": "Careca, capitão do penta com a amarelinha."
+  "detalhe": "Careca, capitão do penta com a amarelinha.",
+  "grupo": [
+   "brasil",
+   "milan"
+  ],
+  "wiki": "Cafu"
  },
  "Roberto Carlos": {
   "pele": 3,
@@ -96,7 +134,13 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffdc02",
-  "detalhe": "Careca, lateral da Seleção famoso pela falta contra a França."
+  "detalhe": "Careca, lateral da Seleção famoso pela falta contra a França.",
+  "grupo": [
+   "brasil",
+   "real_madrid",
+   "inter"
+  ],
+  "wiki": "Roberto Carlos (futebolista)"
  },
  "Lúcio": {
   "pele": 2,
@@ -107,7 +151,13 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffdc02",
-  "detalhe": "Cabelo raspado, zagueiro do penta com a amarelinha."
+  "detalhe": "Cabelo raspado, zagueiro do penta com a amarelinha.",
+  "grupo": [
+   "brasil",
+   "inter",
+   "bayern"
+  ],
+  "wiki": "Lúcio (futebolista, 1978)"
  },
  "Zidane": {
   "pele": 1,
@@ -118,7 +168,13 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1f3a93",
-  "detalhe": "Calvície no topo e laterais curtas, azul da França."
+  "detalhe": "Calvície no topo e laterais curtas, azul da França.",
+  "grupo": [
+   "franca",
+   "juventus",
+   "real_madrid"
+  ],
+  "wiki": "Zinédine Zidane"
  },
  "Xavi": {
   "pele": 1,
@@ -129,7 +185,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#a50044",
-  "detalhe": "Cabelo curto e barba rala, grená do Barcelona."
+  "detalhe": "Cabelo curto e barba rala, grená do Barcelona.",
+  "grupo": [
+   "espanha",
+   "barcelona"
+  ],
+  "wiki": "Xavi"
  },
  "Modric": {
   "pele": 0,
@@ -140,7 +201,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#e30613",
-  "detalhe": "Cabelo médio liso claro, xadrez vermelho da Croácia (cor dominante)."
+  "detalhe": "Cabelo médio liso claro, xadrez vermelho da Croácia (cor dominante).",
+  "grupo": [
+   "croacia",
+   "real_madrid"
+  ],
+  "wiki": "Luka Modrić"
  },
  "Kaká": {
   "pele": 1,
@@ -151,7 +217,13 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#c8102e",
-  "detalhe": "Cabelo curto castanho, rubro-negro do Milan da Bola de Ouro 2007."
+  "detalhe": "Cabelo curto castanho, rubro-negro do Milan da Bola de Ouro 2007.",
+  "grupo": [
+   "brasil",
+   "milan",
+   "real_madrid"
+  ],
+  "wiki": "Kaká"
  },
  "Gilberto Silva": {
   "pele": 4,
@@ -162,7 +234,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffdc02",
-  "detalhe": "Cabelo raspado, volante do penta."
+  "detalhe": "Cabelo raspado, volante do penta.",
+  "grupo": [
+   "brasil"
+  ],
+  "wiki": "Gilberto Silva"
  },
  "Pelé": {
   "pele": 5,
@@ -173,7 +249,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffdc02",
-  "detalhe": "Cabelo crespo curto, amarelinha de 1970."
+  "detalhe": "Cabelo crespo curto, amarelinha de 1970.",
+  "grupo": [
+   "brasil",
+   "santos"
+  ],
+  "wiki": "Pelé"
  },
  "Messi": {
   "pele": 1,
@@ -184,7 +265,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#75aadb",
-  "detalhe": "Barba cheia da era campeã do mundo, celeste da Argentina."
+  "detalhe": "Barba cheia da era campeã do mundo, celeste da Argentina.",
+  "grupo": [
+   "argentina",
+   "barcelona"
+  ],
+  "wiki": "Lionel Messi"
  },
  "Neymar": {
   "pele": 2,
@@ -195,7 +281,13 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffdc02",
-  "detalhe": "Moicano da era Santos/início na Seleção."
+  "detalhe": "Moicano da era Santos/início na Seleção.",
+  "grupo": [
+   "brasil",
+   "barcelona",
+   "santos"
+  ],
+  "wiki": "Neymar"
  },
  "Romário": {
   "pele": 3,
@@ -206,7 +298,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffdc02",
-  "detalhe": "Cabelo bem curto, Baixinho do tetra em 1994."
+  "detalhe": "Cabelo bem curto, Baixinho do tetra em 1994.",
+  "grupo": [
+   "brasil",
+   "barcelona"
+  ],
+  "wiki": "Romário"
  },
  "Adriano": {
   "pele": 4,
@@ -217,7 +314,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#0068a8",
-  "detalhe": "Imperador de cabeça raspada, azul da Inter de Milão."
+  "detalhe": "Imperador de cabeça raspada, azul da Inter de Milão.",
+  "grupo": [
+   "brasil",
+   "inter"
+  ],
+  "wiki": "Adriano Imperador"
  },
  "José Aldo": {
   "pele": 2,
@@ -228,7 +330,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#009c3b",
-  "detalhe": "Cabelo curto preto, verde do Brasil no octógono."
+  "detalhe": "Cabelo curto preto, verde do Brasil no octógono.",
+  "grupo": [
+   "brasil"
+  ],
+  "wiki": "José Aldo"
  },
  "Max Holloway": {
   "pele": 2,
@@ -239,7 +345,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#e6a817",
-  "detalhe": "Havaiano de cabelo curto preto, cor inspirada em estampa havaiana."
+  "detalhe": "Havaiano de cabelo curto preto, cor inspirada em estampa havaiana.",
+  "grupo": [
+   "eua"
+  ],
+  "wiki": "Max Holloway"
  },
  "Conor McGregor": {
   "pele": 0,
@@ -250,7 +360,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#169b62",
-  "detalhe": "Topete e barba cheia ruiva, verde da Irlanda."
+  "detalhe": "Topete e barba cheia ruiva, verde da Irlanda.",
+  "grupo": [
+   "irlanda"
+  ],
+  "wiki": "Conor McGregor"
  },
  "Volkanovski": {
   "pele": 0,
@@ -261,7 +375,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#00843d",
-  "detalhe": "Cabeça raspada, verde e amarelo da Austrália."
+  "detalhe": "Cabeça raspada, verde e amarelo da Austrália.",
+  "grupo": [
+   "australia",
+   "city_kickboxing"
+  ],
+  "wiki": "Alexander Volkanovski"
  },
  "Ilia Topuria": {
   "pele": 1,
@@ -272,7 +391,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#c8102e",
-  "detalhe": "Cabelo curto preto e barba curta, vermelho de Espanha/Geórgia."
+  "detalhe": "Cabelo curto preto e barba curta, vermelho de Espanha/Geórgia.",
+  "grupo": [
+   "georgia",
+   "espanha"
+  ],
+  "wiki": "Ilia Topuria"
  },
  "Khabib": {
   "pele": 1,
@@ -283,7 +407,13 @@
   "acessorio": "papakha",
   "corAcessorio": "#d9d4cc",
   "camisa": "#2b2b2b",
-  "detalhe": "Papakha (gorro de pele do Daguestão) e barba cheia."
+  "detalhe": "Papakha (gorro de pele do Daguestão) e barba cheia.",
+  "grupo": [
+   "daguestao",
+   "russia",
+   "aka"
+  ],
+  "wiki": "Khabib Nurmagomedov"
  },
  "Charles Oliveira": {
   "pele": 2,
@@ -294,7 +424,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#009c3b",
-  "detalhe": "Do Bronx de cabelo raspado, verde do Brasil."
+  "detalhe": "Do Bronx de cabelo raspado, verde do Brasil.",
+  "grupo": [
+   "brasil"
+  ],
+  "wiki": "Charles Oliveira"
  },
  "Islam Makhachev": {
   "pele": 1,
@@ -305,7 +439,13 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#2b2b2b",
-  "detalhe": "Cabelo curto e barba cheia preta, estilo daguestanês."
+  "detalhe": "Cabelo curto e barba cheia preta, estilo daguestanês.",
+  "grupo": [
+   "daguestao",
+   "russia",
+   "aka"
+  ],
+  "wiki": "Islam Makhachev"
  },
  "Justin Gaethje": {
   "pele": 0,
@@ -316,7 +456,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#b22234",
-  "detalhe": "Cabeça raspada, vermelho dos EUA."
+  "detalhe": "Cabeça raspada, vermelho dos EUA.",
+  "grupo": [
+   "eua"
+  ],
+  "wiki": "Justin Gaethje"
  },
  "Dustin Poirier": {
   "pele": 1,
@@ -327,7 +471,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#4b2e83",
-  "detalhe": "Cabelo curto e barba curta, roxo de Louisiana."
+  "detalhe": "Cabelo curto e barba curta, roxo de Louisiana.",
+  "grupo": [
+   "eua"
+  ],
+  "wiki": "Dustin Poirier"
  },
  "Anderson Silva": {
   "pele": 3,
@@ -338,7 +486,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#009c3b",
-  "detalhe": "Spider careca de cavanhaque, verde do Brasil."
+  "detalhe": "Spider careca de cavanhaque, verde do Brasil.",
+  "grupo": [
+   "brasil"
+  ],
+  "wiki": "Anderson Silva"
  },
  "Israel Adesanya": {
   "pele": 4,
@@ -349,7 +501,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Tranças curtas e roupa escura."
+  "detalhe": "Tranças curtas e roupa escura.",
+  "grupo": [
+   "nova_zelandia",
+   "city_kickboxing"
+  ],
+  "wiki": "Israel Adesanya"
  },
  "Georges St-Pierre": {
   "pele": 1,
@@ -360,7 +517,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#d52b1e",
-  "detalhe": "Cabelo curto preto, vermelho do Canadá."
+  "detalhe": "Cabelo curto preto, vermelho do Canadá.",
+  "grupo": [
+   "canada"
+  ],
+  "wiki": "Georges St. Pierre"
  },
  "Sean Strickland": {
   "pele": 0,
@@ -371,7 +532,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#3a3a3a",
-  "detalhe": "Cabeça raspada e barba curta, roupa escura."
+  "detalhe": "Cabeça raspada e barba curta, roupa escura.",
+  "grupo": [
+   "eua"
+  ],
+  "wiki": "Sean Strickland"
  },
  "Vitor Belfort": {
   "pele": 2,
@@ -382,7 +547,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#009c3b",
-  "detalhe": "Fenômeno de cabelo curto preto, verde do Brasil."
+  "detalhe": "Fenômeno de cabelo curto preto, verde do Brasil.",
+  "grupo": [
+   "brasil"
+  ],
+  "wiki": "Vitor Belfort"
  },
  "Jon Jones": {
   "pele": 4,
@@ -393,7 +562,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Cabelo raspado, roupa preta."
+  "detalhe": "Cabelo raspado, roupa preta.",
+  "grupo": [
+   "eua"
+  ],
+  "wiki": "Jon Jones"
  },
  "Francis Ngannou": {
   "pele": 5,
@@ -404,7 +577,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#007a5e",
-  "detalhe": "Careca, verde de Camarões."
+  "detalhe": "Careca, verde de Camarões.",
+  "grupo": [
+   "camaroes"
+  ],
+  "wiki": "Francis Ngannou"
  },
  "Fedor Emelianenko": {
   "pele": 0,
@@ -415,7 +592,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#d52b1e",
-  "detalhe": "Cabelo curto castanho, vermelho russo da era Pride."
+  "detalhe": "Cabelo curto castanho, vermelho russo da era Pride.",
+  "grupo": [
+   "russia"
+  ],
+  "wiki": "Fiódor Emelianenko"
  },
  "Daniel Cormier": {
   "pele": 4,
@@ -426,7 +607,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Careca com barba curta, roupa escura."
+  "detalhe": "Careca com barba curta, roupa escura.",
+  "grupo": [
+   "eua",
+   "aka"
+  ],
+  "wiki": "Daniel Cormier"
  },
  "Mark Hunt": {
   "pele": 3,
@@ -437,7 +623,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Samoano de cabelo raspado, roupa preta da Nova Zelândia."
+  "detalhe": "Samoano de cabelo raspado, roupa preta da Nova Zelândia.",
+  "grupo": [
+   "nova_zelandia",
+   "australia"
+  ],
+  "wiki": "Mark Hunt"
  },
  "Sócrates": {
   "pele": 1,
@@ -448,7 +639,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#f2efe6",
-  "detalhe": "Careca de barba longa, como nos bustos clássicos, túnica branca."
+  "detalhe": "Careca de barba longa, como nos bustos clássicos, túnica branca.",
+  "grupo": [
+   "grecia_antiga",
+   "socrates_platao_aristoteles"
+  ],
+  "wiki": "Sócrates"
  },
  "Platão": {
   "pele": 1,
@@ -459,7 +655,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#e8e2d0",
-  "detalhe": "Busto clássico com cabelo curto e barba longa, túnica clara."
+  "detalhe": "Busto clássico com cabelo curto e barba longa, túnica clara.",
+  "grupo": [
+   "grecia_antiga",
+   "socrates_platao_aristoteles"
+  ],
+  "wiki": "Platão"
  },
  "Aristóteles": {
   "pele": 1,
@@ -470,7 +671,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#3b5fa0",
-  "detalhe": "Barba cheia e cabelo curto do busto, manto azul da Escola de Atenas."
+  "detalhe": "Barba cheia e cabelo curto do busto, manto azul da Escola de Atenas.",
+  "grupo": [
+   "grecia_antiga",
+   "socrates_platao_aristoteles"
+  ],
+  "wiki": "Aristóteles"
  },
  "Diógenes": {
   "pele": 1,
@@ -481,7 +687,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#8b6b45",
-  "detalhe": "Cínico desgrenhado de barba longa, trapos marrons."
+  "detalhe": "Cínico desgrenhado de barba longa, trapos marrons.",
+  "grupo": [
+   "grecia_antiga"
+  ],
+  "wiki": "Diógenes de Sinope"
  },
  "Epicuro": {
   "pele": 1,
@@ -492,7 +702,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#e8e2d0",
-  "detalhe": "Busto com cabelo curto e barba longa, túnica clara."
+  "detalhe": "Busto com cabelo curto e barba longa, túnica clara.",
+  "grupo": [
+   "grecia_antiga"
+  ],
+  "wiki": "Epicuro de Samos"
  },
  "Tomás de Aquino": {
   "pele": 1,
@@ -503,7 +717,13 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Tonsura de frade dominicano, hábito preto e branco."
+  "detalhe": "Tonsura de frade dominicano, hábito preto e branco.",
+  "grupo": [
+   "escolastica",
+   "filosofia_crista",
+   "aristotelismo_medieval"
+  ],
+  "wiki": "Tomás de Aquino"
  },
  "Santo Agostinho": {
   "pele": 2,
@@ -514,7 +734,11 @@
   "acessorio": "mitra",
   "corAcessorio": "#e9e0c8",
   "camisa": "#8b1a1a",
-  "detalhe": "Mitra de bispo e barba grisalha, manto vermelho."
+  "detalhe": "Mitra de bispo e barba grisalha, manto vermelho.",
+  "grupo": [
+   "filosofia_crista"
+  ],
+  "wiki": "Agostinho de Hipona"
  },
  "Averróis": {
   "pele": 2,
@@ -525,7 +749,12 @@
   "acessorio": "turbante",
   "corAcessorio": "#f2efe6",
   "camisa": "#2e6b4f",
-  "detalhe": "Turbante claro e barba cheia preta."
+  "detalhe": "Turbante claro e barba cheia preta.",
+  "grupo": [
+   "filosofia_islamica",
+   "aristotelismo_medieval"
+  ],
+  "wiki": "Averróis"
  },
  "Maimônides": {
   "pele": 1,
@@ -536,7 +765,12 @@
   "acessorio": "turbante",
   "corAcessorio": "#e8e2d0",
   "camisa": "#3b4a7a",
-  "detalhe": "Turbante e barba cheia do retrato tradicional."
+  "detalhe": "Turbante e barba cheia do retrato tradicional.",
+  "grupo": [
+   "filosofia_judaica",
+   "aristotelismo_medieval"
+  ],
+  "wiki": "Maimônides"
  },
  "Guilherme de Ockham": {
   "pele": 0,
@@ -547,7 +781,12 @@
   "acessorio": "capuz_monge",
   "corAcessorio": "#6b4f2e",
   "camisa": "#6b4f2e",
-  "detalhe": "Frade franciscano de tonsura e capuz marrom."
+  "detalhe": "Frade franciscano de tonsura e capuz marrom.",
+  "grupo": [
+   "escolastica",
+   "filosofia_crista"
+  ],
+  "wiki": "Guilherme de Ockham"
  },
  "Descartes": {
   "pele": 0,
@@ -558,7 +797,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Retrato de Frans Hals: cabelo longo escuro, bigode fino e roupa preta com gola branca."
+  "detalhe": "Retrato de Frans Hals: cabelo longo escuro, bigode fino e roupa preta com gola branca.",
+  "grupo": [
+   "racionalismo"
+  ],
+  "wiki": "René Descartes"
  },
  "Kant": {
   "pele": 0,
@@ -569,7 +812,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#4a3b2a",
-  "detalhe": "Peruca empoada clássica do século XVIII, casaca marrom."
+  "detalhe": "Peruca empoada clássica do século XVIII, casaca marrom.",
+  "grupo": [
+   "idealismo_alemao"
+  ],
+  "wiki": "Immanuel Kant"
  },
  "Nietzsche": {
   "pele": 0,
@@ -580,7 +827,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#2b2b2b",
-  "detalhe": "O bigodão é a marca; cabelo curto penteado para trás, terno escuro."
+  "detalhe": "O bigodão é a marca; cabelo curto penteado para trás, terno escuro.",
+  "grupo": [
+   "existencialismo"
+  ],
+  "wiki": "Friedrich Nietzsche"
  },
  "Hobbes": {
   "pele": 0,
@@ -591,7 +842,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Retrato idoso de cabelo grisalho até o ombro e bigode, roupa preta."
+  "detalhe": "Retrato idoso de cabelo grisalho até o ombro e bigode, roupa preta.",
+  "grupo": [
+   "empirismo_contratualismo"
+  ],
+  "wiki": "Thomas Hobbes"
  },
  "Spinoza": {
   "pele": 1,
@@ -602,7 +857,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Cabelo longo ondulado escuro e bigode fino, roupa preta com gola branca."
+  "detalhe": "Cabelo longo ondulado escuro e bigode fino, roupa preta com gola branca.",
+  "grupo": [
+   "racionalismo",
+   "filosofia_judaica"
+  ],
+  "wiki": "Baruch Espinoza"
  },
  "Sartre": {
   "pele": 0,
@@ -613,7 +873,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#3a3a3a",
-  "detalhe": "Óculos redondos grossos e cabelo curto penteado, terno cinza com cachimbo implícito."
+  "detalhe": "Óculos redondos grossos e cabelo curto penteado, terno cinza com cachimbo implícito.",
+  "grupo": [
+   "existencialismo",
+   "sartre_beauvoir"
+  ],
+  "wiki": "Jean-Paul Sartre"
  },
  "Simone de Beauvoir": {
   "pele": 0,
@@ -624,7 +889,12 @@
   "acessorio": "turbante",
   "corAcessorio": "#7a2e3a",
   "camisa": "#2b2b2b",
-  "detalhe": "Turbante envolvendo o coque, roupa escura."
+  "detalhe": "Turbante envolvendo o coque, roupa escura.",
+  "grupo": [
+   "existencialismo",
+   "sartre_beauvoir"
+  ],
+  "wiki": "Simone de Beauvoir"
  },
  "Wittgenstein": {
   "pele": 0,
@@ -635,7 +905,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#d8d2c0",
-  "detalhe": "Cabelo ondulado curto e camisa de colarinho aberto, sem gravata."
+  "detalhe": "Cabelo ondulado curto e camisa de colarinho aberto, sem gravata.",
+  "grupo": [
+   "filosofia_analitica"
+  ],
+  "wiki": "Ludwig Wittgenstein"
  },
  "Foucault": {
   "pele": 0,
@@ -646,7 +920,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Careca reluzente com óculos de armação, gola rulê preta."
+  "detalhe": "Careca reluzente com óculos de armação, gola rulê preta.",
+  "grupo": [
+   "pos_estruturalismo"
+  ],
+  "wiki": "Michel Foucault"
  },
  "Hannah Arendt": {
   "pele": 0,
@@ -657,7 +935,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#2b2b2b",
-  "detalhe": "Cabelo curto escuro penteado para trás, roupa escura e cigarro implícito."
+  "detalhe": "Cabelo curto escuro penteado para trás, roupa escura e cigarro implícito.",
+  "grupo": [
+   "existencialismo"
+  ],
+  "wiki": "Hannah Arendt"
  },
  "Hulk": {
   "pele": "verde",
@@ -668,7 +950,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#6a2c91",
-  "detalhe": "Pele verde e cabelo preto curto, roxo das calças rasgadas."
+  "detalhe": "Pele verde e cabelo preto curto, roxo das calças rasgadas.",
+  "grupo": [
+   "marvel",
+   "vingadores"
+  ],
+  "wiki": "Hulk"
  },
  "Thor": {
   "pele": 0,
@@ -679,7 +966,12 @@
   "acessorio": "capacete_alado",
   "corAcessorio": "#b8bcc4",
   "camisa": "#c0392b",
-  "detalhe": "Cabelo loiro longo e capacete alado clássico prateado, armadura com capa vermelha."
+  "detalhe": "Cabelo loiro longo e capacete alado clássico prateado, armadura com capa vermelha.",
+  "grupo": [
+   "marvel",
+   "vingadores"
+  ],
+  "wiki": "Thor (Marvel Comics)"
  },
  "Superman": {
   "pele": 0,
@@ -690,7 +982,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1e4fa0",
-  "detalhe": "Cabelo preto curto com cachinho na testa, uniforme azul."
+  "detalhe": "Cabelo preto curto com cachinho na testa, uniforme azul.",
+  "grupo": [
+   "dc"
+  ],
+  "wiki": "Superman"
  },
  "Goku": {
   "pele": 0,
@@ -701,7 +997,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#f28c28",
-  "detalhe": "Cabelo preto espetado e kimono laranja."
+  "detalhe": "Cabelo preto espetado e kimono laranja.",
+  "grupo": [
+   "anime"
+  ],
+  "wiki": "Goku"
  },
  "Chapolin Colorado": {
   "pele": 0,
@@ -712,7 +1012,11 @@
   "acessorio": "capuz_antenas",
   "corAcessorio": "#d62828",
   "camisa": "#d62828",
-  "detalhe": "Capuz vermelho com anteninhas, roupa vermelha."
+  "detalhe": "Capuz vermelho com anteninhas, roupa vermelha.",
+  "grupo": [
+   "chaves"
+  ],
+  "wiki": "El Chapulín Colorado (personagem)"
  },
  "Batman": {
   "pele": 0,
@@ -723,7 +1027,11 @@
   "acessorio": "capuz_morcego",
   "corAcessorio": "#1a1a1a",
   "camisa": "#5a5a5a",
-  "detalhe": "Capuz de morcego preto e uniforme cinza."
+  "detalhe": "Capuz de morcego preto e uniforme cinza.",
+  "grupo": [
+   "dc"
+  ],
+  "wiki": "Batman"
  },
  "Tony Stark": {
   "pele": 0,
@@ -734,7 +1042,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#b22222",
-  "detalhe": "Cavanhaque marcante e óculos escuros, vermelho da armadura."
+  "detalhe": "Cavanhaque marcante e óculos escuros, vermelho da armadura.",
+  "grupo": [
+   "marvel",
+   "vingadores"
+  ],
+  "wiki": "Homem de Ferro"
  },
  "Light Yagami": {
   "pele": 0,
@@ -745,7 +1058,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#8a6d4a",
-  "detalhe": "Franja castanha e terno marrom do uniforme escolar."
+  "detalhe": "Franja castanha e terno marrom do uniforme escolar.",
+  "grupo": [
+   "anime"
+  ],
+  "wiki": "Light Yagami"
  },
  "Sherlock Holmes": {
   "pele": 0,
@@ -756,7 +1073,11 @@
   "acessorio": "deerstalker",
   "corAcessorio": "#8b7355",
   "camisa": "#7a6a4f",
-  "detalhe": "Chapéu deerstalker xadrez marrom e capa."
+  "detalhe": "Chapéu deerstalker xadrez marrom e capa.",
+  "grupo": [
+   "sherlock_holmes"
+  ],
+  "wiki": "Sherlock Holmes"
  },
  "Professor Xavier": {
   "pele": 0,
@@ -767,7 +1088,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#2c3e50",
-  "detalhe": "Careca e terno escuro."
+  "detalhe": "Careca e terno escuro.",
+  "grupo": [
+   "marvel",
+   "x_men"
+  ],
+  "wiki": "Professor Charles Xavier"
  },
  "Homem-Aranha": {
   "pele": 0,
@@ -778,7 +1104,12 @@
   "acessorio": "mascara_teia",
   "corAcessorio": "#d0021b",
   "camisa": "#d0021b",
-  "detalhe": "Máscara total vermelha, uniforme vermelho e azul."
+  "detalhe": "Máscara total vermelha, uniforme vermelho e azul.",
+  "grupo": [
+   "marvel",
+   "vingadores"
+  ],
+  "wiki": "Homem-Aranha"
  },
  "Naruto": {
   "pele": 0,
@@ -789,7 +1120,11 @@
   "acessorio": "faixa_ninja",
   "corAcessorio": "#1e3a8a",
   "camisa": "#f28c28",
-  "detalhe": "Cabelo loiro espetado, bandana ninja da Folha e roupa laranja."
+  "detalhe": "Cabelo loiro espetado, bandana ninja da Folha e roupa laranja.",
+  "grupo": [
+   "anime"
+  ],
+  "wiki": "Naruto Uzumaki"
  },
  "Wolverine": {
   "pele": 0,
@@ -800,7 +1135,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#f2c200",
-  "detalhe": "Cabelo preto em pontas e costeletas grossas, uniforme amarelo clássico."
+  "detalhe": "Cabelo preto em pontas e costeletas grossas, uniforme amarelo clássico.",
+  "grupo": [
+   "marvel",
+   "x_men"
+  ],
+  "wiki": "Wolverine"
  },
  "Deadpool": {
   "pele": 0,
@@ -811,7 +1151,12 @@
   "acessorio": "mascara_olhos_pretos",
   "corAcessorio": "#a00000",
   "camisa": "#a00000",
-  "detalhe": "Máscara total vermelha com olhos pretos, uniforme vermelho."
+  "detalhe": "Máscara total vermelha com olhos pretos, uniforme vermelho.",
+  "grupo": [
+   "marvel",
+   "x_men"
+  ],
+  "wiki": "Deadpool"
  },
  "Viúva Negra": {
   "pele": 0,
@@ -822,7 +1167,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#111111",
-  "detalhe": "Cabelo ruivo médio e traje preto."
+  "detalhe": "Cabelo ruivo médio e traje preto.",
+  "grupo": [
+   "marvel",
+   "vingadores"
+  ],
+  "wiki": "Viúva Negra (Marvel Comics)"
  },
  "Capitão América": {
   "pele": 0,
@@ -833,7 +1183,12 @@
   "acessorio": "capacete_alado",
   "corAcessorio": "#1e4fa0",
   "camisa": "#1e4fa0",
-  "detalhe": "Capuz azul com asinhas brancas dos quadrinhos, uniforme azul."
+  "detalhe": "Capuz azul com asinhas brancas dos quadrinhos, uniforme azul.",
+  "grupo": [
+   "marvel",
+   "vingadores"
+  ],
+  "wiki": "Capitão América"
  },
  "Optimus Prime": {
   "pele": "cinza",
@@ -844,7 +1199,11 @@
   "acessorio": "elmo_robo",
   "corAcessorio": "#1e4fa0",
   "camisa": "#c41e3a",
-  "detalhe": "Elmo azul de robô com placa facial metálica, peito vermelho."
+  "detalhe": "Elmo azul de robô com placa facial metálica, peito vermelho.",
+  "grupo": [
+   "transformers"
+  ],
+  "wiki": "Optimus Prime"
  },
  "Dumbledore": {
   "pele": 0,
@@ -855,7 +1214,11 @@
   "acessorio": "chapeu_bruxo",
   "corAcessorio": "#5b2a86",
   "camisa": "#5b2a86",
-  "detalhe": "Barba longa branca, óculos meia-lua (aprox. redondos) e chapéu de bruxo roxo."
+  "detalhe": "Barba longa branca, óculos meia-lua (aprox. redondos) e chapéu de bruxo roxo.",
+  "grupo": [
+   "harry_potter"
+  ],
+  "wiki": "Albus Dumbledore"
  },
  "Aragorn": {
   "pele": 0,
@@ -866,7 +1229,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#3d4a2e",
-  "detalhe": "Cabelo médio desgrenhado e barba curta, roupa verde-escura de guardião."
+  "detalhe": "Cabelo médio desgrenhado e barba curta, roupa verde-escura de guardião.",
+  "grupo": [
+   "senhor_dos_aneis"
+  ],
+  "wiki": "Aragorn"
  },
  "Gandalf": {
   "pele": 0,
@@ -877,7 +1244,11 @@
   "acessorio": "chapeu_bruxo",
   "corAcessorio": "#7a7a7a",
   "camisa": "#8a8a8a",
-  "detalhe": "Chapéu de bruxo cinza, cabelo e barba longos grisalhos, manto cinza."
+  "detalhe": "Chapéu de bruxo cinza, cabelo e barba longos grisalhos, manto cinza.",
+  "grupo": [
+   "senhor_dos_aneis"
+  ],
+  "wiki": "Gandalf"
  },
  "Freddie Mercury": {
   "pele": 1,
@@ -888,7 +1259,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffffff",
-  "detalhe": "Bigodão e cabelo curto preto, regata branca do Live Aid."
+  "detalhe": "Bigodão e cabelo curto preto, regata branca do Live Aid.",
+  "grupo": [
+   "queen"
+  ],
+  "wiki": "Freddie Mercury"
  },
  "Robert Plant": {
   "pele": 0,
@@ -899,7 +1274,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#d9c9a3",
-  "detalhe": "Juba loira cacheada dos anos 70, camisa aberta clara."
+  "detalhe": "Juba loira cacheada dos anos 70, camisa aberta clara.",
+  "grupo": [
+   "led_zeppelin"
+  ],
+  "wiki": "Robert Plant"
  },
  "Renato Russo": {
   "pele": 0,
@@ -910,7 +1289,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Cabelo curto e barba rala, roupa preta da Legião Urbana."
+  "detalhe": "Cabelo curto e barba rala, roupa preta da Legião Urbana.",
+  "grupo": [
+   "legiao_urbana",
+   "rock_brasil"
+  ],
+  "wiki": "Renato Russo"
  },
  "Cazuza": {
   "pele": 0,
@@ -921,7 +1305,11 @@
   "acessorio": "bandana",
   "corAcessorio": "#d62828",
   "camisa": "#f2efe6",
-  "detalhe": "Cachos castanhos e bandana, visual anos 80."
+  "detalhe": "Cachos castanhos e bandana, visual anos 80.",
+  "grupo": [
+   "rock_brasil"
+  ],
+  "wiki": "Cazuza"
  },
  "Axl Rose": {
   "pele": 0,
@@ -932,7 +1320,11 @@
   "acessorio": "bandana",
   "corAcessorio": "#d62828",
   "camisa": "#1a1a1a",
-  "detalhe": "Cabelo longo ruivo com bandana vermelha, era Appetite."
+  "detalhe": "Cabelo longo ruivo com bandana vermelha, era Appetite.",
+  "grupo": [
+   "guns_n_roses"
+  ],
+  "wiki": "Axl Rose"
  },
  "Jimi Hendrix": {
   "pele": 4,
@@ -943,7 +1335,11 @@
   "acessorio": "faixa_cabeca",
   "corAcessorio": "#e63946",
   "camisa": "#c96f2b",
-  "detalhe": "Black power com faixa na cabeça e bigode, roupa psicodélica."
+  "detalhe": "Black power com faixa na cabeça e bigode, roupa psicodélica.",
+  "grupo": [
+   "jimi_hendrix_experience"
+  ],
+  "wiki": "Jimi Hendrix"
  },
  "Jimmy Page": {
   "pele": 0,
@@ -954,7 +1350,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#111111",
-  "detalhe": "Cabelo longo cacheado preto e o terno preto do dragão."
+  "detalhe": "Cabelo longo cacheado preto e o terno preto do dragão.",
+  "grupo": [
+   "led_zeppelin",
+   "yardbirds"
+  ],
+  "wiki": "Jimmy Page"
  },
  "Slash": {
   "pele": 2,
@@ -965,7 +1366,11 @@
   "acessorio": "cartola",
   "corAcessorio": "#1a1a1a",
   "camisa": "#1a1a1a",
-  "detalhe": "Cartola, cachos longos pretos e óculos escuros."
+  "detalhe": "Cartola, cachos longos pretos e óculos escuros.",
+  "grupo": [
+   "guns_n_roses"
+  ],
+  "wiki": "Slash"
  },
  "Eric Clapton": {
   "pele": 0,
@@ -976,7 +1381,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#3a4a6b",
-  "detalhe": "Cabelo curto e barba curta, camisa azul-escura."
+  "detalhe": "Cabelo curto e barba curta, camisa azul-escura.",
+  "grupo": [
+   "cream",
+   "yardbirds"
+  ],
+  "wiki": "Eric Clapton"
  },
  "Kiko Loureiro": {
   "pele": 1,
@@ -987,7 +1397,12 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Cabelo longo liso preto da era Angra/Megadeth, roupa preta."
+  "detalhe": "Cabelo longo liso preto da era Angra/Megadeth, roupa preta.",
+  "grupo": [
+   "angra",
+   "rock_brasil"
+  ],
+  "wiki": "Kiko Loureiro"
  },
  "Paul McCartney": {
   "pele": 0,
@@ -998,7 +1413,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#2b2b2b",
-  "detalhe": "Corte mop-top de franja e terno escuro dos Beatles."
+  "detalhe": "Corte mop-top de franja e terno escuro dos Beatles.",
+  "grupo": [
+   "beatles"
+  ],
+  "wiki": "Paul McCartney"
  },
  "John Entwistle": {
   "pele": 0,
@@ -1009,7 +1428,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#111111",
-  "detalhe": "Cabelo médio castanho e o macacão preto de esqueleto do The Who."
+  "detalhe": "Cabelo médio castanho e o macacão preto de esqueleto do The Who.",
+  "grupo": [
+   "the_who"
+  ],
+  "wiki": "John Entwistle"
  },
  "Flea": {
   "pele": 0,
@@ -1020,7 +1443,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "pele",
-  "detalhe": "Cabelo colorido espetado, sem camisa."
+  "detalhe": "Cabelo colorido espetado, sem camisa.",
+  "grupo": [
+   "red_hot"
+  ],
+  "wiki": "Flea"
  },
  "Geddy Lee": {
   "pele": 0,
@@ -1031,7 +1458,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Cabelo longo liso preto e óculos de armação, roupa escura."
+  "detalhe": "Cabelo longo liso preto e óculos de armação, roupa escura.",
+  "grupo": [
+   "rush"
+  ],
+  "wiki": "Geddy Lee"
  },
  "Roger Waters": {
   "pele": 0,
@@ -1042,7 +1473,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#111111",
-  "detalhe": "Cabelo médio grisalho e camiseta preta."
+  "detalhe": "Cabelo médio grisalho e camiseta preta.",
+  "grupo": [
+   "pink_floyd"
+  ],
+  "wiki": "Roger Waters"
  },
  "John Bonham": {
   "pele": 0,
@@ -1053,7 +1488,11 @@
   "acessorio": "chapeu_coco",
   "corAcessorio": "#1a1a1a",
   "camisa": "#f2efe6",
-  "detalhe": "Chapéu-coco preto, bigodão e macacão branco."
+  "detalhe": "Chapéu-coco preto, bigodão e macacão branco.",
+  "grupo": [
+   "led_zeppelin"
+  ],
+  "wiki": "John Bonham"
  },
  "Dave Grohl": {
   "pele": 0,
@@ -1064,7 +1503,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#1a1a1a",
-  "detalhe": "Cabelo longo e barba cheia, camiseta preta."
+  "detalhe": "Cabelo longo e barba cheia, camiseta preta.",
+  "grupo": [
+   "foo_fighters_nirvana"
+  ],
+  "wiki": "Dave Grohl"
  },
  "Neil Peart": {
   "pele": 0,
@@ -1075,7 +1518,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#7b1e1e",
-  "detalhe": "Cabelo curto e bigode, roupa vinho."
+  "detalhe": "Cabelo curto e bigode, roupa vinho.",
+  "grupo": [
+   "rush"
+  ],
+  "wiki": "Neil Peart"
  },
  "Ringo Starr": {
   "pele": 0,
@@ -1086,7 +1533,11 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#2b2b2b",
-  "detalhe": "Franja mop-top e barba curta, terno escuro dos Beatles."
+  "detalhe": "Franja mop-top e barba curta, terno escuro dos Beatles.",
+  "grupo": [
+   "beatles"
+  ],
+  "wiki": "Ringo Starr"
  },
  "Phil Collins": {
   "pele": 0,
@@ -1097,6 +1548,10 @@
   "acessorio": "nenhum",
   "corAcessorio": "#000000",
   "camisa": "#ffffff",
-  "detalhe": "Calvície no topo e camisa branca dos anos 80."
+  "detalhe": "Calvície no topo e camisa branca dos anos 80.",
+  "grupo": [
+   "genesis"
+  ],
+  "wiki": "Phil Collins"
  }
 }

@@ -701,13 +701,12 @@ const eff=(p,k,b)=>.6*p.attrs[k]+.4*ov(p)+b;
 const lgt=x=>1/(1+Math.exp(-x));
 const tagsOf=p=>((window.VISUAIS||{})[p.nome]||{}).grupo||p.grupo||[];
 const tagNome=t=>String(t).replace(/_/g,' ');
+// cada grupo com 2 ou mais nomes no time vale +2 uma única vez (4 brasileiros não valem mais que 2); teto de +6
 function synergy(t){
-  const pares=[];
-  for(let i=0;i<t.ps.length;i++)for(let j=i+1;j<t.ps.length;j++){
-    const tag=tagsOf(t.ps[i]).find(x=>tagsOf(t.ps[j]).includes(x));
-    if(tag)pares.push([t.ps[i].nome,t.ps[j].nome,tag]);
-  }
-  return{pares,bonus:Math.min(6,pares.length*2)};
+  const por={};t.ps.forEach(p=>tagsOf(p).forEach(g=>{(por[g]=por[g]||[]).push(p.nome)}));
+  const grupos=Object.entries(por).filter(([,ns])=>ns.length>1);
+  const pares=grupos.map(([g,ns])=>[ns.slice(0,-1).join(', '),ns[ns.length-1],g]);
+  return{pares,bonus:Math.min(6,grupos.length*2)};
 }
 function stats(t){
   const ps=t.ps,base=ps.reduce((a,p)=>a+ov(p),0)/ps.length;
