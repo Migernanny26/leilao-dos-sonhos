@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700;800&display=swap">
 <script src="visuais.js"></script>
-<script src="caricatura.js"></script>
 <style>
 :root{
   --bg:#120a10;--bg2:#1c0f19;--v1:#3a0d20;--v2:#561430;--v3:#7a1c40;
@@ -194,6 +193,31 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .cw{display:inline-flex;align-items:center;gap:4px;margin:0 12px 4px 0;color:var(--creme)}
 .syn{margin:.5em 0 0;color:var(--ouro2);font-weight:800;font-size:.9em;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .crit .ic{vertical-align:-6px}
+/* cartas estilo figurinha */
+.lenda{--tb:linear-gradient(135deg,#ffe8a8,#f2b33d 28%,#8f5f10 52%,#ffd77a 76%,#b57d16);--tc:#ffd77a}
+.ouro{--tb:linear-gradient(135deg,#f6d27a,#b8862a);--tc:#f2c86a}
+.prata{--tb:linear-gradient(135deg,#f1f3f7,#8d95a3);--tc:#e2e6ee}
+.bronze{--tb:linear-gradient(135deg,#e9a873,#80522f);--tc:#e7ad78}
+.carta{width:190px;aspect-ratio:5/7;border-radius:20px;position:relative;overflow:hidden;flex:none;background:var(--tb);box-shadow:0 16px 34px rgba(0,0,0,.55)}
+.carta::before{content:"";position:absolute;inset:4px;border-radius:16px;background:#140a11}
+.cfoto{position:absolute;inset:4px 4px 30% 4px;border-radius:16px 16px 0 0;overflow:hidden;display:grid;place-items:center;background:radial-gradient(circle at 50% 30%,#4a1630,#1c0f19 75%)}
+.cfoto::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(transparent,#140a11)}
+.cfoto img,.fbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;opacity:0;transition:opacity .3s var(--out)}
+.cfoto.tem img,.fbox.tem img{opacity:1}
+.cfoto.tem .mono,.fbox.tem .mono{opacity:0}
+.mono{font:4rem var(--d);color:var(--tc);opacity:.9;position:relative}
+.cnum{position:absolute;left:14px;top:12px;z-index:2;display:flex;flex-direction:column;align-items:center;line-height:1;text-shadow:0 2px 0 rgba(0,0,0,.65)}
+.cnum b{font:2.7rem var(--d);color:var(--tc)}
+.cnum span{font:800 .78rem var(--b);color:var(--creme);background:rgba(0,0,0,.55);border-radius:999px;padding:2px 8px;margin-top:4px}
+.cnome{position:absolute;left:8px;right:8px;bottom:15%;text-align:center;font:1.3rem/1.05 var(--d);color:var(--creme);z-index:2}
+.ctier{position:absolute;left:0;right:0;bottom:6%;text-align:center;font:800 .78rem var(--b);color:var(--tc);z-index:2}
+.fmini{position:relative;display:inline-block;width:var(--s);height:var(--s);flex:none;border-radius:50%;padding:2.5px;background:var(--tb);vertical-align:middle}
+.fbox{border-radius:50%;overflow:hidden;position:relative;display:grid;place-items:center;background:#2a0d1c;width:100%;height:100%}
+.fbox .mono{font-size:calc(var(--s)*.36)}
+.fmini b{position:absolute;right:-5px;bottom:-5px;background:#140a11;color:var(--tc);font:calc(var(--s)*.2 + 5px)/1 var(--d);border-radius:999px;padding:2px 6px;box-shadow:0 0 0 1.5px var(--tc)}
+.slot.f .fmini{transform:scale(.92)}
+.duel .win .fmini{transform:scale(1.08)} .duel .fmini{transition:transform .3s var(--out)}
+@media(max-width:560px){.carta{width:150px}.cnum b{font-size:2.1rem}.cnome{font-size:1.05rem}.mono{font-size:3rem}}
 /* pódio */
 .pod{display:flex;gap:14px;align-items:flex-end;justify-content:center;margin:10px 0 18px}
 .pod div{background:var(--bg2);border-radius:24px 24px 10px 10px;padding:14px;text-align:center;min-width:130px;flex:1;max-width:240px;box-shadow:0 0 0 1px var(--line) inset;display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -234,6 +258,15 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
   .pod div{min-width:0;padding:10px 6px}.pod .p1{padding-bottom:30px}.pod .av{width:44px;height:44px}
   .cb{width:40px;height:40px}
 }
+/* auditoria anti-visual-de-IA (skill frontend-design-deslop): sem brilho decorativo, sem listras, sem piscar, cantos com duas medidas só */
+#tv::before{display:none}
+.panel,.pad,.bidpanel,.lotcard,.wt,.vd,.vc,.cap,.season,.critd,.stats,.slot,.pod div,#lower{border-radius:14px}
+.btn,.dar,input,select,textarea{border-radius:10px}
+.carta{border-radius:14px}.carta::before{border-radius:11px}.cfoto{border-radius:11px 11px 0 0}
+#lt{border-radius:12px}
+.live::before,.rec{animation:none}
+#ticker span{animation:none;padding:0 18px;display:block;overflow:hidden;text-overflow:ellipsis}
+.pad .ava{background:none;box-shadow:none;border-radius:0;overflow:visible}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -388,54 +421,68 @@ const EMPTY={nome:'(vaga vazia)',pos:'',bio:'',attrs:[40,40,40,40]};
 let W=[.25,.25,.25,.25];                       // pesos do critério da rodada
 const ov=p=>p.attrs.reduce((a,x,i)=>a+x*W[i],0);
 
-/* ---------- PERSONAGENS (avatar por peças) ---------- */
-const SKINS=['#f5d0b0','#e8b88a','#c98e5f','#a0643c','#6b4226','#f7e1c3'];
-const COLS=['#e63946','#2a9d8f','#f4a261','#7b2cbf','#1d70c4','#f2c94c'];
-const HATS=[
- {n:'sem chapéu',s:()=>''},
- {n:'cartola',s:()=>`<rect x="31" y="6" width="38" height="26" fill="#222"/><rect x="24" y="30" width="52" height="7" rx="3" fill="#222"/><rect x="31" y="24" width="38" height="5" fill="#c1121f"/>`},
- {n:'boné',s:c=>`<path d="M26 36 Q50 6 74 36 Z" fill="${c}"/><rect x="48" y="31" width="38" height="7" rx="3" fill="${c}"/>`},
- {n:'chapéu de festa',s:()=>`<path d="M50 0 L69 37 H31 Z" fill="#ff7bd0"/><circle cx="50" cy="3" r="5" fill="#ffd400"/><path d="M38 28 H62" stroke="#fff" stroke-width="3"/>`},
- {n:'coroa',s:()=>`<path d="M30 36 V14 L40 25 L50 10 L60 25 L70 14 V36 Z" fill="#ffc72c" stroke="#b8860b" stroke-width="2"/>`},
- {n:'capacete',s:()=>`<path d="M26 40 Q26 8 50 8 Q74 8 74 40 Z" fill="#f2c94c" stroke="#a37b00" stroke-width="2"/><rect x="46" y="8" width="8" height="12" fill="#a37b00"/>`},
- {n:'chef',s:()=>`<circle cx="36" cy="22" r="11" fill="#fff"/><circle cx="50" cy="16" r="13" fill="#fff"/><circle cx="64" cy="22" r="11" fill="#fff"/><rect x="32" y="26" width="36" height="12" fill="#fff"/>`},
- {n:'chapéu de palha',s:()=>`<ellipse cx="50" cy="36" rx="35" ry="7" fill="#e2b45b"/><path d="M32 36 Q34 12 50 12 Q66 12 68 36 Z" fill="#e2b45b"/><rect x="32" y="28" width="36" height="5" fill="#a63d40"/>`}
-];
-const EYES=[
- {n:'olhos normais',s:()=>`<circle cx="41" cy="50" r="3.2" fill="#222"/><circle cx="59" cy="50" r="3.2" fill="#222"/>`},
- {n:'óculos redondos',s:()=>`<circle cx="41" cy="50" r="9" fill="rgba(255,255,255,.5)" stroke="#222" stroke-width="2.5"/><circle cx="59" cy="50" r="9" fill="rgba(255,255,255,.5)" stroke="#222" stroke-width="2.5"/><path d="M50 50 H50" stroke="#222" stroke-width="3"/><circle cx="41" cy="50" r="2.5" fill="#222"/><circle cx="59" cy="50" r="2.5" fill="#222"/>`},
- {n:'óculos escuros',s:()=>`<rect x="30" y="43" width="18" height="12" rx="4" fill="#111"/><rect x="52" y="43" width="18" height="12" rx="4" fill="#111"/><path d="M48 47 H52" stroke="#111" stroke-width="3"/>`},
- {n:'monóculo',s:()=>`<circle cx="41" cy="50" r="3.2" fill="#222"/><circle cx="59" cy="50" r="3.2" fill="#222"/><circle cx="59" cy="50" r="9" fill="none" stroke="#b8860b" stroke-width="2.5"/><path d="M66 56 Q72 70 68 84" fill="none" stroke="#b8860b" stroke-width="1.5"/>`},
- {n:'sobrancelha brava',s:()=>`<circle cx="41" cy="51" r="3.2" fill="#222"/><circle cx="59" cy="51" r="3.2" fill="#222"/><path d="M33 42 L47 47 M67 42 L53 47" stroke="#222" stroke-width="3.5" stroke-linecap="round"/>`},
- {n:'olhos sonolentos',s:()=>`<path d="M34 50 H48 M52 50 H66" stroke="#222" stroke-width="3.5" stroke-linecap="round"/><path d="M34 50 Q41 56 48 50 M52 50 Q59 56 66 50" fill="none" stroke="#222" stroke-width="1.5"/>`}
-];
-const ACCS=[
- {n:'sem acessório',s:()=>''},
- {n:'bigode',s:()=>`<path d="M35 62 Q42 55 50 60 Q58 55 65 62 Q58 66 50 63 Q42 66 35 62Z" fill="#3b2418"/>`},
- {n:'barba',s:()=>`<path d="M27 56 Q27 84 50 84 Q73 84 73 56 Q65 70 50 70 Q35 70 27 56Z" fill="#3b2418"/>`},
- {n:'gravata-borboleta',s:()=>`<path d="M50 80 L36 73 V87 Z M50 80 L64 73 V87 Z" fill="#c1121f"/><circle cx="50" cy="80" r="3.5" fill="#8b0a14"/>`},
- {n:'medalha',s:()=>`<path d="M43 78 L50 92 L57 78Z" fill="#c1121f"/><circle cx="50" cy="94" r="5.5" fill="#ffc72c" stroke="#b8860b"/>`},
- {n:'headset',s:()=>`<path d="M26 52 Q26 26 50 26 Q74 26 74 52" fill="none" stroke="#222" stroke-width="4"/><rect x="21" y="48" width="8" height="14" rx="3" fill="#222"/><path d="M25 62 Q30 74 42 70" fill="none" stroke="#222" stroke-width="3"/><circle cx="43" cy="70" r="3.2" fill="#222"/>`}
-];
-const CATS=[['skin','Pele'],['hat','Chapéu'],['eyes','Olhos'],['acc','Acessório'],['col','Camisa']];
-const CATN={skin:SKINS.length,hat:HATS.length,eyes:EYES.length,acc:ACCS.length,col:COLS.length};
+/* ---------- ESCUDO DE CADA JOGADOR (formato, duas cores, padrão, símbolo e iniciais) ---------- */
+const COLS=['#b3263a','#1f6f8b','#c9971c','#6c3fa0','#2e8b57','#d9682a','#22406f','#7a1c40'];
+const SHAPES=[
+ {n:'clássico',d:'M50 5 L89 17 V50 C89 75 71 89 50 96 C29 89 11 75 11 50 V17 Z'},
+ {n:'redondo',d:'M50 5 A45 45 0 1 1 49.9 5 Z'},
+ {n:'flâmula',d:'M13 7 H87 V68 L50 95 L13 68 Z'},
+ {n:'diamante',d:'M50 3 L95 50 L50 97 L5 50 Z'}];
+const PADS=['liso','listras','faixa','metade'];
+const SYMS=['estrela','raio','coracao','alvo','nota','punho','escudo','lampada','balao','elos'];
+const CATS=[['skin','Formato'],['col','Cor 1'],['eyes','Cor 2'],['acc','Padrão'],['hat','Símbolo']];
+const CATN={skin:SHAPES.length,hat:SYMS.length,eyes:COLS.length,acc:PADS.length,col:COLS.length};
 function randChar(seed){
   let x=Math.floor(seed)%2147483647||1;const r=()=>(x=x*16807%2147483647)/2147483647;
-  return{skin:Math.floor(r()*SKINS.length),hat:Math.floor(r()*HATS.length),eyes:Math.floor(r()*EYES.length),acc:Math.floor(r()*ACCS.length),col:Math.floor(r()*COLS.length),bordao:''};
+  const col=Math.floor(r()*COLS.length);let eyes=Math.floor(r()*COLS.length);if(eyes===col)eyes=(eyes+3)%COLS.length;
+  return{skin:Math.floor(r()*SHAPES.length),hat:Math.floor(r()*SYMS.length),eyes,acc:Math.floor(r()*PADS.length),col,bordao:''};
 }
-function avatarSVG(c,tam=48,estado='neutro'){
-  const col=COLS[c.col],mouth=estado==='feliz'?`<path d="M40 62 Q50 75 60 62 Z" fill="#fff" stroke="#5a2a1a" stroke-width="2"/>`:estado==='triste'?`<path d="M42 68 Q50 60 58 68" fill="none" stroke="#5a2a1a" stroke-width="2.5" stroke-linecap="round"/>`:`<path d="M42 64 Q50 69 58 64" fill="none" stroke="#5a2a1a" stroke-width="2.5" stroke-linecap="round"/>`;
-  const mouthC=c.acc===2?mouth.replaceAll('#5a2a1a','#fff'):mouth;
-  const K='#2a1018',sk=SKINS[c.skin],brilho=[0,3,4].includes(c.eyes)?`<circle cx="42.2" cy="48.8" r="1.1" fill="#fff"/><circle cx="60.2" cy="48.8" r="1.1" fill="#fff"/>`:'';
-  return `<svg class="av" width="${tam}" height="${tam}" viewBox="0 0 100 100" aria-hidden="true"><path d="M13 101 Q13 77 50 77 Q87 77 87 101 Z" fill="${col}" stroke="${K}" stroke-width="2.4"/><circle cx="26" cy="54" r="5.5" fill="${sk}" stroke="${K}" stroke-width="2.4"/><circle cx="74" cy="54" r="5.5" fill="${sk}" stroke="${K}" stroke-width="2.4"/><circle cx="50" cy="52" r="24" fill="${sk}" stroke="${K}" stroke-width="2.4"/><path d="M68 40 Q77 56 62 73 Q72 58 68 40Z" fill="rgba(0,0,0,.12)"/><circle cx="37" cy="62" r="4" fill="rgba(255,90,110,.25)"/><circle cx="63" cy="62" r="4" fill="rgba(255,90,110,.25)"/><g stroke="${K}" stroke-width="1.8" stroke-linejoin="round">${ACCS[c.acc].s()}</g>${EYES[c.eyes].s()}${brilho}${mouthC.replaceAll('#5a2a1a',K)}<g stroke="${K}" stroke-width="2.2" stroke-linejoin="round">${HATS[c.hat].s(col)}</g></svg>`;
+const iniciais=n=>{const w=String(n||'?').trim().split(/\s+/).filter(Boolean);if(!w.length)return'?';return((w[0][0]||'')+(w.length>1?w[w.length-1][0]:(w[0][1]||''))).toUpperCase()};
+let escId=0;
+function avatarSVG(c,tam=48,estado='neutro',nome=''){
+  const s=SHAPES[c.skin%SHAPES.length],c1=COLS[c.col%COLS.length],c2=COLS[c.eyes%COLS.length]===c1?'#fff1dc':COLS[c.eyes%COLS.length],id='esc'+(++escId);
+  const pad=['',`<path d="M32 0V100M50 0V100M68 0V100" stroke="${c2}" stroke-width="9"/>`,`<path d="M-10 78L110 22" stroke="${c2}" stroke-width="20"/>`,`<rect x="50" y="0" width="50" height="100" fill="${c2}"/>`][c.acc%PADS.length];
+  const sym=(typeof IC!=='undefined'&&IC[SYMS[c.hat%SYMS.length]])||'';
+  return `<svg class="av" width="${tam}" height="${tam}" viewBox="0 0 100 100" aria-hidden="true"${estado==='triste'?' style="opacity:.55"':''}><defs><clipPath id="${id}"><path d="${s.d}"/></clipPath></defs>`+
+    `<g clip-path="url(#${id})"><rect width="100" height="100" fill="${c1}"/>${pad}<path d="M0 0H100V45H0Z" fill="rgba(255,255,255,.08)"/></g>`+
+    `<path d="${s.d}" fill="none" stroke="${estado==='feliz'?'#ffd77a':'#f2b33d'}" stroke-width="${estado==='feliz'?6:4}"/>`+
+    `<g transform="translate(36.2 15) scale(1.15)" fill="none" stroke="#fff1dc" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${sym}</g>`+
+    `<text x="50" y="78" text-anchor="middle" font-family="Lilita One,sans-serif" font-size="27" fill="#fff1dc" stroke="#2a1018" stroke-width="4" paint-order="stroke">${esc(iniciais(nome))}</text></svg>`;
 }
 const hashName=n=>[...String(n)].reduce((a,ch)=>(a*31+ch.charCodeAt(0))>>>0,7);
 const charFor=n=>S.chars[n]||(S.chars[n]=randChar(hashName(n)));
-const av=(n,tam,estado)=>avatarSVG(charFor(n),tam,estado);
+const av=(n,tam,estado)=>avatarSVG(charFor(n),tam,estado,n);
 const bordaoOf=n=>(charFor(n).bordao||'').trim();
-const descChar=n=>{const c=charFor(n);return `usa ${HATS[c.hat].n}, ${EYES[c.eyes].n}, ${ACCS[c.acc].n}${bordaoOf(n)?`; bordão: "${bordaoOf(n)}"`:''}`};
+const descChar=n=>{const c=charFor(n);return `tem um escudo ${SHAPES[c.skin%SHAPES.length].n} com símbolo de ${SYMS[c.hat%SYMS.length]}${bordaoOf(n)?`; bordão: "${bordaoOf(n)}"`:''}`};
 /* ---------- DESENHO DO NOME LEILOADO: caricatura.js + visuais.js ---------- */
-function lotArtSVG(p,mid,tam=96,estado){return window.caricatura?caricatura(p.nome,tam,estado,p.visual):'';}
+/* ---------- FOTOS (miniatura da Wikipédia, guardada no navegador) E CARTAS ---------- */
+const FOTOS=store.get('lds_fotos2',{}),fotoPend={};
+const visualOf=p=>(window.VISUAIS||{})[p.nome]||{};
+function pedirFoto(p){
+  const k=p&&p.nome;if(!k||p===EMPTY||(k in FOTOS)||fotoPend[k])return;fotoPend[k]=1;
+  const v=visualOf(p),lang=v.wikiLang||'pt',titulo=(v.wiki||p.wiki||k).replace(/ /g,'_');
+  fetch(`https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(titulo)}`)
+    .then(r=>r.ok?r.json():null)
+    .then(j=>{FOTOS[k]=j&&j.thumbnail&&/^https:\/\/(upload|thumb)\.wikimedia\.org\//.test(j.thumbnail.source)?j.thumbnail.source:'';
+      store.set('lds_fotos2',Object.fromEntries(Object.entries(FOTOS).filter(([,u])=>u)));aplicarFoto(k);})
+    .catch(()=>{fotoPend[k]=0});
+}
+function aplicarFoto(k){const u=FOTOS[k];if(!u)return;document.querySelectorAll('img[data-foto]').forEach(im=>{if(im.dataset.foto===k&&!im.getAttribute('src'))im.src=u;});}
+const TIER={S:['lenda','Lenda'],A:['ouro','Ouro'],B:['prata','Prata'],C:['bronze','Bronze']};
+function fotoBox(p,cls){
+  pedirFoto(p);const k=p.nome,u=FOTOS[k];
+  return `<div class="${cls}${u?' tem':''}"><span class="mono">${esc(iniciais(k))}</span><img data-foto="${esc(k)}"${u?` src="${esc(u)}"`:''} alt="" loading="lazy" onload="this.parentNode.classList.add('tem')" onerror="this.remove()"></div>`;
+}
+function cardHTML(p){
+  const t=TIER[p.tier]||TIER.C;
+  return `<div class="carta ${t[0]}"><div class="cnum"><b>${Math.round(ov(p))}</b><span>${esc(p.pos)}</span></div>${fotoBox(p,'cfoto')}<div class="cnome">${esc(p.nome)}</div><div class="ctier">${t[1]}</div></div>`;
+}
+function fotoMini(p,s=50){
+  if(!p||p===EMPTY)return'';const t=TIER[p.tier]||TIER.C;
+  return `<span class="fmini ${t[0]}" style="--s:${s}px">${fotoBox(p,'fbox')}<b>${Math.round(ov(p))}</b></span>`;
+}
+function lotArtSVG(p,mid,tam=96){return fotoMini(p,tam);}
+
 /* ---------- ÍCONES (no lugar de emojis) ---------- */
 const coinSVG=s=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="#f2b33d" stroke="#9c6a12" stroke-width="2"/><circle cx="12" cy="12" r="6.5" fill="none" stroke="#ffd77a" stroke-width="1.6"/></svg>`;
 const medalSVG=(n,s=42)=>{const c=['#f2b33d','#c9ccd2','#c98a4b'][n-1]||'#7a5a6a';return `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 40 40" aria-hidden="true"><path d="M12 2 L20 15 L28 2Z" fill="#7a1c40" stroke="#2a1018" stroke-width="2"/><circle cx="20" cy="25" r="12" fill="${c}" stroke="#2a1018" stroke-width="2.4"/><text x="20" y="30" text-anchor="middle" font-family="Lilita One,sans-serif" font-size="14" fill="#2a1018">${n}</text></svg>`};
@@ -482,14 +529,14 @@ const CHIPS=[[1,'#1f5e47'],[5,'#7a1c40'],[10,'#1d3a6b'],[25,'#141014']];
 function padHTML(t,i){
   const mid=S.modes[S.round];
   return `<article class="pad" style="--pc:${COLS[charFor(t.name).col]}"><div class="row" style="flex-wrap:nowrap"><div class="ava">${av(t.name,54)}</div><b class="n">${esc(t.name)}</b>${t.bonus?'<span class="chip bonus">+15%</span>':''}<span class="mny" style="margin-left:auto">${coinSVG(22)}${t.money}</span></div>
-  <div class="slots4">${t.slots.map(s=>s.pick?`<div class="slot f" title="${esc(s.pick.nome)}">${lotArtSVG(s.pick,mid,50)}<b>${s.paid}</b></div>`:`<div class="slot">${esc(s.pos)}</div>`).join('')}</div>
+  <div class="slots4">${t.slots.map(s=>s.pick?`<div class="slot f" title="${esc(s.pick.nome)}">${fotoMini(s.pick,50)}<b>${s.paid}</b></div>`:`<div class="slot">${esc(s.pos)}</div>`).join('')}</div>
   <div class="row bids">${CHIPS.map(([d,c])=>`<button class="cb ${d===25?'k':''}" style="--c:${c}" aria-label="Aumentar ${d} para ${esc(t.name)}" onclick="bump(${i},${d})">+${d}</button>`).join('')}
   <input class="outro" type="number" id="c${i}" min="1" placeholder="valor" aria-label="Outro valor de lance de ${esc(t.name)}" onkeydown="if(event.key==='Enter')bid(${i},+this.value)"><button class="dar" onclick="bid(${i},+$('#c${i}').value)">Dar</button></div></article>`;
 }
 function fixDraft(arr){
   return [0,1,2,3].map(i=>{const c=arr&&arr[i],ok=c&&Object.keys(CATN).every(k=>Number.isInteger(c[k])&&c[k]>=0&&c[k]<CATN[k]);return ok?{...c,bordao:String(c.bordao||'').slice(0,40)}:randChar(i*977+13)});
 }
-function refreshAv(i){$('#av'+i).innerHTML=avatarSVG(S.draft[i],84);}
+function refreshAv(i){$('#av'+i).innerHTML=avatarSVG(S.draft[i],84,'neutro',($('#p'+i)?.value||'').trim()||'Jogador '+(i+1));}
 function part(i,k,d){S.draft[i][k]=(S.draft[i][k]+d+CATN[k])%CATN[k];refreshAv(i);}
 function rndChar(i){S.draft[i]={...randChar(Math.random()*1e9),bordao:$('#bd'+i).value};refreshAv(i);}
 
@@ -520,7 +567,7 @@ function setup(){
   const rank=Object.entries(se.totals).sort((a,b)=>b[1]-a[1]);
   $('#rnd').textContent='';lower('Boa noite!','Monte o time, defenda no tribunal e leve o troféu');
   scene('setup',`<h1 class="dsp" style="font-size:clamp(2.4rem,7vw,5rem);color:var(--ouro);text-shadow:0 4px 0 rgba(0,0,0,.35);margin:.2em 0">Leilão dos Sonhos</h1>
-  <div class="grid"><div class="panel" style="grid-column:1/-1"><h2>Quem joga (2 a 4)</h2><div class="slots">${[0,1,2,3].map(i=>`<div class="pl"><div class="avbox" id="av${i}">${avatarSVG(S.draft[i],84)}</div><div class="plf"><input id="p${i}" placeholder="Jogador ${i+1}" aria-label="Jogador ${i+1}" value="${esc(saved[i]||'')}"><input id="bd${i}" maxlength="40" placeholder="Bordão (grito de guerra)" aria-label="Bordão do jogador ${i+1}" value="${esc(S.draft[i].bordao||'')}"><div class="parts">${CATS.map(([k,l])=>`<span class="pt"><button class="btn s" aria-label="${l} anterior" onclick="part(${i},'${k}',-1)">‹</button>${l}<button class="btn s" aria-label="${l} próximo" onclick="part(${i},'${k}',1)">›</button></span>`).join('')}<button class="btn s" onclick="rndChar(${i})">Aleatório</button></div></div></div>`).join('')}</div></div>
+  <div class="grid"><div class="panel" style="grid-column:1/-1"><h2>Quem joga (2 a 4)</h2><div class="slots">${[0,1,2,3].map(i=>`<div class="pl"><div class="avbox" id="av${i}">${avatarSVG(S.draft[i],84,'neutro',saved[i]||'Jogador '+(i+1))}</div><div class="plf"><input id="p${i}" oninput="refreshAv(${i})" placeholder="Jogador ${i+1}" aria-label="Jogador ${i+1}" value="${esc(saved[i]||'')}"><input id="bd${i}" maxlength="40" placeholder="Bordão (grito de guerra)" aria-label="Bordão do jogador ${i+1}" value="${esc(S.draft[i].bordao||'')}"><div class="parts">${CATS.map(([k,l])=>`<span class="pt"><button class="btn s" aria-label="${l} anterior" onclick="part(${i},'${k}',-1)">‹</button>${l}<button class="btn s" aria-label="${l} próximo" onclick="part(${i},'${k}',1)">›</button></span>`).join('')}<button class="btn s" onclick="rndChar(${i})">Aleatório</button></div></div></div>`).join('')}</div></div>
   <div class="panel"><h2>Rodadas</h2><p>${sel(0,'futebol')}</p><p>${sel(1,'filosofos')}</p><p>${sel(2,'mma')}</p>
   <p class="row" style="flex-wrap:nowrap"><select id="nr" aria-label="Quantidade de rodadas"><option value="3" ${prefs.nr!==2?'selected':''}>3 rodadas</option><option value="2" ${prefs.nr===2?'selected':''}>2 rodadas (noite curta)</option></select>
   <select id="fame" aria-label="Fama dos nomes"><option value="misto">Nomes: misto</option><option value="conhecidos" ${prefs.fame==='conhecidos'?'selected':''}>Nomes: só os muito famosos</option></select></p>
@@ -606,7 +653,7 @@ async function startRound(){
   while(lists.SA.length+lists.B.length+lists.C.length){let k=pat[i++%4];if(!lists[k].length)k=Object.keys(lists).find(x=>lists[x].length);queue.push(lists[k].shift());}
   const lowest=S.lastPlace;
   R={pool:cut,queue,unsold:[],aviso,crit,teams:S.players.map(name=>({name,money:name===lowest?115:100,slots:m.slots.map(pos=>({pos,pick:null,paid:0})),bonus:name===lowest}))};
-  lower(`${m.emoji} ${crit.titulo}`,crit.desc);$("#lt-a").insertAdjacentHTML("afterbegin",critIcon(20)+" ");
+  cut.forEach(pedirFoto);lower(`${m.emoji} ${crit.titulo}`,crit.desc);$("#lt-a").insertAdjacentHTML("afterbegin",critIcon(20)+" ");
   scene('abertura',`<div class="open"><div class="kick">Rodada ${S.round+1} · ${esc(m.nome)}</div>
   <div class="mut">${esc(m.tema)}. Hoje vale:</div>
   <div class="crit">${critIcon(56)} ${esc(crit.titulo)}</div><p style="font-size:1.2em">${esc(crit.desc)}</p><div style="max-width:720px;margin:0 auto;text-align:left">${critDetails()}</div>
@@ -628,7 +675,7 @@ async function nextItem(){
 async function drawAuction(){
   const m=mode(),it=R.cur;
   lower(`${m.emoji} ${R.crit.titulo}`,'Agora: dê seu lance falando · cada lance precisa subir pelo menos 5%');$('#lt-a').insertAdjacentHTML('afterbegin',critIcon(20)+' ');
-  await scene('leilao',`<div class="lot" id="lotwrap"><section class="lotcard"><div class="lothead"><div class="lotart">${lotArtSVG(it,S.modes[S.round],150)}</div><div><span class="pos">${esc(it.pos)}</span><h1 class="nome">${esc(it.nome)}</h1><p class="bio">${esc(it.bio)||'&nbsp;'}</p>${synHint(it)}</div></div>
+  await scene('leilao',`<div class="lot" id="lotwrap"><section class="lotcard"><div class="lothead">${cardHTML(it)}<div><span class="pos">${esc(it.pos)}</span><h1 class="nome">${esc(it.nome)}</h1><p class="bio">${esc(it.bio)||'&nbsp;'}</p>${synHint(it)}</div></div>
   <div class="stats">${m.attrs.map((a,i)=>`<div class="at ${W[i]>=.4?'hot':''}"><span>${attrIcon(S.modes[S.round],i,16)} ${a}</span><i style="--v:${it.attrs[i]}%"></i><b>${it.attrs[i]}</b><em>${Math.round(W[i]*100)}%</em></div>`).join('')}${critDetails()}</div></section>
   <section class="bidpanel"><div class="mut" style="font-weight:800">Lance atual · faltam ${R.queue.length} nomes</div><div class="val">${coinSVG(52)}<span id="bid" class="bignum">0</span></div><div id="leader" class="mut">Ninguém deu lance ainda</div>
   <div class="clock"><i id="clk"></i></div><div id="call"></div>
@@ -677,7 +724,7 @@ function endAuction(){
   R.res={order:R.lg.order,narr:localNarr(R.lg)};
   R.narrP=S.offline?null:narrate().catch(()=>null);
   lower('Elencos fechados','Agora: confira os times antes das apostas');
-  scene('elenco',`<h2>Os elencos estão fechados</h2><div class="grid">${R.teams.map(t=>`<div class="panel"><span class="row">${av(t.name,48)}<b style="font:700 1.5em var(--c)">${esc(t.name)}</b> <span class="mut">sobrou ${t.money}</span></span>${synergy(t).pares.length?`<p class="syn">${icon('elos',16)} Sinergia +${synergy(t).bonus}: ${synergy(t).pares.map(p=>esc(p[0])+' e '+esc(p[1])+' ('+esc(tagNome(p[2]))+')').join(' · ')}</p>`:''}${t.slots.map(s=>`<p class="row" style="margin:.5em 0;gap:6px">${s.pick?lotArtSVG(s.pick,mid,34):''}<span class="pos">${esc(s.pos)}</span> <b>${esc(s.pick?s.pick.nome:'(vaga vazia)')}</b> <span class="mut">${s.pick?(s.saldao?'saldão · ':'')+s.paid+' moedas':''}</span></p>`).join('')}</div>`).join('')}</div>
+  scene('elenco',`<h2>Os elencos estão fechados</h2><div class="grid">${R.teams.map(t=>`<div class="panel"><span class="row">${av(t.name,48)}<b style="font:700 1.5em var(--c)">${esc(t.name)}</b> <span class="mut">sobrou ${t.money}</span></span>${synergy(t).pares.length?`<p class="syn">${icon('elos',16)} Sinergia +${synergy(t).bonus}: ${synergy(t).pares.map(p=>esc(p[0])+' e '+esc(p[1])+' ('+esc(tagNome(p[2]))+')').join(' · ')}</p>`:''}${t.slots.map(s=>`<p class="row" style="margin:.5em 0;gap:6px">${s.pick?fotoMini(s.pick,36):''}<span class="pos">${esc(s.pos)}</span> <b>${esc(s.pick?s.pick.nome:'(vaga vazia)')}</b> <span class="mut">${s.pick?(s.saldao?'saldão · ':'')+s.paid+' moedas':''}</span></p>`).join('')}</div>`).join('')}</div>
   <p><button class="btn" onclick="drawBets()">Abrir as apostas</button></p>`);
 }
 
@@ -911,7 +958,7 @@ async function drawLeague(){
   lower('Em campo',`Critério: ${R.crit.titulo} · Agora: acompanhe os jogos`);
   await scene('jogo',`<div class="panel dk"><p>O narrador está se aquecendo…</p></div>`);
   if(R.narrP){const j=await Promise.race([R.narrP,sleep(15000).then(()=>null)]);R.res.narr=mergeNarr(j,lg);R.narrP=null;}
-  const narr=R.res.narr,art=p=>lotArtSVG(p,mid,92);
+  const narr=R.res.narr,art=p=>fotoMini(p,104);
   await scene('jogo',`<div class="lgwrap"><div class="panel dk match"><div class="vs"><div id="sideA"></div><div class="sc"><div class="mi" id="mi"></div><div class="num"><b id="ga">0</b><span>×</span><b id="gb">0</b></div><div class="un">${m.un}</div></div><div id="sideB"></div></div><div class="hl" id="hl"></div></div>
   <div class="panel dk mini"><b>Tabela</b><table id="mt"></table></div></div>
   <div class="cap" id="cap">Os times entram…</div>

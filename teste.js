@@ -45,7 +45,7 @@
       ok(await W8(()=>$('.open button')),`rodada ${r+1}: abertura com critério`);
       nextItem();await W8(()=>$('#bid'));
       ok(!$('#stage').innerText.includes('Pular'),`rodada ${r+1}: leilão sem botão Pular`);
-      ok(!!$('.lotart svg'),`rodada ${r+1}: desenho do nome no leilão`);
+      ok(!!$('.carta'),`rodada ${r+1}: carta do nome no leilão`);
       let k=0;
       while($('#bid')&&k<30){
         k++;const it=R.cur,ts=R.teams.map((t,i)=>i).filter(i=>canBid(R.teams[i],it));
