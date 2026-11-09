@@ -203,6 +203,24 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .cnum span{font:800 .78rem var(--b);color:var(--creme);background:rgba(0,0,0,.55);border-radius:999px;padding:2px 8px;margin-top:4px}
 .cnome{position:absolute;left:8px;right:8px;bottom:15%;text-align:center;font:1.3rem/1.05 var(--d);color:var(--creme);z-index:2}
 .ctier{position:absolute;left:0;right:0;bottom:6%;text-align:center;font:800 .78rem var(--b);color:var(--tc);z-index:2}
+.carreg{display:grid;justify-items:center;gap:14px;margin:28px auto}
+.martelo .cabeca{transform-origin:78px 74px;animation:bate 1s var(--out) infinite}
+@keyframes bate{0%,100%{transform:rotate(-18deg)}45%{transform:rotate(14deg)}55%{transform:rotate(10deg)}}
+.martelo .m1,.martelo .m2{animation:pula 1s var(--out) infinite}.martelo .m2{animation-delay:.08s}
+@keyframes pula{0%,40%{transform:none}55%{transform:translateY(-12px)}75%{transform:none}}
+.carreg .frases{display:grid;font:700 1.3em var(--d);min-height:1.4em}
+.carreg .frases span{grid-area:1/1;opacity:0;animation:frase calc(var(--n)*2.4s) linear infinite;animation-delay:calc(var(--i)*2.4s)}
+@keyframes frase{0%{opacity:0;transform:translateY(6px)}4%,22%{opacity:1;transform:none}26%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.martelo .cabeca,.martelo .m1,.martelo .m2{animation:none}.carreg .frases span{animation:none}.carreg .frases span:first-child{opacity:1}}
+.revisao{margin-top:14px;display:grid;gap:8px}
+.rj{border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.05);border-left:4px solid var(--line)}
+.rj.venceu{border-left-color:var(--ok)}.rj.perdeu{border-left-color:var(--al)}
+.rj ul{margin:.4em 0 0;padding-left:1.1em;font-size:.9em}.rjp{font:700 1.3em var(--d)}
+.elrs{display:grid;gap:2px;margin-top:10px}
+.elr{display:flex;align-items:center;gap:12px;padding:8px 2px;border-top:1px solid var(--line)}
+.eln{flex:1;min-width:0;display:grid;gap:2px}.eln b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.eln .pos{justify-self:start}
+.elp{font:700 1em var(--d);color:var(--ouro);white-space:nowrap}
+.fmini.vazio{border:2px dashed var(--line);background:none}
 .fmini{position:relative;display:inline-block;width:var(--s);height:var(--s);flex:none;border-radius:50%;padding:2.5px;background:var(--tb);vertical-align:middle}
 .fbox{border-radius:50%;overflow:hidden;position:relative;display:grid;place-items:center;background:#2a0d1c;width:100%;height:100%}
 .fbox .mono{font-size:calc(var(--s)*.36)}
@@ -224,6 +242,10 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .gol.rede{animation:rede .5s var(--out)}
 @keyframes rede{30%{transform:scaleX(1.7)}}
 .pc.gk{transition:transform .28s var(--out)}
+.pc.atk.cabeceia .fmini,.pc.zag.cabeceia .fmini{animation:cabeceia .3s var(--out)}@keyframes cabeceia{40%{transform:translateY(-10px) scale(1.08)}}
+.bola.alta{width:22px;height:22px;margin:-3px}
+.gol.trave{animation:trave .35s var(--out)}@keyframes trave{30%{border-color:var(--ouro);transform:translateX(3px)}60%{transform:translateX(-2px)}}
+@media (prefers-reduced-motion:reduce){.gol.trave,.pc.atk.cabeceia .fmini,.pc.zag.cabeceia .fmini{animation:none}}
 .pc.gk.salta{transform:translate(-50%,-78%) rotate(-14deg)}
 .pc.L.golpe{animation:socoL .2s var(--out)}@keyframes socoL{50%{transform:translate(calc(-50% + 34px),-50%)}}
 .pc.R.golpe{animation:socoR .2s var(--out)}@keyframes socoR{50%{transform:translate(calc(-50% - 34px),-50%)}}
@@ -608,6 +630,8 @@ function cardHTML(p){
   const t=TIER[p.tier]||TIER.C;
   return `<div class="carta ${t[0]}"><div class="cnum"><b>${Math.round(ov(p))}</b><span>${esc(p.pos)}</span></div>${fotoBox(p,'cfoto')}<div class="cnome">${esc(p.nome)}</div><div class="ctier">${t[1]}</div></div>`;
 }
+// tela de espera: martelo batendo na mesa e frases que se revezam (troca feita por CSS, sem timer)
+function carregando(frases){const n=frases.length;return `<div class="carreg" style="--n:${n}" role="status" aria-live="polite"><svg class="martelo" viewBox="0 0 120 90" width="160" height="120" aria-hidden="true"><rect x="10" y="74" width="100" height="10" rx="4" fill="var(--ouro)" opacity=".35"/><g class="cabeca"><rect x="44" y="20" width="10" height="52" rx="4" fill="#c9905a" transform="rotate(-35 49 46)"/><rect x="22" y="8" width="44" height="22" rx="7" fill="var(--ouro)" transform="rotate(-35 44 19)"/></g><circle class="m1" cx="86" cy="70" r="5" fill="var(--ouro)"/><circle class="m2" cx="96" cy="70" r="4" fill="var(--ouro)"/></svg><div class="frases">${frases.map((f,i)=>`<span style="--i:${i}">${esc(f)}…</span>`).join("")}</div></div>`;}
 function fotoMini(p,s=50){
   if(!p||p===EMPTY)return'';const t=TIER[p.tier]||TIER.C;
   return `<span class="fmini ${t[0]}" style="--s:${s}px">${fotoBox(p,'fbox')}<b>${Math.round(ov(p))}</b></span>`;
@@ -822,7 +846,7 @@ async function startRound(){
   const m=mode();
   $('#rnd').textContent=`Rodada ${S.round+1} de ${S.modes.length}`;
   lower(`${m.emoji} ${m.nome}`,m.tema);
-  scene('abertura',`<div class="open"><div class="kick">Rodada ${S.round+1}</div><div class="crit" style="animation:none">…</div><p>Preparando os nomes do leilão</p></div>`);
+  scene('abertura',`<div class="open"><div class="kick">Rodada ${S.round+1}</div>${carregando(['Chamando os nomes para o palco','Conferindo as fichas de cada um','Polindo o martelo','Escolhendo o critério da rodada'])}</div>`);
   let pool,crit,aviso='';
   if(S.offline){pool=fallbackPool(S.modes[S.round]);crit=localCrit(m);}
   else{
@@ -932,7 +956,7 @@ function endAuction(){
   R.res={order:R.lg.order,narr:localNarr(R.lg)};
   R.narrP=S.offline?null:narrate().catch(()=>null);
   lower('Elencos fechados','Agora: confira os times antes das apostas');
-  scene('elenco',`<h2>Os elencos estão fechados</h2><div class="grid">${R.teams.map(t=>`<div class="panel"><span class="row">${av(t.name,48)}<b style="font:700 1.5em var(--c)">${esc(t.name)}</b> <span class="mut">sobrou ${t.money}</span></span>${synergy(t).pares.length?`<p class="syn">${icon('elos',16)} Sinergia +${synergy(t).bonus}: ${synergy(t).pares.map(p=>esc(p[0])+' e '+esc(p[1])+' ('+esc(tagNome(p[2]))+')').join(' · ')}</p>`:''}${t.slots.map(s=>`<p class="row" style="margin:.5em 0;gap:6px">${s.pick?fotoMini(s.pick,36):''}<span class="pos">${esc(s.pos)}</span> <b>${esc(s.pick?s.pick.nome:'(vaga vazia)')}</b> <span class="mut">${s.pick?(s.saldao?'saldão · ':'')+s.paid+' moedas':''}</span></p>`).join('')}</div>`).join('')}</div>
+  scene('elenco',`<h2>Os elencos estão fechados</h2><div class="grid">${R.teams.map(t=>`<div class="panel"><span class="row">${av(t.name,48)}<b style="font:700 1.5em var(--c)">${esc(t.name)}</b> <span class="mut">sobrou ${t.money}</span></span>${synergy(t).pares.length?`<p class="syn">${icon('elos',16)} Sinergia +${synergy(t).bonus}: ${synergy(t).pares.map(p=>esc(p[0])+' e '+esc(p[1])+' ('+esc(tagNome(p[2]))+')').join(' · ')}</p>`:''}<div class="elrs">${t.slots.map(s=>`<div class="elr">${s.pick?fotoMini(s.pick,40):'<span class="fmini vazio" style="--s:40px"></span>'}<div class="eln"><span class="pos">${esc(s.pos)}</span><b>${esc(s.pick?s.pick.nome:'(vaga vazia)')}</b></div><span class="elp">${s.pick?(s.saldao?'<small class="mut">saldão</small> ':'')+coinSVG(16)+' '+s.paid:''}</span></div>`).join('')}</div></div>`).join('')}</div>
   <p><button class="btn" onclick="drawBets()">Abrir as apostas</button></p>`);
 }
 
@@ -1103,7 +1127,7 @@ const teamTxt=t=>`${t.name} (personagem que ${descChar(t.name)}): ${t.ps.map(p=>
 const critTxt=()=>`Critério da rodada: "${R.crit.titulo}" (${R.crit.desc}). Pesos por atributo (${mode().attrs.join('/')}): ${W.map(w=>Math.round(w*100)+'%').join('/')}.`;
 function legendLocal(m,e){
   const A=R.teams[m.a],B=R.teams[m.b],T=e.side==='a'?A:B,D=e.side==='a'?B:A;
-  if(e.t==='chance')return e.res==='gol'?`${e.min}' ${T.ps[2].nome} acha ${T.ps[e.shooter].nome}, que vence ${D.ps[0].nome}: gol de ${T.name}!`:`${e.min}' ${T.ps[e.shooter].nome} finaliza, mas ${D.ps[0].nome} defende!`;
+  if(e.t==='chance'){const sh=T.ps[e.shooter].nome,gk=D.ps[0].nome,mn=e.min+"' ";return {chute:`${mn}${T.ps[2].nome} acha ${sh}, que vence ${gk}: gol de ${T.name}!`,cabeca:`${mn}${T.ps[2].nome} cruza e ${sh} sobe de cabeça: gol de ${T.name}!`,drible:`${mn}${sh} dribla ${gk} e empurra pro gol vazio: gol de ${T.name}!`,defesa:`${mn}${sh} finaliza, mas ${gk} defende!`,trave:`${mn}${sh} bate e a bola explode na trave!`,fora:`${mn}${sh} arrisca e manda pra fora.`,corte:`${mn}${D.ps[1].nome} chega antes e corta o passe para ${sh}.`}[tipoLance(e)];}
   if(e.t==='luta'){const w=e.win==='a'?A.ps[e.j]:B.ps[e.j];return `${A.ps[e.j].nome} x ${B.ps[e.j].nome}: ${w.nome} vence por ${e.how}${e.how==='decisão'?' ('+e.cards.map(c=>Math.max(...c)+'-'+Math.min(...c)).join(', ')+')':' no '+e.round+'º round'}`}
   return `${mode().attrs[e.k]}: ${e.pa} x ${e.pb}, ${e.win==='a'?A.name:B.name} leva ${e.votos} de 3 jurados (+${e.pts})`;
 }
@@ -1179,24 +1203,51 @@ const FRASES={
  ficticios:[['Sente o peso disso!','Isso foi só o aquecimento.','Agora é pra valer!'],['Já previ seu próximo passo.','Caiu na minha armadilha.','Plano B, C e D prontos.'],['Ainda estou de pé.','Pode bater mais forte.','Não vou cair.'],['A torcida está comigo!','Olha quem chegou.','Isso é carisma.']]
 };
 
+const LANCE={gol:['chute','cabeca','drible'],defesa:['defesa','trave','fora','corte']};
+const tipoLance=e=>{const l=LANCE[e.res]||LANCE.defesa;return l[(e.min*7+(e.side==='a'?3:5)+e.shooter*11)%l.length]};
+function movePc(el,xp,yp,ms){if(!el)return;el.style.transition=`left ${skipAnim?0:fastAnim?ms/2:ms}ms var(--io),top ${skipAnim?0:fastAnim?ms/2:ms}ms var(--io)`;el.style.left=xp+'%';el.style.top=yp+'%';}
 async function animaChance(x,e,A,B,marca){
-  const T=e.side==='a'?A:B,D=e.side==='a'?B:A,dir=e.side==='a'?1:-1,X=v=>dir===1?v:100-v;
-  const pas=T.ps[2],sho=T.ps[e.shooter],gk=D.ps[0];
+  const T=e.side==='a'?A:B,D=e.side==='a'?B:A,dir=e.side==='a'?1:-1,X=v=>dir===1?v:100-v,tipo=tipoLance(e);
+  const pas=T.ps[2],sho=T.ps[e.shooter],gk=D.ps[0],zag=D.ps[1];
+  const pasPos=tipo==='cabeca'?[80,12]:[42,58],shoPos=tipo==='cabeca'?[84,44]:[72,34];
   arena().className='arena campo';
   arena().innerHTML=`<svg class="linhas" viewBox="0 0 600 280" preserveAspectRatio="none" aria-hidden="true"><rect x="6" y="6" width="588" height="268"/><path d="M300 6V274"/><circle cx="300" cy="140" r="42"/><rect x="6" y="80" width="70" height="120"/><rect x="524" y="80" width="70" height="120"/></svg>
     <i class="gol ${dir===1?'gR':'gL'}"></i>
-    <div class="pc" style="left:${X(42)}%;top:58%">${fotoMini(pas,46)}<small>${esc(pas.nome)}</small></div>
-    <div class="pc atk" style="left:${X(72)}%;top:34%">${fotoMini(sho,52)}<small>${esc(sho.nome)}</small></div>
-    <div class="pc gk ${e.res==='defesa'?'pula':''}" style="left:${X(91)}%;top:50%">${fotoMini(gk,48)}<small>${esc(gk.nome)}</small></div><i class="bola"></i>`;
-  moveBola(X(42),58,0);await wait(700);
-  moveBola(X(72),34,650);await wait(800);
-  if(e.res==='gol'){
-    moveBola(X(98),48,260);await wait(280);arena().querySelector('.gol').classList.add('rede');
-    await juice('g');marca();carimbo('Gol!','ouro');await wait(1700);
-  }else{
-    arena().querySelector('.gk').classList.add('salta');moveBola(X(90),46,280);await wait(300);
-    await juice('p');moveBola(X(82),8,420);carimbo('Defesa!');await wait(1500);
+    <div class="pc" style="left:${X(pasPos[0])}%;top:${pasPos[1]}%">${fotoMini(pas,46)}<small>${esc(pas.nome)}</small></div>
+    <div class="pc atk" style="left:${X(shoPos[0])}%;top:${shoPos[1]}%">${fotoMini(sho,52)}<small>${esc(sho.nome)}</small></div>
+    ${tipo==='corte'?`<div class="pc zag" style="left:${X(60)}%;top:70%">${fotoMini(zag,46)}<small>${esc(zag.nome)}</small></div>`:''}
+    <div class="pc gk" style="left:${X(91)}%;top:50%">${fotoMini(gk,48)}<small>${esc(gk.nome)}</small></div><i class="bola"></i>`;
+  const atk=arena().querySelector('.atk'),gkEl=arena().querySelector('.gk'),zEl=arena().querySelector('.zag'),gol=()=>arena().querySelector('.gol');
+  moveBola(X(pasPos[0]),pasPos[1],0);await wait(700);
+  if(tipo==='cabeca'){ // cruzamento pelo alto: a bola sobe e cai na cabeça do atacante
+    arena().querySelector('.bola').classList.add('alta');moveBola(X(78),20,380);await wait(380);
+    moveBola(X(shoPos[0]),shoPos[1]-6,380);await wait(420);arena().querySelector('.bola').classList.remove('alta');
+    atk.classList.add('cabeceia');gkEl.classList.add('salta');moveBola(X(98),40,220);await wait(240);
+    gol().classList.add('rede');await juice('g');marca();carimbo('Gol de cabeça!','ouro');await wait(1700);return;
   }
+  if(tipo==='corte'){ // o zagueiro chega antes e manda pra lateral
+    moveBola(X(60),46,420);movePc(zEl,X(60),48,380);await wait(440);
+    zEl.classList.add('cabeceia');await juice('p');moveBola(X(52),102,420);carimbo('Cortou!');await wait(1500);return;
+  }
+  moveBola(X(shoPos[0]),shoPos[1],650);await wait(800);
+  if(tipo==='drible'){ // o atacante leva a bola, o goleiro sai e cai do lado errado
+    movePc(atk,X(86),46,520);moveBola(X(86),46,520);movePc(gkEl,X(85),50,400);await wait(420);
+    gkEl.classList.add('salta');await wait(150);moveBola(X(97),56,420);movePc(atk,X(93),52,420);await wait(440);
+    gol().classList.add('rede');await juice('g');marca();carimbo('Driblou o goleiro!','ouro');await wait(1700);return;
+  }
+  if(tipo==='chute'){
+    moveBola(X(98),48,260);await wait(280);gol().classList.add('rede');
+    await juice('g');marca();carimbo('Gol!','ouro');await wait(1700);return;
+  }
+  if(tipo==='trave'){
+    gkEl.classList.add('salta');moveBola(X(98),37,260);await wait(270);
+    gol().classList.add('trave');await juice('p');moveBola(X(78),58,420);carimbo('Na trave!','al');await wait(1500);return;
+  }
+  if(tipo==='fora'){
+    moveBola(X(103),18,320);await wait(340);carimbo('Pra fora!');await wait(1500);return;
+  }
+  gkEl.classList.add('salta');moveBola(X(90),46,280);await wait(300);
+  await juice('p');moveBola(X(82),8,420);carimbo('Defesa!');await wait(1500);
 }
 async function animaLuta(x,e,A,B,marca){
   const fa=A.ps[e.j],fb=B.ps[e.j],wL=e.win==='a';
@@ -1271,7 +1322,7 @@ async function drawLeague(){
   const id=++animId,m=mode(),mid=S.modes[S.round],lg=R.lg;skipAnim=false;fastAnim=false;
   $('#tv').dataset.mode=mid;
   lower('Em campo',`Critério: ${R.crit.titulo} · Agora: acompanhe os jogos`);
-  await scene('jogo',`<div class="panel dk"><p>O narrador está se aquecendo…</p></div>`);
+  await scene('jogo',`<div class="open">${carregando(['O narrador está se aquecendo','Os times entram em campo','Ajustando as câmeras'])}</div>`);
   if(R.narrP){const j=await Promise.race([R.narrP,sleep(15000).then(()=>null)]);R.res.narr=mergeNarr(j,lg);R.narrP=null;}
   salaJogo();
   const narr=R.res.narr,resumo=lg.matches.length>3;
@@ -1358,11 +1409,20 @@ async function startVar(ci){
   await scene('var',`${tbHTML('Defesa de '+t.name)}
   <div class="varbar"><b class="varlogo">VAR</b><span class="rec">● chamado por ${esc(t.name)}</span></div>
   <div class="vcols"><div class="vd"><div class="row">${donoOf(t.name,96)}<div><b style="font:700 1.4em var(--c)">${esc(t.name)}</b><div class="mut">${esc(timeOf(t.name))} · ficou em ${pos}º lugar</div></div></div>
-  <div>${t.ps.map(p=>`<span class="chip">${esc(p.nome)}</span>`).join('')}</div></div>
-  <div><p>Fale em voz alta por 40s. O operador digita o resumo (até 240 caracteres). Argumento forte e verdadeiro sobre o critério sobe a colocação.</p>
+  <div>${t.ps.map(p=>`<span class="chip">${esc(p.nome)}</span>`).join('')}</div>
+  ${revisaoVar(ci)}</div>
+  <div><p>Leia seus jogos ao lado e prepare o argumento. Quando estiver pronto, aperte Começar e fale em voz alta por 40s. O operador digita o resumo (até 240 caracteres). Argumento forte e verdadeiro sobre o critério sobe a colocação.</p>
   <textarea id="vtext" rows="4" maxlength="240" aria-label="Resumo da defesa" placeholder="Resumo da defesa"></textarea>
   <p class="row"><button class="btn s" id="vstart" onclick="varStart()">Começar 40s</button><button class="btn" onclick="reviewVar()">Enviar ao VAR</button></p></div></div>`);
   $('#tbt').textContent='40s';$('#tbi').style.transform='scaleX(1)';
+}
+// o que o VAR vai rever: os jogos de quem chamou, placar, chance antes do jogo e o porquê de cada resultado
+function revisaoVar(ci){
+  const m=mode(),jogos=R.lg.matches.filter(x=>x.a===ci||x.b===ci);
+  return `<div class="revisao"><b>Seus jogos</b> <p class="mut" style="margin:.2em 0 0;font-size:.9em">Critério: ${esc(R.crit.titulo)} (${m.attrs.map((a,k)=>esc(a)+" "+Math.round(W[k]*100)+"%").join(", ")})</p>
+  ${jogos.map(x=>{const eu=x.a===ci?"a":"b",ri=eu==="a"?x.b:x.a,meu=eu==="a"?x.ga:x.gb,dele=eu==="a"?x.gb:x.ga,pr=x.prob?.[eu],res=x.win===eu?"venceu":x.win==="d"?"":"perdeu";
+    return `<div class="rj ${res}"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><span class="row" style="flex-wrap:nowrap;gap:8px">${av(R.teams[ri].name,26)}contra <b>${esc(R.teams[ri].name)}</b></span><b class="rjp">${meu} × ${dele}</b></div>
+    ${pr!==undefined?`<small class="mut">Você tinha ${Math.round(pr*100)}% de chance de vencer</small>`:""}<ul>${(x.fatores||[]).map(f=>`<li>${esc(f)}</li>`).join("")}</ul></div>`}).join("")}</div>`;
 }
 function varStart(){$('#vstart').disabled=true;tbStart(40,()=>tbStart(15,null,'Mais 15s para digitar o resumo'),'Defesa de '+R.teams[R.varCaller].name);}
 async function reviewVar(){
