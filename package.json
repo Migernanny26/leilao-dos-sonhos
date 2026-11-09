@@ -1,0 +1,17 @@
+{
+  "name": "leilao-dos-sonhos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Servidor da sala online do Leilão dos Sonhos",
+  "main": "servidor/server.js",
+  "scripts": {
+    "start": "node servidor/server.js",
+    "test": "node servidor/teste-servidor.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ws": "8.18.0"
+  }
+}
