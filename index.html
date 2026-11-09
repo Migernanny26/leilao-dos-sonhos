@@ -271,6 +271,11 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .hero p{color:var(--mut);margin:.4em 0 0;max-width:52ch;font-weight:700}
 .btn.grande{font-size:1.35em;padding:16px 30px}
 .cams{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:18px}
+.salap{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin:0 0 18px}.salap>div{min-width:0}
+.codigo{font:clamp(2rem,6vw,3rem)/1 var(--d);letter-spacing:.12em;color:var(--ouro);margin:4px 0 8px}
+.conectados{display:flex;flex-wrap:wrap;gap:6px}
+.cam.remoto{outline:2px solid var(--ouro);outline-offset:-2px}
+button.alheio,input:disabled{opacity:.45;cursor:not-allowed}
 .cam{background:linear-gradient(180deg,color-mix(in srgb,var(--c1) 30%,#1c0f19) 0,#1c0f19 46%);border-radius:14px;padding:14px;box-shadow:0 0 0 1px var(--line) inset;display:flex;flex-direction:column;gap:9px}
 .cam-top{display:flex;gap:10px;align-items:center}
 .escbox{flex:none}
@@ -358,13 +363,13 @@ function scene(name,html){
     const tv=$('#tv'),st=$('#stage'),cv=$('#curtain'),anim=tv.dataset.scene!==name&&!reduced();
     if(anim){cv.classList.add('closed');await sleep(330);}
     tbStop();tv.dataset.scene=name;st.innerHTML=html;st.classList.remove('enter');void st.offsetWidth;st.classList.add('enter');window.scrollTo(0,0);
-    done();
+    done();salaDepoisCena(name,html);
     const f=st.querySelector('button,input');if(f&&anim)try{f.focus({preventScroll:true})}catch{}
     if(anim){cv.classList.remove('closed');await sleep(390);}
   }).catch(e=>{console.error(e);done()});
   return swapped;
 }
-function lower(a,b){$('#lt-a').textContent=(a||'').trim();$('#lt-b').textContent=(b||'').trim();}
+function lower(a,b){$('#lt-a').textContent=(a||'').trim();$('#lt-b').textContent=(b||'').trim();salaLower();}
 
 /* ---------- MODOS E CRITÉRIOS ---------- */
 const MODES={
@@ -697,7 +702,30 @@ function season(){
 function download(name,obj){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(obj,null,1)],{type:'application/json'}));a.download=name;a.click();}
 
 /* ---------- BASTIDORES (TELA DE INÍCIO) ---------- */
+function camHTML(i,d,nome,{bot=true,remoto=false}={}){
+  const nt=(d.time||'').trim()||'Time '+(i+1);
+  return `<article class="cam${remoto?' remoto':''}" id="cam${i}" style="--c1:${COLS[d.col%COLS.length]}">
+    <div class="cam-top"><div class="escbox" id="es${i}">${avatarSVG(d,72,'neutro',nt)}</div>
+      <div class="cam-time"><input id="tm${i}" maxlength="24" value="${esc(d.time||'')}" placeholder="Nome do time" aria-label="Nome do time ${i+1}" oninput="refreshCam(${i})"${remoto?' readonly':''}><span class="mut" style="font-size:.8em;font-weight:700">${remoto?'Entrou pela sala online':'Nome e escudo do time'}</span></div></div>
+    <div class="dono" id="dn${i}">${donoSVG(d,150)}</div>
+    <input class="pessoa" id="p${i}" placeholder="Seu nome" aria-label="Nome do jogador ${i+1}" value="${esc(nome||'')}"${remoto?' readonly':''}>
+    ${remoto?'':`<div class="seg" role="tablist"><button data-alvo="dono" class="on" onclick="aba(${i},'dono')">Boneco</button><button data-alvo="escudo" onclick="aba(${i},'escudo')">Escudo e time</button></div>
+    <div class="parts" data-aba="dono">${setas(i,DCATS)}<button class="btn s" onclick="rndChar(${i})">Sortear tudo</button></div>
+    <div data-aba="escudo" hidden><div class="presets">${TIMES.map((t,k)=>`<button title="${esc(t.time)}" aria-label="Usar ${esc(t.time)}" onclick="presetTime(${i},${k})">${avatarSVG(t,40,'neutro',t.time)}</button>`).join('')}</div>
+      <div class="parts" style="margin-top:8px">${setas(i,CATS)}</div></div>`}
+    ${bot&&!remoto?`<label class="botck"><input type="checkbox" id="bt${i}" onchange="toggleBot(${i})"> É um bot (joga sozinho)</label>`:''}</article>`;
+}
+function painelSala(){
+  if(SALA.papel!=='host')return SALA.servidor?`<div class="panel salap"><div><b class="dsp" style="font-size:1.4em">Jogar online</b><p class="mut" style="margin:.3em 0 0">Crie uma sala e mande o link: cada amigo entra pelo próprio aparelho e vê o jogo inteiro.</p></div><button class="btn" onclick="criarSala()">Criar sala online</button></div>`:'';
+  const link=location.origin+location.pathname+'?sala='+SALA.sala;
+  return `<div class="panel salap"><div style="min-width:0"><span class="mut" style="font-weight:800">Sala online</span><div class="codigo">${esc(SALA.sala)}</div>
+    <div class="row" style="flex-wrap:nowrap"><input id="linkSala" readonly value="${esc(link)}" aria-label="Link da sala"><button class="btn s" onclick="copiarLink()">Copiar link</button></div>
+    <p class="mut" style="margin:.4em 0 0;font-size:.85em">${SALA.iaServidor?'IA do servidor ligada.':'IA do servidor desligada: o jogo usa os nomes prontos.'} Quem entra aparece num cartão abaixo.</p></div>
+    <div class="conectados" id="conectados">${conectadosHTML()}</div></div>`;
+}
+const conectadosHTML=()=>SALA.presenca.length?SALA.presenca.map(j=>`<span class="chip ${j.on?'f':''}">${esc(j.nome)}${j.on?'':' (caiu)'}</span>`).join(''):'<span class="mut">Ninguém entrou ainda.</span>';
 function setup(){
+  if(SALA.papel==='jogador')return setupJogador();
   const se=season(), saved=store.get('lds_players',['','','','']);
   if(!S.draft)S.draft=fixDraft(store.get('lds_chars',null));
   const prefs=store.get('lds_prefs',{});
@@ -705,30 +733,33 @@ function setup(){
   const sel=(i,d)=>`<select id="m${i}" aria-label="Rodada ${i+1}">${Object.entries(MODES).map(([k,m])=>`<option value="${k}" ${k===d?'selected':''}>${m.nome}</option>`).join('')}</select>`;
   const rank=Object.entries(se.totals).sort((a,b)=>b[1]-a[1]);
   $('#rnd').textContent='';lower('Boa noite!','Agora: cada um monta seu dono e seu time');
+  const remoto=i=>Object.values(SALA.slotDe).includes(i);
   scene('setup',`<section class="hero"><div><h1 class="dsp titulo">Leilão dos Sonhos</h1><p>Um leilão falado, times montados na hora e uma noite inteira de confrontos. Escolham quem é quem e abram o programa.</p></div>
   <button class="btn grande" onclick="startNight()">Abrir o programa</button></section>
+  ${painelSala()}
   <h2>Quem disputa hoje</h2>
-  <div class="cams">${[0,1,2,3].map(i=>{const d=S.draft[i],nt=(d.time||'').trim()||'Time '+(i+1);return `<article class="cam" id="cam${i}" style="--c1:${COLS[d.col%COLS.length]}">
-    <div class="cam-top"><div class="escbox" id="es${i}">${avatarSVG(d,72,'neutro',nt)}</div>
-      <div class="cam-time"><input id="tm${i}" maxlength="24" value="${esc(d.time||'')}" placeholder="Nome do time" aria-label="Nome do time ${i+1}" oninput="refreshCam(${i})"><span class="mut" style="font-size:.8em;font-weight:700">Nome e escudo do time</span></div></div>
-    <div class="dono" id="dn${i}">${donoSVG(d,150)}</div>
-    <input class="pessoa" id="p${i}" placeholder="Seu nome" aria-label="Nome do jogador ${i+1}" value="${esc(saved[i]||'')}">
-    <div class="seg" role="tablist"><button data-alvo="dono" class="on" onclick="aba(${i},'dono')">Boneco</button><button data-alvo="escudo" onclick="aba(${i},'escudo')">Escudo e time</button></div>
-    <div class="parts" data-aba="dono">${setas(i,DCATS)}<button class="btn s" onclick="rndChar(${i})">Sortear tudo</button></div>
-    <div data-aba="escudo" hidden><div class="presets">${TIMES.map((t,k)=>`<button title="${esc(t.time)}" aria-label="Usar ${esc(t.time)}" onclick="presetTime(${i},${k})">${avatarSVG(t,40,'neutro',t.time)}</button>`).join('')}</div>
-      <div class="parts" style="margin-top:8px">${setas(i,CATS)}</div></div>
-    <label class="botck"><input type="checkbox" id="bt${i}" onchange="toggleBot(${i})"> É um bot (joga sozinho)</label></article>`}).join('')}</div>
+  <div class="cams">${[0,1,2,3].map(i=>camHTML(i,S.draft[i],saved[i],{remoto:remoto(i)})).join('')}</div>
   <div class="grid"><div class="panel"><h2>Rodadas</h2><p>${sel(0,'futebol')}</p><p>${sel(1,'filosofos')}</p><p>${sel(2,'mma')}</p>
   <p class="row" style="flex-wrap:nowrap"><select id="nr" aria-label="Quantidade de rodadas"><option value="3" ${prefs.nr!==2?'selected':''}>3 rodadas</option><option value="2" ${prefs.nr===2?'selected':''}>2 rodadas (noite curta)</option></select>
   <select id="fame" aria-label="Fama dos nomes"><option value="misto">Nomes: misto</option><option value="conhecidos" ${prefs.fame==='conhecidos'?'selected':''}>Nomes: só os muito famosos</option></select></p>
-  <p><input id="key" type="password" placeholder="Chave de API da Anthropic (opcional)" aria-label="Chave de API" value="${esc(sk)}"></p>
-  <p class="mut" style="font-size:.85em">Sem chave: nomes prontos e narrador local. A chave fica só nesta aba.</p></div>
+  ${SALA.papel==='host'&&SALA.iaServidor?'<p class="mut" style="font-size:.85em">A IA vem do servidor da sala; não precisa de chave aqui.</p>':`<p><input id="key" type="password" placeholder="Chave de API da Anthropic (opcional)" aria-label="Chave de API" value="${esc(sk)}"></p>
+  <p class="mut" style="font-size:.85em">Sem chave: nomes prontos e narrador local. A chave fica só nesta aba.</p>`}</div>
   <div class="panel season"><div class="row"><h2 style="margin:0">Temporada ${se.month}</h2><span class="mut">${se.nights} ${se.nights===1?'noite':'noites'}</span></div>
   ${rank.length?`<table>${rank.map(([n,p],i)=>`<tr><td class="odd" style="width:60px">${i+1}º</td><td style="font:700 1.4em var(--c)">${esc(n)}</td><td class="odd" style="text-align:right">${p}</td></tr>`).join('')}</table>`:'<p class="mut">Ainda sem pontos. A primeira noite abre o placar.</p>'}
   ${se.champions.length?`<p class="mut">Campeões: ${se.champions.map(c=>esc(c.month)+' '+esc(c.nome)).join(', ')}</p>`:''}
   <div class="row"><button class="btn s" onclick="download('temporada.json',season())">Exportar</button>
   <label class="btn s">Importar<input type="file" accept=".json" hidden onchange="importSeason(this)"></label></div></div></div>
   <p><button class="btn grande" onclick="startNight()">Abrir o programa</button></p>`);
+}
+function setupJogador(){
+  if(!S.draft)S.draft=fixDraft(store.get('lds_chars',null));
+  const nome=SALA.nome||store.get('lds_players',[''])[0]||'';
+  lower('Sala '+SALA.sala,SALA.id?'Agora: espere o anfitrião abrir o programa':'Agora: monte seu dono e seu time e entre');
+  scene('setup',`<section class="hero"><div><h1 class="dsp titulo">Leilão dos Sonhos</h1><p>${SALA.id?'Você está na sala. Quando o anfitrião abrir o programa, o jogo aparece aqui.':'Monte seu dono e seu time e entre na sala.'}</p></div>
+    ${SALA.id?`<button class="btn grande" onclick="enviarPerfil()">Atualizar meu cartão</button>`:`<button class="btn grande" onclick="entrarSala()">Entrar na sala</button>`}</section>
+    <div class="panel salap"><div><span class="mut" style="font-weight:800">Sala</span><div class="codigo">${esc(SALA.sala)}</div></div><div class="conectados" id="conectados">${conectadosHTML()}</div></div>
+    <p id="salaErro" class="bad"></p>
+    <div class="cams" style="max-width:340px">${camHTML(0,S.draft[0],nome,{bot:false})}</div>`);
 }
 function importSeason(el){const f=el.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(d&&d.totals){store.set('lds_season',d);setup();}else alert('Arquivo inválido');}catch{alert('Arquivo inválido')}})}
 function startNight(){
@@ -746,13 +777,18 @@ function startNight(){
   S.varLeft=Object.fromEntries(players.map(n=>[n,1]));
   S.players=players;S.modes=[0,1,2].map(i=>$('#m'+i).value).slice(0,nr);S.round=0;S.lastPlace=null;S.usedCrit=[];
   S.totals=Object.fromEntries(players.map(n=>[n,0]));
-  S.key=$('#key').value.trim();S.offline=!S.key;
+  S.key=($('#key')?.value||'').trim();S.offline=!(S.key||(SALA.papel==='host'&&SALA.iaServidor));
   try{sessionStorage.setItem('lds_key',S.key)}catch{}
   startRound();
 }
 
 /* ---------- IA ---------- */
 async function ai(model,prompt,max=3000){
+  if(!S.key&&SALA.papel==='host'&&SALA.iaServidor){ // sala online: a chave fica no servidor
+    const r=await fetch('/ia',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sala:SALA.sala,token:SALA.token,model,max_tokens:max,prompt}),signal:AbortSignal.timeout(90000)});
+    const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.erro||'HTTP '+r.status);
+    const m=String(j.texto||'').match(/[\[{][\s\S]*[\]}]/);return JSON.parse(m[0]);
+  }
   const call=fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':S.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model,max_tokens:max,messages:[{role:'user',content:prompt}]})});
   const r=await Promise.race([call,new Promise((_,j)=>setTimeout(()=>j(new Error('timeout')),45000))]);
   if(!r.ok)throw new Error('HTTP '+r.status);
@@ -835,8 +871,8 @@ async function drawAuction(){
   <div class="grid paddles">${R.teams.map((t,i)=>padHTML(t,i)).join('')}</div>`);
 const c=$('#clk');c.style.transition='none';c.style.transform='scaleX(1)';void c.offsetWidth;c.style.transition='';
 }
-function say(t){const e=$('#call');if(e)e.textContent=t}
-function clock(){const c=$('#clk');if(!c)return;c.style.transform=`scaleX(${Math.max(R.t,0)/8})`;c.classList.toggle('low',R.t<=2);}
+function say(t){const e=$('#call');if(e)e.textContent=t;salaParcial({call:t})}
+function clock(){const c=$('#clk');if(!c)return;c.style.transform=`scaleX(${Math.max(R.t,0)/8})`;c.classList.toggle('low',R.t<=2);salaParcial({relogio:Math.max(R.t,0)});}
 function bid(i,v){
   if(R.locked)return;const t=R.teams[i];v=Math.floor(v);
   if(!canBid(t,R.cur))return say(t.name+' sem vaga ou saldo!');
@@ -845,7 +881,7 @@ function bid(i,v){
   R.bid=v;R.leader=i;R.t=Math.max(R.t,4);R.paused=false;
   const b=$('#bid');b.textContent=v;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');
   const ld=$('#leader');ld.className='';ld.innerHTML=`<span class="row" style="justify-content:center;gap:8px;flex-wrap:nowrap">${av(t.name,40,'feliz')}${esc(t.name)} está na frente</span>`;
-  document.querySelectorAll('.pad').forEach((p,k)=>p.classList.toggle('lead',k===i));say('');clock();
+  document.querySelectorAll('.pad').forEach((p,k)=>p.classList.toggle('lead',k===i));salaParcial({leilao:{bid:v,leader:ld.innerHTML,lead:i}});say('');clock();
 }
 /* ---------- JOGADOR-BOT ---------- */
 const isBot=n=>!!(S.bots&&S.bots.has(n));
@@ -875,7 +911,7 @@ function tick(){
   else{const t=R.teams[R.leader],s=t.slots.find(s=>!s.pick&&s.pos===R.cur.pos);s.pick=R.cur;s.paid=R.bid;t.money-=R.bid;
     $('#stamp').innerHTML=`<div class="stamp">VENDIDO<small>${av(t.name,30,'feliz')}${esc(t.name)} por ${R.bid}</small></div>`+
       (reduced()?'':Array.from({length:14},(_,k)=>{const a=k/14*Math.PI*2,r=120+Math.random()*90;return `<i class="coin" style="--x:${Math.round(Math.cos(a)*r)}px;--y:${Math.round(Math.sin(a)*r)}px;animation-delay:${k*12}ms"></i>`}).join(''));
-    const lw=$('#lotwrap');if(lw){lw.classList.remove('shake');void lw.offsetWidth;lw.classList.add('shake')}say('');}
+    const lw=$('#lotwrap');if(lw){lw.classList.remove('shake');void lw.offsetWidth;lw.classList.add('shake')}salaParcial({vendido:$('#stamp').innerHTML});say('');}
   setTimeout(nextItem,1900);
 }
 function endAuction(){
@@ -899,7 +935,7 @@ function endAuction(){
 /* ---------- BARRA DE TEMPO ---------- */
 let TB=null;
 const tbHTML=l=>`<div class="tb" id="tb"><span>${esc(l)}</span><div class="tbk"><i id="tbi"></i></div><b id="tbt"></b><button class="btn s" onclick="tbAdd(10)">+10s</button><button class="btn s" id="tbp" onclick="tbPause()">Pausar</button></div>`;
-function tbDraw(){const i=$('#tbi'),t=$('#tbt');if(!TB||!i)return;i.style.transform=`scaleX(${Math.max(TB.left,0)/TB.total})`;i.classList.toggle('low',TB.left<=TB.total*.2);t.textContent=TB.left+'s';}
+function tbDraw(){const i=$('#tbi'),t=$('#tbt');if(!TB||!i)return;i.style.transform=`scaleX(${Math.max(TB.left,0)/TB.total})`;i.classList.toggle('low',TB.left<=TB.total*.2);t.textContent=TB.left+'s';salaParcial({tbv:[TB.left,TB.total,$('#tb')?.firstElementChild?.textContent||'']});}
 function tbStop(){if(TB){clearInterval(TB.iv);TB=null}}
 function tbStart(sec,onEnd,label){
   tbStop();if(label&&$('#tb'))$('#tb').firstElementChild.textContent=label;
@@ -1232,6 +1268,7 @@ async function drawLeague(){
   lower('Em campo',`Critério: ${R.crit.titulo} · Agora: acompanhe os jogos`);
   await scene('jogo',`<div class="panel dk"><p>O narrador está se aquecendo…</p></div>`);
   if(R.narrP){const j=await Promise.race([R.narrP,sleep(15000).then(()=>null)]);R.res.narr=mergeNarr(j,lg);R.narrP=null;}
+  salaJogo();
   const narr=R.res.narr,resumo=lg.matches.length>3;
   await scene('jogo',`<div class="lgwrap"><div class="panel dk match"><div class="vs"><div id="sideA"></div><div class="sc"><div class="mi" id="mi"></div><div class="num"><b id="ga">0</b><span>×</span><b id="gb">0</b></div><div class="un">${m.un}</div></div><div id="sideB"></div></div>
   <div id="arena" class="arena"></div><div class="hl" id="hl"></div></div>
@@ -1278,6 +1315,7 @@ async function drawLeague(){
   }
   if(id!==animId)return;
   cap('Fim da tabela!');await wait(1200);
+  if(SALA.papel==='jogador')return cap('Fim da tabela! Esperando o veredito do anfitrião…');
   showVerdict();
 }
 
@@ -1300,7 +1338,7 @@ async function showVerdict(){
   <p><button class="btn" onclick="closeVarWindow()">Seguir sem VAR / encerrar janela</button></p>`:`<p><button class="btn" onclick="scoreRound()">Ver a pontuação</button></p>`}`);
   if(elig.length)tbStart(20,closeVarWindow);
 }
-function varCall(i){R.varCalls.add(i);const b=$('#vc'+i);if(b){b.textContent=R.teams[i].name+' chamou o VAR';b.disabled=true}}
+function varCall(i){R.varCalls.add(i);const b=$('#vc'+i);if(b){b.textContent=R.teams[i].name+' chamou o VAR';b.disabled=true;salaParcial({texto:['vc'+i,b.textContent]})}}
 function closeVarWindow(){
   tbStop();
   if(!R.varCalls||!R.varCalls.size)return scoreRound();
@@ -1394,7 +1432,186 @@ function endNight(){
   <h2>Temporada ${se.month}</h2><div class="panel"><table>${Object.entries(se.totals).sort((a,b)=>b[1]-a[1]).map(([n,p],i)=>`<tr><td>${i+1}º</td><td>${esc(n)}</td><td>${p} pts</td></tr>`).join('')}</table></div>
   <p class="row"><button class="btn s" onclick="download('temporada.json',season())">Exportar temporada</button><button class="btn" onclick="setup()">Voltar ao início</button></p>`);
 }
+/* ---------- SALA ONLINE: o anfitrião decide, o servidor repassa, todo mundo desenha ---------- */
+const SALA={papel:null,servidor:false,iaServidor:false,ws:null,sala:null,token:null,id:null,nome:null,presenca:[],assentos:{},slotDe:{},ultimo:null};
+const salaURL=()=>(location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws';
+function salaConectar(primeira){
+  return new Promise((ok,falha)=>{
+    let ws;try{ws=new WebSocket(salaURL())}catch(e){return falha(e)}
+    SALA.ws=ws;
+    ws.onopen=()=>{ws.send(JSON.stringify(primeira));ok(ws)};
+    ws.onerror=()=>falha(new Error('sem conexão com o servidor'));
+    ws.onmessage=ev=>{let m;try{m=JSON.parse(ev.data)}catch{return}salaRecebe(m)};
+    ws.onclose=()=>{if(SALA.ws===ws){SALA.ws=null;setTimeout(salaReconectar,1500)}};
+  });
+}
+function salaReconectar(){
+  if(SALA.ws||!SALA.sala)return;
+  if(SALA.papel==='host'&&SALA.token)salaConectar({t:'retomar',sala:SALA.sala,token:SALA.token}).catch(()=>setTimeout(salaReconectar,3000));
+  else if(SALA.papel==='jogador'&&SALA.id)salaConectar({t:'entrar',sala:SALA.sala,id:SALA.id,nome:SALA.nome}).catch(()=>setTimeout(salaReconectar,3000));
+}
+const salaManda=o=>{if(SALA.ws&&SALA.ws.readyState===1)SALA.ws.send(JSON.stringify(o))};
+function salaRecebe(m){
+  if(m.t==='criada'){SALA.sala=m.sala;SALA.token=m.token;SALA.papel='host';try{sessionStorage.setItem('lds_sala_host',JSON.stringify({sala:m.sala,token:m.token}))}catch{};const p=$('.salap');if(p)p.outerHTML=painelSala();return;}
+  if(m.t==='retomada')return;
+  if(m.t==='entrou'){SALA.id=m.id;try{sessionStorage.setItem('lds_sala_jog',JSON.stringify({sala:SALA.sala,id:m.id,nome:SALA.nome}))}catch{};enviarPerfil();if($('#tv').dataset.scene==='setup')setupJogador();return;}
+  if(m.t==='presenca'){SALA.presenca=m.jogadores||[];const c=$('#conectados');if(c)c.innerHTML=conectadosHTML();
+    if(SALA.papel==='jogador'&&!m.host&&$('#tv').dataset.scene!=='setup')lower('Aguardando o anfitrião','A conexão dele caiu; o jogo volta quando ele reconectar');return;}
+  if(m.t==='erro'){const e=$('#salaErro');if(e)e.textContent=m.erro;return;}
+  if(SALA.papel==='host'&&m.t==='acao')return salaAcaoRecebida(m.de,m.nome,m.dados||{});
+  if(SALA.papel==='jogador'&&m.t==='estado')return salaAplicaEstado(m.dados||{});
+  if(SALA.papel==='jogador'&&m.t==='parcial')return salaAplicaParcial(m.dados||{});
+}
+
+/* ---------- anfitrião ---------- */
+async function criarSala(){
+  try{await salaConectar({t:'criar'})}catch(e){alert('Não deu para falar com o servidor da sala.')}
+}
+function copiarLink(){const i=$('#linkSala');if(!i)return;const v=i.value;(navigator.clipboard?.writeText(v)||Promise.reject()).catch(()=>{i.select()});}
+const salaHost=()=>SALA.papel==='host'&&SALA.ws&&SALA.ws.readyState===1;
+function salaInfo(){return{times:(R&&R.teams?R.teams.map(t=>t.name):S.players)||[],varCaller:R&&Number.isInteger(R.varCaller)?R.varCaller:-1,rnd:$('#rnd').textContent,lower:[$('#lt-a').innerHTML,$('#lt-b').textContent],mode:$('#tv').dataset.mode||''}}
+function salaDepoisCena(name,html){ // chamado por scene(): espelha a cena para os jogadores
+  if(!salaHost()||name==='setup'||name==='jogo')return;
+  salaManda({t:'estado',dados:{cena:name,html,...salaInfo()}});
+}
+let salaParcialFila=null;
+function salaParcial(o){if(!salaHost())return;salaManda({t:'parcial',dados:o});}
+function salaLower(){if(!salaHost())return;clearTimeout(salaParcialFila);salaParcialFila=setTimeout(()=>salaParcial({lower:[$('#lt-a').innerHTML,$('#lt-b').textContent],rnd:$('#rnd').textContent}),0);}
+function salaJogo(){ // a animação dos jogos roda em cada aparelho a partir do log do motor
+  if(!salaHost())return;
+  salaManda({t:'estado',dados:{cena:'jogo',jogo:{teams:R.teams.map(t=>({name:t.name,ps:t.ps,slots:t.slots,money:t.money})),lg:R.lg,narr:R.res.narr,crit:R.crit},W,modes:S.modes,round:S.round,chars:S.chars,bots:[...(S.bots||[])],...salaInfo()}});
+}
+const inteiro=(v,a,b)=>{v=Math.floor(Number(v));return Number.isFinite(v)?Math.max(a,Math.min(b,v)):a};
+function salaAcaoRecebida(de,nomeSrv,d){
+  if(d.a==='perfil')return salaPerfil(de,d);
+  const nome=SALA.assentos[de],i=R&&R.teams?R.teams.findIndex(t=>t.name===nome):-1;
+  if(i<0)return;
+  const cena=$('#tv').dataset.scene;
+  if(d.a==='bump'&&cena==='leilao'&&inteiro(d.i,0,9)===i)return bump(i,inteiro(d.d,1,100));
+  if(d.a==='lance'&&cena==='leilao'&&inteiro(d.i,0,9)===i)return bid(i,inteiro(d.v,1,10000));
+  if(d.a==='aposta'&&cena==='apostas'&&Array.isArray(d.linha)){d.linha.slice(0,R.teams.length).forEach((v,ti)=>{const el=$(`#b_${i}_${ti}`);if(el)el.value=inteiro(v,0,R.fich?R.fich[i]:6)});return;}
+  if(d.a==='var'&&cena==='veredito'&&inteiro(d.i,0,9)===i)return varCall(i);
+  if(R.varCaller===i&&cena==='var'){
+    if(d.a==='varStart'){const b=$('#vstart');if(b&&!b.disabled)varStart();return;}
+    if(d.a==='defesa'){const t=$('#vtext');if(t){t.value=String(d.txt||'').slice(0,240);salaParcial({defesa:t.value})}return;}
+    if(d.a==='enviarVar'&&$('#vtext'))return reviewVar();
+  }
+}
+function salaPerfil(de,d){
+  if($('#tv').dataset.scene!=='setup')return; // depois que a noite começa, o cartão fica como está
+  let nome=String(d.nome||'').replace(/[\u0000-\u001f\u007f<>]/g,'').trim().slice(0,24)||'Jogador';
+  const ch=fixDraft([d.char])[0];if(d.char&&typeof d.char.time==='string')ch.time=String(d.char.time).slice(0,24);
+  let slot=SALA.slotDe[de];
+  if(slot===undefined){slot=[0,1,2,3].find(i=>!Object.values(SALA.slotDe).includes(i)&&!($('#p'+i)?.value.trim()));if(slot===undefined)return;}
+  const outros=[0,1,2,3].filter(i=>i!==slot).map(i=>($('#p'+i)?.value||'').trim().toLowerCase());
+  if(outros.includes(nome.toLowerCase()))nome=(nome+' 2').slice(0,24);
+  SALA.slotDe[de]=slot;SALA.assentos[de]=nome;S.draft[slot]=ch;
+  const saved=store.get('lds_players',['','','','']);saved[slot]=nome;store.set('lds_players',saved);
+  const cam=$('#cam'+slot);if(cam)cam.outerHTML=camHTML(slot,ch,nome,{remoto:true});
+}
+
+/* ---------- jogador ---------- */
+async function entrarSala(){
+  const nome=($('#p0')?.value||'').trim().slice(0,24);
+  if(!nome){$('#salaErro').textContent='Escreva seu nome no cartão.';return;}
+  SALA.nome=nome;S.draft[0].time=($('#tm0')?.value||'').trim().slice(0,24)||TIMES[0].time;store.set('lds_chars',S.draft);
+  try{await salaConectar({t:'entrar',sala:SALA.sala,nome,id:SALA.id||undefined})}catch(e){$('#salaErro').textContent='Não deu para falar com o servidor da sala.'}
+}
+function enviarPerfil(){
+  if(SALA.papel!=='jogador')return;
+  if($('#p0'))SALA.nome=($('#p0').value||SALA.nome||'').trim().slice(0,24)||SALA.nome;
+  if($('#tm0'))S.draft[0].time=($('#tm0').value||'').trim().slice(0,24);
+  store.set('lds_chars',S.draft);
+  salaManda({t:'acao',dados:{a:'perfil',nome:SALA.nome,char:S.draft[0]}});
+}
+// o que o anfitrião desenhou chega como HTML: só passam as tags e os atributos que o jogo usa
+const ON_OK=[/^bump\(\d,\d+\)$/,/^bid\(\d,\+\$\('#c\d'\)\.value\)$/,/^if\(event\.key==='Enter'\)bid\(\d,\+this\.value\)$/,/^varCall\(\d\)$/,/^varStart\(\)$/,/^reviewVar\(\)$/,
+  /^skipAnim=true$/,/^fastAnim=!fastAnim;this\.textContent=fastAnim\?'Velocidade normal':'Acelerar'$/,/^this\.parentNode\.classList\.add\('tem'\)$/,/^this\.remove\(\)$/];
+function sanitiza(html){
+  const doc=new DOMParser().parseFromString('<body>'+String(html||'')+'</body>','text/html');
+  doc.querySelectorAll('script,iframe,object,embed,link,meta,base,form,style').forEach(e=>e.remove());
+  doc.body.querySelectorAll('*').forEach(el=>{
+    for(const at of [...el.attributes]){
+      const n=at.name.toLowerCase(),v=at.value.trim();
+      if(n.startsWith('on')){if(!ON_OK.some(r=>r.test(v)))el.removeAttribute(at.name);continue;}
+      if(/^(href|src|xlink:href|action|formaction)$/.test(n)&&!/^(https:\/\/(upload|thumb)\.wikimedia\.org\/|#)/.test(v))el.removeAttribute(at.name);
+    }
+  });
+  return doc.body.innerHTML;
+}
+function salaMeu(times){return(times||[]).indexOf(SALA.nome)}
+function salaAjustaControles(d){
+  const eu=salaMeu(d.times);
+  document.querySelectorAll('#stage button').forEach(b=>{
+    const oc=b.getAttribute('onclick')||'';const m=oc.match(/^(?:bump|bid|varCall)\((\d)/);
+    const meu=m?+m[1]===eu:/^(varStart|reviewVar)\(\)$/.test(oc)?d.varCaller===eu&&eu>=0:/Anim/.test(oc);
+    if(!oc||!meu){b.disabled=true;b.removeAttribute('onclick');b.classList.add('alheio')}
+  });
+  document.querySelectorAll('#stage input,#stage textarea,#stage select').forEach(el=>{
+    const id=el.id||'';let meu=false;
+    const ap=id.match(/^b_(\d)_(\d)$/);if(ap)meu=+ap[1]===eu;
+    const c=id.match(/^c(\d)$/);if(c)meu=+c[1]===eu;
+    if(id==='vtext')meu=d.varCaller===eu&&eu>=0;
+    if(!meu){el.disabled=true;el.removeAttribute('onkeydown');return;}
+    if(ap)el.addEventListener('input',()=>{clearTimeout(el._t);el._t=setTimeout(()=>{const linha=d.times.map((_,ti)=>+($(`#b_${eu}_${ti}`)?.value||0));salaManda({t:'acao',dados:{a:'aposta',linha}})},250)});
+    if(id==='vtext')el.addEventListener('input',()=>{clearTimeout(el._t);el._t=setTimeout(()=>salaManda({t:'acao',dados:{a:'defesa',txt:el.value.slice(0,240)}}),300)});
+  });
+}
+let salaFila=Promise.resolve(); // parciais esperam a cena a que pertencem
+function salaAplicaEstado(d){
+  SALA.ultimo=d;animId++;tbStop();
+  if(d.rnd!==undefined)$('#rnd').textContent=d.rnd;
+  const poeLower=()=>{if(d.lower){$('#lt-a').innerHTML=sanitiza(d.lower[0]);$('#lt-b').textContent=d.lower[1]||''}};
+  if(d.cena==='jogo'&&d.jogo){
+    W=Array.isArray(d.W)?d.W:W;S.modes=d.modes||S.modes;S.round=d.round|0;S.chars=d.chars||{};S.bots=new Set(d.bots||[]);
+    const teams=(d.jogo.teams||[]).map(t=>({...t,ps:(t.ps||[]).map(p=>p&&p.nome===EMPTY.nome&&!p.pos?EMPTY:p)}));
+    R={teams,lg:d.jogo.lg,res:{order:d.jogo.lg.order,narr:d.jogo.narr},crit:d.jogo.crit};
+    teams.forEach(t=>t.ps.forEach(pedirFoto));
+    salaFila=salaFila.then(()=>{drawLeague();poeLower()});return;
+  }
+  $('#tv').dataset.mode=d.mode||'';
+  salaFila=scene(String(d.cena||'setup').replace(/[^a-z]/g,''),sanitiza(d.html)).then(()=>{poeLower();salaAjustaControles(d)});
+}
+function salaAplicaParcial(p){salaFila=salaFila.then(()=>salaParcialJa(p))}
+function salaParcialJa(p){
+  if(p.lower){$('#lt-a').innerHTML=sanitiza(p.lower[0]);$('#lt-b').textContent=p.lower[1]||''}
+  if(p.rnd!==undefined)$('#rnd').textContent=p.rnd;
+  if(p.leilao){const b=$('#bid');if(b){b.textContent=inteiro(p.leilao.bid,0,100000);b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}
+    const l=$('#leader');if(l){l.className='';l.innerHTML=sanitiza(p.leilao.leader)}
+    document.querySelectorAll('.pad').forEach((x,k)=>x.classList.toggle('lead',k===p.leilao.lead));}
+  if(p.relogio!==undefined){const c=$('#clk');if(c){const t=inteiro(p.relogio,0,8);c.style.transform=`scaleX(${t/8})`;c.classList.toggle('low',t<=2)}}
+  if(p.call!==undefined){const e=$('#call');if(e)e.textContent=String(p.call).slice(0,80)}
+  if(p.vendido){const s=$('#stamp');if(s)s.innerHTML=sanitiza(p.vendido);const lw=$('#lotwrap');if(lw&&!reduced()){lw.classList.remove('shake');void lw.offsetWidth;lw.classList.add('shake')}}
+  if(Array.isArray(p.tbv)){const i=$('#tbi'),t=$('#tbt'),l=inteiro(p.tbv[0],0,999),tot=inteiro(p.tbv[1],1,999);
+    if(i){i.style.transform=`scaleX(${l/tot})`;i.classList.toggle('low',l<=tot*.2)}if(t)t.textContent=l+'s';
+    if(p.tbv[2]&&$('#tb'))$('#tb').firstElementChild.textContent=String(p.tbv[2]).slice(0,80);}
+  if(Array.isArray(p.texto)){const e=document.getElementById(String(p.texto[0]));if(e)e.textContent=String(p.texto[1]).slice(0,120)}
+  if(p.defesa!==undefined){const t=$('#vtext');if(t&&t.disabled)t.value=String(p.defesa).slice(0,240)}
+}
+function salaModoJogador(){ // os botões do jogador viram pedidos ao anfitrião
+  window.bump=(i,d)=>salaManda({t:'acao',dados:{a:'bump',i,d}});
+  window.bid=(i,v)=>salaManda({t:'acao',dados:{a:'lance',i,v}});
+  window.varCall=i=>salaManda({t:'acao',dados:{a:'var',i}});
+  window.varStart=()=>{salaManda({t:'acao',dados:{a:'varStart'}});const b=$('#vstart');if(b)b.disabled=true};
+  window.reviewVar=()=>{const t=$('#vtext');if(t)salaManda({t:'acao',dados:{a:'defesa',txt:t.value.slice(0,240)}});setTimeout(()=>salaManda({t:'acao',dados:{a:'enviarVar'}}),150)};
+}
+async function salaIniciar(){ // descobre se a página veio do servidor da sala
+  if(!/^https?:$/.test(location.protocol))return;
+  try{const j=await(await fetch('/saude',{cache:'no-store'})).json();SALA.servidor=!!j.ok;SALA.iaServidor=!!j.ia;}catch{return}
+  const cod=(new URLSearchParams(location.search).get('sala')||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,4);
+  if(cod){
+    SALA.papel='jogador';SALA.sala=cod;salaModoJogador();
+    let salvo=null;try{salvo=JSON.parse(sessionStorage.getItem('lds_sala_jog')||'null')}catch{}
+    if(salvo&&salvo.sala===cod&&salvo.id){SALA.id=salvo.id;SALA.nome=salvo.nome;salaConectar({t:'entrar',sala:cod,id:salvo.id,nome:salvo.nome}).catch(()=>{});}
+    return setupJogador();
+  }
+  let h=null;try{h=JSON.parse(sessionStorage.getItem('lds_sala_host')||'null')}catch{}
+  if(h&&h.sala&&h.token){SALA.papel='host';SALA.sala=h.sala;SALA.token=h.token;salaConectar({t:'retomar',sala:h.sala,token:h.token}).catch(()=>{SALA.papel=null});}
+  await sceneChain; // só acrescenta o painel da sala, sem redesenhar o que já foi digitado
+  const hero=$('.hero');if($('#tv').dataset.scene==='setup'&&hero&&!$('.salap'))hero.insertAdjacentHTML('afterend',painelSala());
+}
 setup();
+if(!/[?&]teste\b/.test(location.search))salaIniciar();
 // teste automático: abra index.html?teste
 if(/[?&]teste\b/.test(location.search)){const s=document.createElement('script');s.src='teste.js';document.body.appendChild(s);}
 </script>
