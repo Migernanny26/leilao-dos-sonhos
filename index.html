@@ -263,6 +263,7 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .luz{position:absolute;top:-20px;width:160px;height:320px;background:linear-gradient(180deg,rgba(255,215,122,.2),transparent 80%);clip-path:polygon(40% 0,60% 0,100% 100%,0 100%)}
 .luz.l1{left:calc(25% - 80px)}.luz.l2{left:calc(75% - 80px)}
 @media(max-width:560px){.arena{height:230px}.fala{max-width:44%;font-size:.8em}.pulpito{width:84px}}
+.botck{display:flex;gap:8px;align-items:center;font:800 .85em var(--b);color:var(--mut);margin:0 0 6px}.botck input{width:auto}
 /* pódio */
 .pod{display:flex;gap:14px;align-items:flex-end;justify-content:center;margin:10px 0 18px}
 .pod div{background:var(--bg2);border-radius:24px 24px 10px 10px;padding:14px;text-align:center;min-width:130px;flex:1;max-width:240px;box-shadow:0 0 0 1px var(--line) inset;display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -474,7 +475,7 @@ const SHAPES=[
  {n:'flâmula',d:'M13 7 H87 V68 L50 95 L13 68 Z'},
  {n:'diamante',d:'M50 3 L95 50 L50 97 L5 50 Z'}];
 const PADS=['liso','listras','faixa','metade'];
-const SYMS=['estrela','raio','coracao','alvo','nota','punho','escudo','lampada','balao','elos'];
+const SYMS=['estrela','raio','coracao','alvo','nota','punho','escudo','lampada','balao','elos','robo'];
 const CATS=[['skin','Formato'],['col','Cor 1'],['eyes','Cor 2'],['acc','Padrão'],['hat','Símbolo']];
 const CATN={skin:SHAPES.length,hat:SYMS.length,eyes:COLS.length,acc:PADS.length,col:COLS.length};
 function randChar(seed){
@@ -548,6 +549,7 @@ const IC={
  raio:'<path d="M13 2L5 14h6l-1 8 8-12h-6z"/>',
  estrela:'<path d="M12 3l2.7 5.6 6.1.8-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1-4.4-4.3 6.1-.8z"/>',
  elos:'<path d="M10 14a4 4 0 010-5.7l2-2a4 4 0 015.7 5.7l-1 1"/><path d="M14 10a4 4 0 010 5.7l-2 2a4 4 0 01-5.7-5.7l1-1"/>',
+ robo:'<rect x="5" y="8" width="14" height="11" rx="2"/><path d="M12 4v4M9.5 12.5h.01M14.5 12.5h.01M9 16h6"/><circle cx="12" cy="3.5" r="1"/>',
  nota:'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>'
 };
 const ATTR_IC={futebol:['alvo','escudo','passe','pulso'],mma:['punho','no','escudo','coracao'],filosofos:['engrenagem','balao','lampada','escudo'],ficticios:['raio','lampada','escudo','estrela'],banda:['alvo','estrela','elos','nota']};
@@ -573,10 +575,10 @@ function synHint(it){
 const CHIPS=[[1,'#1f5e47'],[5,'#7a1c40'],[10,'#1d3a6b'],[25,'#141014']];
 function padHTML(t,i){
   const mid=S.modes[S.round];
-  return `<article class="pad" style="--pc:${COLS[charFor(t.name).col]}"><div class="row" style="flex-wrap:nowrap"><div class="ava">${av(t.name,54)}</div><b class="n">${esc(t.name)}</b>${t.bonus?'<span class="chip bonus">+15%</span>':''}<span class="mny" style="margin-left:auto">${coinSVG(22)}${t.money}</span></div>
+  return `<article class="pad" style="--pc:${COLS[charFor(t.name).col]}"><div class="row" style="flex-wrap:nowrap"><div class="ava">${av(t.name,54)}</div><b class="n">${esc(t.name)}</b>${isBot(t.name)?'<span class="chip">Bot</span>':''}${t.bonus?'<span class="chip bonus">+15%</span>':''}<span class="mny" style="margin-left:auto">${coinSVG(22)}${t.money}</span></div>
   <div class="slots4">${t.slots.map(s=>s.pick?`<div class="slot f" title="${esc(s.pick.nome)}">${fotoMini(s.pick,50)}<b>${s.paid}</b></div>`:`<div class="slot">${esc(s.pos)}</div>`).join('')}</div>
-  <div class="row bids">${CHIPS.map(([d,c])=>`<button class="cb ${d===25?'k':''}" style="--c:${c}" aria-label="Aumentar ${d} para ${esc(t.name)}" onclick="bump(${i},${d})">+${d}</button>`).join('')}
-  <input class="outro" type="number" id="c${i}" min="1" placeholder="valor" aria-label="Outro valor de lance de ${esc(t.name)}" onkeydown="if(event.key==='Enter')bid(${i},+this.value)"><button class="dar" onclick="bid(${i},+$('#c${i}').value)">Dar</button></div></article>`;
+  ${isBot(t.name)?'<p class="mut" style="margin:0;font-weight:700">Joga sozinho: dá lance quando o nome vale para o time dele.</p>':`<div class="row bids">${CHIPS.map(([d,c])=>`<button class="cb ${d===25?'k':''}" style="--c:${c}" aria-label="Aumentar ${d} para ${esc(t.name)}" onclick="bump(${i},${d})">+${d}</button>`).join('')}
+  <input class="outro" type="number" id="c${i}" min="1" placeholder="valor" aria-label="Outro valor de lance de ${esc(t.name)}" onkeydown="if(event.key==='Enter')bid(${i},+this.value)"><button class="dar" onclick="bid(${i},+$('#c${i}').value)">Dar</button></div>`}</article>`;
 }
 function fixDraft(arr){
   return [0,1,2,3].map(i=>{const c=arr&&arr[i],ok=c&&Object.keys(CATN).every(k=>Number.isInteger(c[k])&&c[k]>=0&&c[k]<CATN[k]);return ok?{...c,bordao:String(c.bordao||'').slice(0,40)}:randChar(i*977+13)});
@@ -612,7 +614,7 @@ function setup(){
   const rank=Object.entries(se.totals).sort((a,b)=>b[1]-a[1]);
   $('#rnd').textContent='';lower('Boa noite!','Monte o time, defenda no tribunal e leve o troféu');
   scene('setup',`<h1 class="dsp" style="font-size:clamp(2.4rem,7vw,5rem);color:var(--ouro);text-shadow:0 4px 0 rgba(0,0,0,.35);margin:.2em 0">Leilão dos Sonhos</h1>
-  <div class="grid"><div class="panel" style="grid-column:1/-1"><h2>Quem joga (2 a 4)</h2><div class="slots">${[0,1,2,3].map(i=>`<div class="pl"><div class="avbox" id="av${i}">${avatarSVG(S.draft[i],84,'neutro',saved[i]||'Jogador '+(i+1))}</div><div class="plf"><input id="p${i}" oninput="refreshAv(${i})" placeholder="Jogador ${i+1}" aria-label="Jogador ${i+1}" value="${esc(saved[i]||'')}"><input id="bd${i}" maxlength="40" placeholder="Bordão (grito de guerra)" aria-label="Bordão do jogador ${i+1}" value="${esc(S.draft[i].bordao||'')}"><div class="parts">${CATS.map(([k,l])=>`<span class="pt"><button class="btn s" aria-label="${l} anterior" onclick="part(${i},'${k}',-1)">‹</button>${l}<button class="btn s" aria-label="${l} próximo" onclick="part(${i},'${k}',1)">›</button></span>`).join('')}<button class="btn s" onclick="rndChar(${i})">Aleatório</button></div></div></div>`).join('')}</div></div>
+  <div class="grid"><div class="panel" style="grid-column:1/-1"><h2>Quem joga (2 a 4)</h2><div class="slots">${[0,1,2,3].map(i=>`<div class="pl"><div class="avbox" id="av${i}">${avatarSVG(S.draft[i],84,'neutro',saved[i]||'Jogador '+(i+1))}</div><div class="plf"><input id="p${i}" oninput="refreshAv(${i})" placeholder="Jogador ${i+1}" aria-label="Jogador ${i+1}" value="${esc(saved[i]||'')}"><input id="bd${i}" maxlength="40" placeholder="Bordão (grito de guerra)" aria-label="Bordão do jogador ${i+1}" value="${esc(S.draft[i].bordao||'')}"><label class="botck"><input type="checkbox" id="bt${i}" onchange="toggleBot(${i})"> É um bot (joga sozinho)</label><div class="parts">${CATS.map(([k,l])=>`<span class="pt"><button class="btn s" aria-label="${l} anterior" onclick="part(${i},'${k}',-1)">‹</button>${l}<button class="btn s" aria-label="${l} próximo" onclick="part(${i},'${k}',1)">›</button></span>`).join('')}<button class="btn s" onclick="rndChar(${i})">Aleatório</button></div></div></div>`).join('')}</div></div>
   <div class="panel"><h2>Rodadas</h2><p>${sel(0,'futebol')}</p><p>${sel(1,'filosofos')}</p><p>${sel(2,'mma')}</p>
   <p class="row" style="flex-wrap:nowrap"><select id="nr" aria-label="Quantidade de rodadas"><option value="3" ${prefs.nr!==2?'selected':''}>3 rodadas</option><option value="2" ${prefs.nr===2?'selected':''}>2 rodadas (noite curta)</option></select>
   <select id="fame" aria-label="Fama dos nomes"><option value="misto">Nomes: misto</option><option value="conhecidos" ${prefs.fame==='conhecidos'?'selected':''}>Nomes: só os muito famosos</option></select></p>
@@ -635,6 +637,9 @@ function startNight(){
   S.draft.forEach((c,i)=>{c.bordao=($('#bd'+i).value||'').trim().slice(0,40)});
   store.set('lds_chars',S.draft);
   S.chars={};names.forEach((n,i)=>{if(n)S.chars[n]={...S.draft[i]}});
+  S.bots=new Set(names.filter((n,i)=>n&&$("#bt"+i)?.checked));
+  if(players.every(n=>S.bots.has(n))){alert("Precisa de pelo menos uma pessoa jogando.");return;}
+  S.bots.forEach(n=>{S.chars[n]={...S.chars[n],hat:SYMS.indexOf("robo"),skin:3}});
   const nr=+$('#nr').value===2?2:3;S.fame=$('#fame').value;store.set('lds_prefs',{nr,fame:S.fame});
   S.varLeft=Object.fromEntries(players.map(n=>[n,1]));
   S.players=players;S.modes=[0,1,2].map(i=>$('#m'+i).value).slice(0,nr);S.round=0;S.lastPlace=null;S.usedCrit=[];
@@ -713,7 +718,7 @@ async function nextItem(){
   clearInterval(R.iv);R.cur=null;
   while(R.queue.length){const it=R.queue.shift();if(R.teams.some(t=>canBid(t,it))){R.cur=it;break;}R.unsold.push(it);}
   if(!R.cur)return endAuction();
-  Object.assign(R,{bid:0,leader:null,t:8,paused:false,locked:false});
+  Object.assign(R,{bid:0,leader:null,t:8,paused:false,locked:false});R.botVal=valoresBot(R.cur);
   await drawAuction();
   R.iv=setInterval(tick,1000);
 }
@@ -740,10 +745,26 @@ function bid(i,v){
   const ld=$('#leader');ld.className='';ld.innerHTML=`<span class="row" style="justify-content:center;gap:8px;flex-wrap:nowrap">${av(t.name,40,'feliz')}${esc(t.name)} está na frente</span>`;
   document.querySelectorAll('.pad').forEach((p,k)=>p.classList.toggle('lead',k===i));say('');clock();
 }
+/* ---------- JOGADOR-BOT ---------- */
+const isBot=n=>!!(S.bots&&S.bots.has(n));
+const BOTNOMES=["Robô Leiloeiro","Dona Algoritma","Capitão Byte","Lata Velha"];
+function toggleBot(i){const n=$("#p"+i);if($("#bt"+i).checked&&!n.value.trim())n.value=BOTNOMES[i%BOTNOMES.length];refreshAv(i);}
+// quanto o nome vale para cada bot: preço justo, com ajuste por sinergia, escassez da posição e dinheiro por vaga
+function valoresBot(it){const v={};R.teams.forEach((t,i)=>{if(!isBot(t.name)||!canBid(t,it))return;
+  const porVaga=t.money/openSlots(t),syn=tagsOf(it).some(g=>t.slots.some(s=>s.pick&&tagsOf(s.pick).includes(g)))?1.15:1;
+  const escassez=R.queue.filter(q=>q.pos===it.pos).length<2?1.25:1;
+  let val=it.exp*(.8+Math.random()*.4)*syn*escassez;val=Math.min(val,porVaga*(it.tier==="S"?2:1.5),maxBid(t));
+  v[i]=Math.max(1,Math.round(val));});return v;}
+// a cada segundo do relógio, um bot que ainda acha o nome barato pode cobrir o lance (mais provável no fim do relógio)
+function botsAgem(){if(!R.botVal||!R.cur)return;const mn=minNext();
+  const cands=Object.keys(R.botVal).map(Number).filter(i=>i!==R.leader&&canBid(R.teams[i],R.cur)&&R.botVal[i]>=mn);if(!cands.length)return;
+  if(Math.random()>(R.t<=3?.75:.35))return;const i=cands[Math.floor(Math.random()*cands.length)],folga=R.botVal[i]-mn;
+  bid(i,Math.min(R.botVal[i],mn+(folga>10&&Math.random()<.3?5:0)));}
 const minNext=()=>R.bid===0?1:R.bid+Math.max(1,Math.round(R.bid*.05));
 function bump(i,d){bid(i,Math.max(minNext(),R.bid+d));}
 function tick(){
   if(R.paused||R.locked)return;
+  botsAgem();
   R.t--;clock();
   if(R.leader!==null){if(R.t===3)say('Dou-lhe uma…');if(R.t===2)say('Dou-lhe duas…');if(R.t===1)say('Última chance!');}
   if(R.t>0)return;
@@ -976,6 +997,8 @@ async function drawBets(){
   <div class="panel board" style="background:rgba(0,0,0,.35);color:var(--papel)"><table><tr><th></th>${R.teams.map((t,i)=>`<th>${av(t.name,40)}${esc(t.name)}<div class="odd">${R.odds[i].odd}x</div><span class="mut">${Math.round(R.odds[i].p*100)}% de chance</span></th>`).join('')}<th>Fichas</th></tr>
   ${R.teams.map((b,bi)=>`<tr><td><b>${esc(b.name)}</b></td>${R.teams.map((_,ti)=>`<td><input type="number" min="0" max="${fich[bi]}" value="0" id="b_${bi}_${ti}" aria-label="${esc(b.name)} aposta em ${esc(R.teams[ti].name)}"></td>`).join('')}<td>${fich[bi]}</td></tr>`).join('')}</table></div>
   <p id="berr" class="bad"></p><button class="btn" onclick="lockBets()">Travar apostas</button>`);
+  R.teams.forEach((b,bi)=>{if(!isBot(b.name))return;let best=0,bv=-1;R.odds.forEach((o,ti)=>{const ev=o.p*(o.odd-1);if(ev>bv){bv=ev;best=ti}});
+    R.teams.forEach((_,ti)=>{const el=$(`#b_${bi}_${ti}`);el.value=ti===best?R.fich[bi]:0;el.readOnly=true;});});
   tbStart(45,()=>lockBets(true));
 }
 function lockBets(force){
@@ -1162,7 +1185,7 @@ async function showVerdict(){
   const cls=['p1','p2','p3','p4'],pl=[1,2,3,4].map(n=>medalSVG(n,44));
   const pod=[order[1],order[0],order[2],order[3]].filter(x=>x!==undefined);
   R.varCalls=new Set();
-  const elig=R.teams.map((t,i)=>i).filter(i=>i!==order[0]&&S.varLeft[R.teams[i].name]>0);
+  const elig=R.teams.map((t,i)=>i).filter(i=>i!==order[0]&&S.varLeft[R.teams[i].name]>0&&!isBot(R.teams[i].name));
   lower(`${R.teams[order[0]].name} lidera`,`Critério: ${R.crit.titulo} · ${elig.length?'Agora: alguém quer chamar o VAR?':'Agora: veja a pontuação'}`);
   await scene('veredito',`${elig.length?tbHTML('A janela do VAR fecha em'):''}
   <div class="pod">${pod.map(i=>{const p=order.indexOf(i);return `<div class="${cls[p]}">${av(R.teams[i].name,64,p===0?'feliz':p===order.length-1?'triste':'neutro')}<big>${pl[p]}</big><b>${esc(R.teams[i].name)}</b>${lg.tab[i].pts} pts</div>`}).join('')}</div>

@@ -76,6 +76,28 @@
     const soma=Object.values(S.totals).reduce((a,b)=>a+b,0);
     ok(soma>0,'a noite somou pontos');
     endNight();ok(await W8(()=>$('#stage').innerText.includes('Fim da noite')),'fim da noite');
+    // 3. Jogador-bot: 1 pessoa e 2 bots, uma rodada
+    S.chars={};S.draft=null;setup();await W8(()=>$('#p0'));
+    ['Ana','','',''].forEach((n,i)=>$('#p'+i).value=n);$('#bt1').checked=true;toggleBot(1);$('#bt2').checked=true;toggleBot(2);
+    $('#nr').value='2';$('#key').value='';startNight();
+    ok(S.bots.size===2,'dois bots na mesa');
+    ok(await W8(()=>$('.open button')),'bots: abertura');
+    nextItem();await W8(()=>$('#bid'));
+    let lancesBot=0,k=0;
+    while($('#bid')&&k<30){
+      k++;R.t=2;for(let q=0;q<12;q++){const antes=R.leader;botsAgem();if(R.leader!==antes&&isBot(R.teams[R.leader].name))lancesBot++;}
+      R.t=1;tick();await sleep(1950);
+    }
+    ok(lancesBot>0,`bots deram lances sozinhos (${lancesBot})`);
+    ok(await W8(()=>cena()==='elenco'),'bots: elencos fechados');
+    const bots=R.teams.filter(t=>isBot(t.name));
+    ok(bots.every(t=>t.money>=0&&t.slots.every(s=>s.pick)),'bots com time completo e sem saldo negativo');
+    drawBets();await W8(()=>TB&&$('#b_0_0'));
+    ok(R.teams.every((t,bi)=>!isBot(t.name)||R.teams.reduce((s,_,ti)=>s+(+$(`#b_${bi}_${ti}`).value),0)===R.fich[bi]),'bots apostaram todas as fichas');
+    lockBets();await W8(()=>$('#sideA'));skipAnim=true;
+    ok(await W8(()=>$('.pod'),300),'bots: veredito');
+    ok([...document.querySelectorAll('[id^=vc]')].every(b=>!isBot(R.teams[+b.id.slice(2)].name)),'bot não chama VAR');
+    closeVarWindow();ok(await W8(()=>cena()==='placar'),'bots: placar');
   }catch(e){ok(false,'erro inesperado: '+e.message)}
   ok(errs.length===0,'sem erros no console'+(errs.length?': '+errs.join(' | '):''));
   const falhas=log.filter(x=>!x[0]);
