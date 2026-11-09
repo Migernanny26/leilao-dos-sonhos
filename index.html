@@ -264,6 +264,28 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .luz.l1{left:calc(25% - 80px)}.luz.l2{left:calc(75% - 80px)}
 @media(max-width:560px){.arena{height:230px}.fala{max-width:44%;font-size:.8em}.pulpito{width:84px}}
 .botck{display:flex;gap:8px;align-items:center;font:800 .85em var(--b);color:var(--mut);margin:0 0 6px}.botck input{width:auto}
+/* tela de início */
+[hidden]{display:none!important}
+.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin:6px 0 22px}
+.hero .titulo{font-size:clamp(2.6rem,7.5vw,5.4rem);color:var(--ouro);text-shadow:0 5px 0 rgba(0,0,0,.4);margin:0}
+.hero p{color:var(--mut);margin:.4em 0 0;max-width:52ch;font-weight:700}
+.btn.grande{font-size:1.35em;padding:16px 30px}
+.cams{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:18px}
+.cam{background:linear-gradient(180deg,color-mix(in srgb,var(--c1) 30%,#1c0f19) 0,#1c0f19 46%);border-radius:14px;padding:14px;box-shadow:0 0 0 1px var(--line) inset;display:flex;flex-direction:column;gap:9px}
+.cam-top{display:flex;gap:10px;align-items:center}
+.escbox{flex:none}
+.cam-time{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.cam-time input{font:1.15em var(--d);padding:8px 10px}
+.dono{display:grid;place-items:end center;height:172px;overflow:hidden;border-radius:12px;background:rgba(0,0,0,.28)}
+.pessoa{text-align:center;font:800 1.05em var(--b)}
+.seg{display:flex;background:rgba(0,0,0,.32);border-radius:10px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:none;color:var(--mut);font:800 .82em var(--b);padding:7px 4px;border-radius:8px}
+.seg button.on{background:var(--ouro);color:#3a2205}
+.presets{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.presets button{background:rgba(0,0,0,.25);border:0;padding:6px 0;border-radius:10px;display:grid;place-items:center}
+@media(hover:hover){.presets button:hover{background:rgba(242,179,61,.18)}}
+.pad .ava svg{display:block}
+.side small{font:700 .8em var(--b);color:var(--mut)}
 /* pódio */
 .pod{display:flex;gap:14px;align-items:flex-end;justify-content:center;margin:10px 0 18px}
 .pod div{background:var(--bg2);border-radius:24px 24px 10px 10px;padding:14px;text-align:center;min-width:130px;flex:1;max-width:240px;box-shadow:0 0 0 1px var(--line) inset;display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -278,10 +300,6 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 #curtain .cr{transform:translateX(101%);box-shadow:inset 8px 0 0 var(--ouro)}
 #curtain.closed i{transform:none;transition-duration:.32s}
 .av{display:block;flex:none}
-.bubble{display:inline-block;background:var(--creme);color:#3a2205;border-radius:14px;padding:3px 12px;font:800 .88em var(--b);margin-top:4px}
-.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.pl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}
-.avbox{background:rgba(0,0,0,.3);border-radius:18px;padding:4px;box-shadow:0 0 0 1px var(--line) inset}
 .plf input{margin-bottom:6px}
 .parts{display:flex;gap:6px;flex-wrap:wrap}
 .pt{display:inline-flex;align-items:center;gap:3px;font:800 .78em var(--b);color:var(--mut)}
@@ -467,7 +485,7 @@ const EMPTY={nome:'(vaga vazia)',pos:'',bio:'',attrs:[40,40,40,40]};
 let W=[.25,.25,.25,.25];                       // pesos do critério da rodada
 const ov=p=>p.attrs.reduce((a,x,i)=>a+x*W[i],0);
 
-/* ---------- ESCUDO DE CADA JOGADOR (formato, duas cores, padrão, símbolo e iniciais) ---------- */
+/* ---------- ESCUDO DO TIME (formato, duas cores, padrão, símbolo e iniciais do time) ---------- */
 const COLS=['#b3263a','#1f6f8b','#c9971c','#6c3fa0','#2e8b57','#d9682a','#22406f','#7a1c40'];
 const SHAPES=[
  {n:'clássico',d:'M50 5 L89 17 V50 C89 75 71 89 50 96 C29 89 11 75 11 50 V17 Z'},
@@ -478,12 +496,31 @@ const PADS=['liso','listras','faixa','metade'];
 const SYMS=['estrela','raio','coracao','alvo','nota','punho','escudo','lampada','balao','elos','robo'];
 const CATS=[['skin','Formato'],['col','Cor 1'],['eyes','Cor 2'],['acc','Padrão'],['hat','Símbolo']];
 const CATN={skin:SHAPES.length,hat:SYMS.length,eyes:COLS.length,acc:PADS.length,col:COLS.length};
+// times prontos: nome + escudo (formato, cor 1, cor 2, padrão, símbolo)
+const TIMES=[
+ {time:'Real Madrugada',skin:1,col:6,eyes:2,acc:0,hat:0},
+ {time:'Unidos do Lance',skin:0,col:7,eyes:2,acc:2,hat:9},
+ {time:'Saideira FC',skin:2,col:5,eyes:0,acc:1,hat:4},
+ {time:'Atlético Sofá',skin:0,col:4,eyes:2,acc:3,hat:2},
+ {time:'Os Galácticos',skin:3,col:3,eyes:2,acc:0,hat:0},
+ {time:'Trovão Noturno',skin:2,col:1,eyes:2,acc:2,hat:1},
+ {time:'Sociedade do Bocejo',skin:1,col:0,eyes:2,acc:1,hat:7},
+ {time:'Leilão Imperial',skin:0,col:2,eyes:7,acc:0,hat:6}];
+/* ---------- DONO DO TIME (busto de terno) ---------- */
+const PELES=['#f6dcc4','#efc8a2','#d6a274','#b07849','#85532f','#5c371f'];
+const CABS=['careca','curto','penteado','topete','longo','cacheado','coque','black power','entradas'];
+const CORCAB=['#201816','#5b3a1e','#d9b04a','#b5502e','#9e9a94','#ebe6dc'];
+const BARBAS=['sem barba','bigode','cavanhaque','barba curta','barba cheia'];
+const OCULOS=['sem óculos','redondo','quadrado','escuro'];
+const TERNOS=['#26232c','#1c2740','#3d1424','#d8d2c4'];
+const DCATS=[['pele','Pele'],['cab','Cabelo'],['corCab','Cor do cabelo'],['barba','Barba'],['oculos','Óculos'],['terno','Terno']];
+const DCATN={pele:PELES.length,cab:CABS.length,corCab:CORCAB.length,barba:BARBAS.length,oculos:OCULOS.length,terno:TERNOS.length};
 function randChar(seed){
-  let x=Math.floor(seed)%2147483647||1;const r=()=>(x=x*16807%2147483647)/2147483647;
-  const col=Math.floor(r()*COLS.length);let eyes=Math.floor(r()*COLS.length);if(eyes===col)eyes=(eyes+3)%COLS.length;
-  return{skin:Math.floor(r()*SHAPES.length),hat:Math.floor(r()*SYMS.length),eyes,acc:Math.floor(r()*PADS.length),col,bordao:''};
+  let x=Math.floor(seed)%2147483647||1;const r=()=>(x=x*16807%2147483647)/2147483647,ri=n=>Math.floor(r()*n);
+  const t=TIMES[ri(TIMES.length)];
+  return{skin:t.skin,hat:t.hat,eyes:t.eyes,acc:t.acc,col:t.col,time:t.time,pele:ri(PELES.length),cab:ri(CABS.length),corCab:ri(CORCAB.length),barba:ri(BARBAS.length),oculos:ri(OCULOS.length),terno:ri(TERNOS.length)};
 }
-const iniciais=n=>{const w=String(n||'?').trim().split(/\s+/).filter(Boolean);if(!w.length)return'?';return((w[0][0]||'')+(w.length>1?w[w.length-1][0]:(w[0][1]||''))).toUpperCase()};
+const iniciais=n=>{const w=String(n||'?').trim().split(/\s+/).filter(x=>x.length>2||/^[A-ZÀ-Ú]/.test(x));if(!w.length)return'?';return((w[0][0]||'')+(w.length>1?w[w.length-1][0]:(w[0][1]||''))).toUpperCase()};
 let escId=0;
 function avatarSVG(c,tam=48,estado='neutro',nome=''){
   const s=SHAPES[c.skin%SHAPES.length],c1=COLS[c.col%COLS.length],c2=COLS[c.eyes%COLS.length]===c1?'#fff1dc':COLS[c.eyes%COLS.length],id='esc'+(++escId);
@@ -495,11 +532,54 @@ function avatarSVG(c,tam=48,estado='neutro',nome=''){
     `<g transform="translate(36.2 15) scale(1.15)" fill="none" stroke="#fff1dc" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${sym}</g>`+
     `<text x="50" y="78" text-anchor="middle" font-family="Lilita One,sans-serif" font-size="27" fill="#fff1dc" stroke="#2a1018" stroke-width="4" paint-order="stroke">${esc(iniciais(nome))}</text></svg>`;
 }
+function donoSVG(c,tam=120,estado='neutro',rosto=false){
+  const K='#2a1018',pele=PELES[(c.pele||0)%PELES.length],cc=CORCAB[(c.corCab||0)%CORCAB.length],terno=TERNOS[(c.terno||0)%TERNOS.length];
+  const c1=COLS[(c.col||0)%COLS.length],c2=COLS[(c.eyes||0)%COLS.length]===c1?'#fff1dc':COLS[(c.eyes||0)%COLS.length];
+  const lapela=c.terno===3?'#bfb8a8':'rgba(0,0,0,.28)',sv=(d,f,w=1.6)=>`<path d="${d}" fill="${f}" stroke="${K}" stroke-width="${w}" stroke-linejoin="round"/>`;
+  const TOP='M38 52 C37 33 46 27 60 27 C74 27 83 33 82 52 C80 41 73 37 60 37 C47 37 40 41 38 52Z';
+  const cachos=(pts,r)=>pts.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${cc}" stroke="${K}" stroke-width="1.4"/>`).join('');
+  const cab=[
+    ['',`<path d="M48 34 Q56 30 64 32" stroke="rgba(255,255,255,.45)" stroke-width="2.5" fill="none" stroke-linecap="round"/>`],
+    ['',sv(TOP,cc)],
+    ['',sv('M38 50 C38 30 50 25 62 26 C77 27 84 36 82 50 C78 38 70 34 58 35 C48 36 41 41 38 50Z',cc)+`<path d="M48 31 Q60 29 72 33" stroke="rgba(0,0,0,.25)" stroke-width="1.5" fill="none"/>`],
+    ['',sv('M38 52 C37 34 44 29 52 28 C50 18 70 14 78 26 C82 32 83 40 82 52 C80 41 73 37 60 37 C47 37 40 41 38 52Z',cc)],
+    [sv('M36 50 C34 28 48 23 60 23 C73 23 86 29 84 52 L86 94 C80 98 74 96 72 88 L72 60 L48 60 L48 88 C46 96 40 98 34 94Z',cc),sv(TOP,cc)],
+    ['',cachos([[39,46],[41,37],[47,31],[55,28],[64,28],[72,31],[78,37],[81,46]],6.5)],
+    ['',sv(TOP,cc)+`<circle cx="60" cy="24" r="8" fill="${cc}" stroke="${K}" stroke-width="1.4"/>`],
+    [`<circle cx="60" cy="44" r="31" fill="${cc}" stroke="${K}" stroke-width="1.6"/>`,''],
+    ['',sv('M37 56 C36 46 39 40 44 37 L46 50 Q41 51 37 56Z',cc)+sv('M83 56 C84 46 81 40 76 37 L74 50 Q79 51 83 56Z',cc)]
+  ][(c.cab||0)%CABS.length];
+  const boca=estado==='feliz'?`<path d="M52 72 Q60 81 68 72 Q60 76 52 72Z" fill="#fff" stroke="${K}" stroke-width="1.5" stroke-linejoin="round"/>`:estado==='triste'?`<path d="M53 77 Q60 72 67 77" fill="none" stroke="${K}" stroke-width="1.8" stroke-linecap="round"/>`:`<path d="M53 74 Q60 77.5 67 74" fill="none" stroke="${K}" stroke-width="1.8" stroke-linecap="round"/>`;
+  const barba=['',sv('M51 70.5 Q60 66 69 70.5 Q60 73 51 70.5Z',cc,1.2),sv('M55 79 Q60 88 65 79 Q60 81 55 79Z',cc,1.2)+sv('M52 70.5 Q60 67 68 70.5 Q60 72.5 52 70.5Z',cc,1.2),
+    `<path d="M38 60 C38 80 48 89 60 89 C72 89 82 80 82 60 C78 72 71 79 60 79 C49 79 42 72 38 60Z" fill="${cc}" opacity=".55"/>`,sv('M38 60 C38 82 48 92 60 92 C72 92 82 82 82 60 C78 72 71 78 60 78 C49 78 42 72 38 60Z',cc)][(c.barba||0)%BARBAS.length];
+  const olho=(x)=>`<ellipse cx="${x}" cy="57" rx="2.3" ry="2.7" fill="${K}"/><circle cx="${x+.8}" cy="56" r=".8" fill="#fff"/>`;
+  const oc=['',`<g fill="rgba(255,255,255,.15)" stroke="${K}" stroke-width="1.6"><circle cx="52" cy="57" r="6"/><circle cx="68" cy="57" r="6"/></g><path d="M58 57 H62" stroke="${K}" stroke-width="1.6"/>`,
+    `<g fill="rgba(255,255,255,.15)" stroke="${K}" stroke-width="1.6"><rect x="45" y="52" width="13" height="10" rx="2"/><rect x="62" y="52" width="13" height="10" rx="2"/></g><path d="M58 56 H62" stroke="${K}" stroke-width="1.6"/>`,
+    `<g fill="#15121a" stroke="${K}" stroke-width="1.4"><rect x="44" y="52" width="14" height="10" rx="4"/><rect x="62" y="52" width="14" height="10" rx="4"/></g><path d="M58 56 H62" stroke="#15121a" stroke-width="2"/>`][(c.oculos||0)%OCULOS.length];
+  const sob=(c.cab||0)%CABS.length===0?K:cc;
+  const vb=rosto?'26 18 68 68':'0 0 120 140';
+  return `<svg class="dono-svg" width="${tam}" height="${rosto?tam:Math.round(tam*140/120)}" viewBox="${vb}" aria-hidden="true"${estado==='triste'?' style="filter:saturate(.5)"':''}>${cab[0]}`+
+    sv('M8 141 C10 112 30 100 60 98 C90 100 110 112 112 141 Z',terno)+
+    `<path d="M46 99 L60 124 L74 99 Z" fill="#f4efe6"/>`+
+    `<path d="M45 99 L60 125 L51 141 L30 108 Z" fill="${lapela}"/><path d="M75 99 L60 125 L69 141 L90 108 Z" fill="${lapela}"/>`+
+    sv('M56.5 103 L63.5 103 L62 109 L58 109 Z',c1,1.2)+sv('M58 109 L62 109 L65 127 L60 133 L55 127 Z',c1,1.2)+
+    `<path d="M82 113 L92 113 L87 108 Z" fill="${c2}" stroke="${K}" stroke-width="1"/>`+
+    sv('M51 82 L69 82 L68 100 L52 100 Z',pele,1.4)+`<path d="M52 92 L68 92 L68 100 L52 100Z" fill="rgba(0,0,0,.12)"/>`+
+    `<ellipse cx="38.5" cy="59" rx="4" ry="6" fill="${pele}" stroke="${K}" stroke-width="1.4"/><ellipse cx="81.5" cy="59" rx="4" ry="6" fill="${pele}" stroke="${K}" stroke-width="1.4"/>`+
+    `<ellipse cx="60" cy="57" rx="22" ry="27" fill="${pele}" stroke="${K}" stroke-width="1.6"/>`+
+    `<path d="M74 40 C84 56 78 76 64 83 C76 72 79 56 74 40Z" fill="rgba(0,0,0,.09)"/>`+
+    barba+cab[1]+
+    `<path d="M47 50.5 Q52 48 56.5 50 M63.5 50 Q68 48 73 50.5" stroke="${sob}" stroke-width="2" fill="none" stroke-linecap="round"/>`+
+    olho(52)+olho(68)+`<path d="M60 59 Q63.5 66 59 68" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="1.5" stroke-linecap="round"/>`+
+    boca+oc+`</svg>`;
+}
 const hashName=n=>[...String(n)].reduce((a,ch)=>(a*31+ch.charCodeAt(0))>>>0,7);
 const charFor=n=>S.chars[n]||(S.chars[n]=randChar(hashName(n)));
-const av=(n,tam,estado)=>avatarSVG(charFor(n),tam,estado,n);
-const bordaoOf=n=>(charFor(n).bordao||'').trim();
-const descChar=n=>{const c=charFor(n);return `tem um escudo ${SHAPES[c.skin%SHAPES.length].n} com símbolo de ${SYMS[c.hat%SYMS.length]}${bordaoOf(n)?`; bordão: "${bordaoOf(n)}"`:''}`};
+const timeOf=n=>(charFor(n).time||'').trim()||('Time de '+n);
+const av=(n,tam,estado)=>avatarSVG(charFor(n),tam,estado,timeOf(n));
+const donoOf=(n,tam,estado)=>donoSVG(charFor(n),tam,estado);
+const rostoOf=(n,tam,estado)=>donoSVG(charFor(n),tam,estado,true);
+const descChar=n=>`dono do time "${timeOf(n)}"`;
 /* ---------- DESENHO DO NOME LEILOADO: caricatura.js + visuais.js ---------- */
 /* ---------- FOTOS (miniatura da Wikipédia, guardada no navegador) E CARTAS ---------- */
 const FOTOS=store.get('lds_fotos2',{}),fotoPend={};
@@ -575,17 +655,29 @@ function synHint(it){
 const CHIPS=[[1,'#1f5e47'],[5,'#7a1c40'],[10,'#1d3a6b'],[25,'#141014']];
 function padHTML(t,i){
   const mid=S.modes[S.round];
-  return `<article class="pad" style="--pc:${COLS[charFor(t.name).col]}"><div class="row" style="flex-wrap:nowrap"><div class="ava">${av(t.name,54)}</div><b class="n">${esc(t.name)}</b>${isBot(t.name)?'<span class="chip">Bot</span>':''}${t.bonus?'<span class="chip bonus">+15%</span>':''}<span class="mny" style="margin-left:auto">${coinSVG(22)}${t.money}</span></div>
+  return `<article class="pad" style="--pc:${COLS[charFor(t.name).col]}"><div class="row" style="flex-wrap:nowrap"><div class="ava">${rostoOf(t.name,58)}</div><div style="min-width:0"><b class="n">${esc(t.name)}</b><div class="mut" style="font:700 .8em var(--b);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(timeOf(t.name))}</div></div>${isBot(t.name)?'<span class="chip">Bot</span>':''}${t.bonus?'<span class="chip bonus">+15%</span>':''}<span class="mny" style="margin-left:auto">${coinSVG(22)}${t.money}</span></div>
   <div class="slots4">${t.slots.map(s=>s.pick?`<div class="slot f" title="${esc(s.pick.nome)}">${fotoMini(s.pick,50)}<b>${s.paid}</b></div>`:`<div class="slot">${esc(s.pos)}</div>`).join('')}</div>
   ${isBot(t.name)?'<p class="mut" style="margin:0;font-weight:700">Joga sozinho: dá lance quando o nome vale para o time dele.</p>':`<div class="row bids">${CHIPS.map(([d,c])=>`<button class="cb ${d===25?'k':''}" style="--c:${c}" aria-label="Aumentar ${d} para ${esc(t.name)}" onclick="bump(${i},${d})">+${d}</button>`).join('')}
   <input class="outro" type="number" id="c${i}" min="1" placeholder="valor" aria-label="Outro valor de lance de ${esc(t.name)}" onkeydown="if(event.key==='Enter')bid(${i},+this.value)"><button class="dar" onclick="bid(${i},+$('#c${i}').value)">Dar</button></div>`}</article>`;
 }
 function fixDraft(arr){
-  return [0,1,2,3].map(i=>{const c=arr&&arr[i],ok=c&&Object.keys(CATN).every(k=>Number.isInteger(c[k])&&c[k]>=0&&c[k]<CATN[k]);return ok?{...c,bordao:String(c.bordao||'').slice(0,40)}:randChar(i*977+13)});
+  const okN=(c,tab)=>Object.keys(tab).every(k=>Number.isInteger(c[k])&&c[k]>=0&&c[k]<tab[k]);
+  return [0,1,2,3].map(i=>{const c=arr&&arr[i];if(c&&okN(c,CATN)&&okN(c,DCATN)&&typeof c.time==='string')return{...c,time:c.time.slice(0,24)};
+    const {skin,col,eyes,acc,hat,time}=TIMES[(i*3)%TIMES.length];return{...randChar(i*977+13),skin,col,eyes,acc,hat,time};});
 }
-function refreshAv(i){$('#av'+i).innerHTML=avatarSVG(S.draft[i],84,'neutro',($('#p'+i)?.value||'').trim()||'Jogador '+(i+1));}
-function part(i,k,d){S.draft[i][k]=(S.draft[i][k]+d+CATN[k])%CATN[k];refreshAv(i);}
-function rndChar(i){S.draft[i]={...randChar(Math.random()*1e9),bordao:$('#bd'+i).value};refreshAv(i);}
+function refreshCam(i){
+  const d=S.draft[i],tm=$('#tm'+i);if(tm)d.time=tm.value.slice(0,24);
+  const nomeTime=(d.time||'').trim()||'Time '+(i+1);
+  $('#es'+i).innerHTML=avatarSVG(d,72,'neutro',nomeTime);$('#dn'+i).innerHTML=donoSVG(d,150);
+  $('#cam'+i).style.setProperty('--c1',COLS[d.col%COLS.length]);
+}
+const refreshAv=refreshCam;
+function part(i,k,dlt){const n=CATN[k]??DCATN[k];S.draft[i][k]=(S.draft[i][k]+dlt+n)%n;refreshCam(i);}
+function rndChar(i){const t=$('#tm'+i).value;S.draft[i]={...randChar(Math.random()*1e9),time:t};refreshCam(i);}
+function presetTime(i,k){const p=TIMES[k];Object.assign(S.draft[i],{skin:p.skin,col:p.col,eyes:p.eyes,acc:p.acc,hat:p.hat,time:p.time});$('#tm'+i).value=p.time;refreshCam(i);}
+function aba(i,qual){$('#cam'+i).querySelectorAll('[data-aba]').forEach(e=>e.hidden=e.dataset.aba!==qual);$('#cam'+i).querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.alvo===qual));}
+const setas=(i,cats)=>cats.map(([k,l])=>`<span class="pt"><button class="btn s" aria-label="${l} anterior" onclick="part(${i},'${k}',-1)">‹</button>${l}<button class="btn s" aria-label="${l} próximo" onclick="part(${i},'${k}',1)">›</button></span>`).join('');
+
 
 /* ---------- ESTADO ---------- */
 let S={players:[],modes:[],round:0,totals:{},key:'',offline:true,lastPlace:null,usedCrit:[],chars:{},draft:null};
@@ -604,7 +696,7 @@ function season(){
 }
 function download(name,obj){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(obj,null,1)],{type:'application/json'}));a.download=name;a.click();}
 
-/* ---------- BASTIDORES (SETUP) ---------- */
+/* ---------- BASTIDORES (TELA DE INÍCIO) ---------- */
 function setup(){
   const se=season(), saved=store.get('lds_players',['','','','']);
   if(!S.draft)S.draft=fixDraft(store.get('lds_chars',null));
@@ -612,21 +704,31 @@ function setup(){
   let sk='';try{sk=sessionStorage.getItem('lds_key')||''}catch{}
   const sel=(i,d)=>`<select id="m${i}" aria-label="Rodada ${i+1}">${Object.entries(MODES).map(([k,m])=>`<option value="${k}" ${k===d?'selected':''}>${m.nome}</option>`).join('')}</select>`;
   const rank=Object.entries(se.totals).sort((a,b)=>b[1]-a[1]);
-  $('#rnd').textContent='';lower('Boa noite!','Monte o time, defenda no tribunal e leve o troféu');
-  scene('setup',`<h1 class="dsp" style="font-size:clamp(2.4rem,7vw,5rem);color:var(--ouro);text-shadow:0 4px 0 rgba(0,0,0,.35);margin:.2em 0">Leilão dos Sonhos</h1>
-  <div class="grid"><div class="panel" style="grid-column:1/-1"><h2>Quem joga (2 a 4)</h2><div class="slots">${[0,1,2,3].map(i=>`<div class="pl"><div class="avbox" id="av${i}">${avatarSVG(S.draft[i],84,'neutro',saved[i]||'Jogador '+(i+1))}</div><div class="plf"><input id="p${i}" oninput="refreshAv(${i})" placeholder="Jogador ${i+1}" aria-label="Jogador ${i+1}" value="${esc(saved[i]||'')}"><input id="bd${i}" maxlength="40" placeholder="Bordão (grito de guerra)" aria-label="Bordão do jogador ${i+1}" value="${esc(S.draft[i].bordao||'')}"><label class="botck"><input type="checkbox" id="bt${i}" onchange="toggleBot(${i})"> É um bot (joga sozinho)</label><div class="parts">${CATS.map(([k,l])=>`<span class="pt"><button class="btn s" aria-label="${l} anterior" onclick="part(${i},'${k}',-1)">‹</button>${l}<button class="btn s" aria-label="${l} próximo" onclick="part(${i},'${k}',1)">›</button></span>`).join('')}<button class="btn s" onclick="rndChar(${i})">Aleatório</button></div></div></div>`).join('')}</div></div>
-  <div class="panel"><h2>Rodadas</h2><p>${sel(0,'futebol')}</p><p>${sel(1,'filosofos')}</p><p>${sel(2,'mma')}</p>
+  $('#rnd').textContent='';lower('Boa noite!','Agora: cada um monta seu dono e seu time');
+  scene('setup',`<section class="hero"><div><h1 class="dsp titulo">Leilão dos Sonhos</h1><p>Um leilão falado, times montados na hora e uma noite inteira de confrontos. Escolham quem é quem e abram o programa.</p></div>
+  <button class="btn grande" onclick="startNight()">Abrir o programa</button></section>
+  <h2>Quem disputa hoje</h2>
+  <div class="cams">${[0,1,2,3].map(i=>{const d=S.draft[i],nt=(d.time||'').trim()||'Time '+(i+1);return `<article class="cam" id="cam${i}" style="--c1:${COLS[d.col%COLS.length]}">
+    <div class="cam-top"><div class="escbox" id="es${i}">${avatarSVG(d,72,'neutro',nt)}</div>
+      <div class="cam-time"><input id="tm${i}" maxlength="24" value="${esc(d.time||'')}" placeholder="Nome do time" aria-label="Nome do time ${i+1}" oninput="refreshCam(${i})"><span class="mut" style="font-size:.8em;font-weight:700">Nome e escudo do time</span></div></div>
+    <div class="dono" id="dn${i}">${donoSVG(d,150)}</div>
+    <input class="pessoa" id="p${i}" placeholder="Seu nome" aria-label="Nome do jogador ${i+1}" value="${esc(saved[i]||'')}">
+    <div class="seg" role="tablist"><button data-alvo="dono" class="on" onclick="aba(${i},'dono')">Boneco</button><button data-alvo="escudo" onclick="aba(${i},'escudo')">Escudo e time</button></div>
+    <div class="parts" data-aba="dono">${setas(i,DCATS)}<button class="btn s" onclick="rndChar(${i})">Sortear tudo</button></div>
+    <div data-aba="escudo" hidden><div class="presets">${TIMES.map((t,k)=>`<button title="${esc(t.time)}" aria-label="Usar ${esc(t.time)}" onclick="presetTime(${i},${k})">${avatarSVG(t,40,'neutro',t.time)}</button>`).join('')}</div>
+      <div class="parts" style="margin-top:8px">${setas(i,CATS)}</div></div>
+    <label class="botck"><input type="checkbox" id="bt${i}" onchange="toggleBot(${i})"> É um bot (joga sozinho)</label></article>`}).join('')}</div>
+  <div class="grid"><div class="panel"><h2>Rodadas</h2><p>${sel(0,'futebol')}</p><p>${sel(1,'filosofos')}</p><p>${sel(2,'mma')}</p>
   <p class="row" style="flex-wrap:nowrap"><select id="nr" aria-label="Quantidade de rodadas"><option value="3" ${prefs.nr!==2?'selected':''}>3 rodadas</option><option value="2" ${prefs.nr===2?'selected':''}>2 rodadas (noite curta)</option></select>
   <select id="fame" aria-label="Fama dos nomes"><option value="misto">Nomes: misto</option><option value="conhecidos" ${prefs.fame==='conhecidos'?'selected':''}>Nomes: só os muito famosos</option></select></p>
   <p><input id="key" type="password" placeholder="Chave de API da Anthropic (opcional)" aria-label="Chave de API" value="${esc(sk)}"></p>
-  <p class="mut" style="font-size:.85em">Sem chave: pool e juiz locais. A chave fica só nesta aba.</p></div>
-  </div>
-  <p><button class="btn" onclick="startNight()">Abrir o programa</button></p>
+  <p class="mut" style="font-size:.85em">Sem chave: nomes prontos e narrador local. A chave fica só nesta aba.</p></div>
   <div class="panel season"><div class="row"><h2 style="margin:0">Temporada ${se.month}</h2><span class="mut">${se.nights} ${se.nights===1?'noite':'noites'}</span></div>
   ${rank.length?`<table>${rank.map(([n,p],i)=>`<tr><td class="odd" style="width:60px">${i+1}º</td><td style="font:700 1.4em var(--c)">${esc(n)}</td><td class="odd" style="text-align:right">${p}</td></tr>`).join('')}</table>`:'<p class="mut">Ainda sem pontos. A primeira noite abre o placar.</p>'}
   ${se.champions.length?`<p class="mut">Campeões: ${se.champions.map(c=>esc(c.month)+' '+esc(c.nome)).join(', ')}</p>`:''}
   <div class="row"><button class="btn s" onclick="download('temporada.json',season())">Exportar</button>
-  <label class="btn s">Importar<input type="file" accept=".json" hidden onchange="importSeason(this)"></label></div></div>`);
+  <label class="btn s">Importar<input type="file" accept=".json" hidden onchange="importSeason(this)"></label></div></div></div>
+  <p><button class="btn grande" onclick="startNight()">Abrir o programa</button></p>`);
 }
 function importSeason(el){const f=el.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(d&&d.totals){store.set('lds_season',d);setup();}else alert('Arquivo inválido');}catch{alert('Arquivo inválido')}})}
 function startNight(){
@@ -634,7 +736,7 @@ function startNight(){
   const players=names.filter(Boolean);
   if(players.length<2||new Set(players.map(n=>n.toLowerCase())).size!==players.length){alert('Informe de 2 a 4 nomes diferentes.');return;}
   store.set('lds_players',names);
-  S.draft.forEach((c,i)=>{c.bordao=($('#bd'+i).value||'').trim().slice(0,40)});
+  S.draft.forEach((c,i)=>{c.time=($('#tm'+i).value||'').trim().slice(0,24)||TIMES[i].time});
   store.set('lds_chars',S.draft);
   S.chars={};names.forEach((n,i)=>{if(n)S.chars[n]={...S.draft[i]}});
   S.bots=new Set(names.filter((n,i)=>n&&$("#bt"+i)?.checked));
@@ -1012,7 +1114,7 @@ function lockBets(force){
 /* ---------- JOGO: confrontos todos contra todos ---------- */
 let skipAnim=false,fastAnim=false,animId=0;
 const wait=ms=>{const t=skipAnim?0:fastAnim?ms/2:ms;return t?sleep(t):Promise.resolve()};
-const sideHTML=(t,est)=>`<div class="side" style="--tc:${COLS[charFor(t.name).col]}">${av(t.name,72,est)}<b>${esc(t.name)}</b></div>`;
+const sideHTML=(t,est)=>`<div class="side" style="--tc:${COLS[charFor(t.name).col]}">${av(t.name,68,est)}<b>${esc(timeOf(t.name))}</b><small>${esc(t.name)}</small></div>`;
 function keyDuel(A,B,mid,x){
   if(x&&x.ev[0]&&x.ev[0].t==='rod'){const e=[...x.ev].sort((p,q)=>q.pts-p.pts)[0];return `Embate que mais vale: ${mode().attrs[e.k]} (${e.pts} pontos), ${e.pa} x ${e.pb}.`;}
   if(mid==='futebol')return `Duelo-chave: ${A.ps[3].nome} (ataque ${A.ps[3].attrs[0]}) contra o goleiro ${B.ps[0].nome} (${B.ps[0].attrs[1]}); do outro lado, ${B.ps[3].nome} contra ${A.ps[0].nome}.`;
@@ -1188,7 +1290,7 @@ async function showVerdict(){
   const elig=R.teams.map((t,i)=>i).filter(i=>i!==order[0]&&S.varLeft[R.teams[i].name]>0&&!isBot(R.teams[i].name));
   lower(`${R.teams[order[0]].name} lidera`,`Critério: ${R.crit.titulo} · ${elig.length?'Agora: alguém quer chamar o VAR?':'Agora: veja a pontuação'}`);
   await scene('veredito',`${elig.length?tbHTML('A janela do VAR fecha em'):''}
-  <div class="pod">${pod.map(i=>{const p=order.indexOf(i);return `<div class="${cls[p]}">${av(R.teams[i].name,64,p===0?'feliz':p===order.length-1?'triste':'neutro')}<big>${pl[p]}</big><b>${esc(R.teams[i].name)}</b>${lg.tab[i].pts} pts</div>`}).join('')}</div>
+  <div class="pod">${pod.map(i=>{const p=order.indexOf(i);return `<div class="${cls[p]}">${donoOf(R.teams[i].name,92,p===0?'feliz':p===order.length-1?'triste':'neutro')}<big>${pl[p]}</big><b>${esc(R.teams[i].name)}</b>${lg.tab[i].pts} pts</div>`}).join('')}</div>
   <div class="panel"><p style="font-size:1.15em;margin-top:0">${esc(narr.veredito)}</p>
   <p class="row" style="gap:6px">${starSVG(22)} MVP: <b>${esc(narr.mvp?.nome)}</b> — ${esc(narr.mvp?.motivo)}</p><p class="row" style="gap:6px">${micoSVG(22)} Mico: <b>${esc(narr.mico?.nome)}</b> — ${esc(narr.mico?.motivo)}</p>
   <table><tr><th>Time</th><th>J</th><th>V</th><th>E</th><th>D</th><th>${m.un} (+/−)</th><th>Pts</th></tr>${order.map(i=>{const x=lg.tab[i];return `<tr><td><span class="row">${av(R.teams[i].name,26)}<b>${esc(R.teams[i].name)}</b></span></td><td>${x.w+x.d+x.l}</td><td>${x.w}</td><td>${x.d}</td><td>${x.l}</td><td>${x.gf}/${x.ga}</td><td><b>${x.pts}</b></td></tr>`}).join('')}</table></div>
@@ -1212,7 +1314,7 @@ async function startVar(ci){
   lower('VAR',`${t.name} chamou o VAR · critério: ${R.crit.titulo} · Agora: defenda seu time`);
   await scene('var',`${tbHTML('Defesa de '+t.name)}
   <div class="varbar"><b class="varlogo">VAR</b><span class="rec">● chamado por ${esc(t.name)}</span></div>
-  <div class="vcols"><div class="vd"><div class="row">${av(t.name,64)}<div><b style="font:700 1.4em var(--c)">${esc(t.name)}</b><div class="mut">Ficou em ${pos}º lugar</div>${bordaoOf(t.name)?`<div class="bubble">“${esc(bordaoOf(t.name))}”</div>`:''}</div></div>
+  <div class="vcols"><div class="vd"><div class="row">${donoOf(t.name,96)}<div><b style="font:700 1.4em var(--c)">${esc(t.name)}</b><div class="mut">${esc(timeOf(t.name))} · ficou em ${pos}º lugar</div></div></div>
   <div>${t.ps.map(p=>`<span class="chip">${esc(p.nome)}</span>`).join('')}</div></div>
   <div><p>Fale em voz alta por 40s. O operador digita o resumo (até 240 caracteres). Argumento forte e verdadeiro sobre o critério sobe a colocação.</p>
   <textarea id="vtext" rows="4" maxlength="240" aria-label="Resumo da defesa" placeholder="Resumo da defesa"></textarea>
