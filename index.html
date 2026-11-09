@@ -94,7 +94,6 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .lotcard{background:linear-gradient(180deg,var(--v2),var(--v1));border-radius:30px;padding:24px 26px;box-shadow:0 0 0 2px rgba(242,179,61,.38) inset,0 20px 44px rgba(0,0,0,.5);transform:rotate(-.7deg);transition:transform .3s var(--out)}
 @media(hover:hover){.lotcard:hover{transform:rotate(0) translateY(-3px)}}
 .lothead{display:flex;gap:22px;align-items:center}
-.lotart{width:168px;height:168px;flex:none;border-radius:50%;background:radial-gradient(circle at 50% 32%,#8a2348,#2a0a17 75%);display:grid;place-items:center;box-shadow:0 0 0 5px var(--ouro),0 0 0 11px rgba(242,179,61,.18)}
 .lotcard .nome{font:clamp(2.2rem,5vw,4rem)/1 var(--d);margin:.18em 0 .12em;text-shadow:0 4px 0 rgba(0,0,0,.35)}
 .bio{color:var(--mut);margin:0}
 .stats{background:rgba(0,0,0,.22);border-radius:20px;padding:10px 16px;margin-top:16px}
@@ -173,14 +172,7 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .sc .num b.pop{display:inline-block;animation:pop .22s var(--out)}
 .sc .mi,.sc .un{font:800 .85em var(--b);color:var(--mut)}
 .hl{min-height:160px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px;margin-top:12px}
-.hit,.duel>div{display:flex;flex-direction:column;align-items:center;gap:4px;animation:entra .3s var(--out)}
 @keyframes entra{from{opacity:0;transform:translateY(8px) scale(.94)}}
-.hit .car,.duel .car{border-radius:50%;background:radial-gradient(circle at 50% 32%,#8a2348,#2a0a17 75%);box-shadow:0 0 0 3px var(--ouro)}
-.hl .tag{font:1.7rem var(--d);color:var(--ouro);text-shadow:0 3px 0 rgba(0,0,0,.4)}
-.hl small{font:800 .95em var(--b)}
-.duel{display:flex;align-items:center;gap:14px}
-.duel .lose{opacity:.45} .duel .win .car{transform:scale(1.08)}
-.vsb{font:1.6rem var(--d);color:var(--mut)}
 .mini b{font:1.2em var(--d)} .mini table td{padding:5px 6px}
 
 .pre{width:100%;max-width:560px}
@@ -216,8 +208,61 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .fbox .mono{font-size:calc(var(--s)*.36)}
 .fmini b{position:absolute;right:-5px;bottom:-5px;background:#140a11;color:var(--tc);font:calc(var(--s)*.2 + 5px)/1 var(--d);border-radius:999px;padding:2px 6px;box-shadow:0 0 0 1.5px var(--tc)}
 .slot.f .fmini{transform:scale(.92)}
-.duel .win .fmini{transform:scale(1.08)} .duel .fmini{transition:transform .3s var(--out)}
 @media(max-width:560px){.carta{width:150px}.cnum b{font-size:2.1rem}.cnome{font-size:1.05rem}.mono{font-size:3rem}}
+/* arena das animações */
+.arena{position:relative;height:280px;margin-top:12px;border-radius:14px;overflow:hidden;background:#160c13;box-shadow:0 0 0 1px var(--line) inset}
+.arena.vazia{height:0;margin:0;box-shadow:none}
+.arena .linhas{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:rgba(255,241,220,.18);stroke-width:2}
+.arena.campo{background:#123326}
+.arena.octo{background:#1a1418}.octo .linhas{stroke:rgba(242,179,61,.35);stroke-width:3}
+.arena.debate{background:#21170f}.arena.batalha{background:#1b1430}.arena.show{background:#160b1c}
+.pc{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;z-index:2}
+.pc small{font:800 .78em var(--b);color:var(--creme);background:rgba(0,0,0,.55);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.bola{position:absolute;left:0;top:0;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:inset -3px -3px 0 rgba(0,0,0,.25);transition-property:transform;transition-timing-function:var(--io);z-index:3}
+.gol{position:absolute;top:36%;width:12px;height:28%;border:3px solid var(--creme)}
+.gol.gR{right:4px;border-left:0}.gol.gL{left:4px;border-right:0}
+.gol.rede{animation:rede .5s var(--out)}
+@keyframes rede{30%{transform:scaleX(1.7)}}
+.pc.gk{transition:transform .28s var(--out)}
+.pc.gk.salta{transform:translate(-50%,-78%) rotate(-14deg)}
+.pc.L.golpe{animation:socoL .2s var(--out)}@keyframes socoL{50%{transform:translate(calc(-50% + 34px),-50%)}}
+.pc.R.golpe{animation:socoR .2s var(--out)}@keyframes socoR{50%{transform:translate(calc(-50% - 34px),-50%)}}
+.pc.L.golpeF{animation:socoLF .26s var(--out)}@keyframes socoLF{45%{transform:translate(calc(-50% + 72px),-50%) scale(1.08)}}
+.pc.R.golpeF{animation:socoRF .26s var(--out)}@keyframes socoRF{45%{transform:translate(calc(-50% - 72px),-50%) scale(1.08)}}
+.pc.caido{opacity:.55;transition:transform .5s var(--io),opacity .5s}
+.pc.L.caido{transform:translate(-50%,-15%) rotate(-82deg)}.pc.R.caido{transform:translate(-50%,-15%) rotate(82deg)}
+.pc.agarraL{transform:translate(calc(-50% + 95px),-50%) rotate(8deg);transition:transform .6s var(--io)}
+.pc.agarraR{transform:translate(calc(-50% - 95px),-50%) rotate(-8deg);transition:transform .6s var(--io)}
+.pc.tap .fmini{animation:tap .3s var(--out)}@keyframes tap{40%{transform:scale(.82)}}
+.pc.braco{transform:translate(-50%,-62%) scale(1.12);transition:transform .45s var(--out)}
+.pc.braco .fmini{box-shadow:0 0 0 3px var(--ouro)}
+.pc.apaga{opacity:.45;transition:opacity .4s}
+.cat{position:absolute;left:50%;top:10px;transform:translateX(-50%);font:800 .85em var(--b);color:var(--mut)}
+.conta{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:5rem var(--d);color:var(--creme);z-index:4;animation:pop .3s var(--out)}
+.juiz{position:absolute;left:50%;bottom:calc(14px + var(--i)*36px);transform:translateX(-50%);background:var(--creme);color:#3a2205;border-radius:10px;padding:4px 14px;font:800 .9em var(--b);z-index:4;white-space:nowrap;animation:entra .3s var(--out)}
+.carimbo{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) rotate(-6deg);z-index:5;background:var(--creme);color:var(--v3);border-radius:12px;padding:6px 22px;font:clamp(1.8rem,5vw,3rem) var(--d);box-shadow:0 0 0 5px var(--ouro),0 16px 30px rgba(0,0,0,.5);animation:slam2 .3s var(--out) both;white-space:nowrap}
+.carimbo.al{color:#fff;background:var(--al);box-shadow:0 0 0 5px var(--creme),0 16px 30px rgba(0,0,0,.5)}
+.carimbo.ouro{background:var(--ouro);color:#3a2205;box-shadow:0 0 0 5px var(--creme),0 16px 30px rgba(0,0,0,.5)}
+@keyframes slam2{from{transform:translate(-50%,-50%) rotate(-6deg) scale(1.8);opacity:0}}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;animation:flash .3s ease-out;z-index:6;pointer-events:none}
+@keyframes flash{0%{opacity:.7}100%{opacity:0}}
+.tremeP{animation:shake .2s ease-out}.tremeG{animation:shakeG .38s ease-out}
+@keyframes shakeG{15%{transform:translate(-8px,3px)}30%{transform:translate(7px,-4px)}50%{transform:translate(-5px,2px)}70%{transform:translate(3px,-1px)}}
+.tema{position:absolute;left:50%;top:12px;transform:translateX(-50%);display:flex;gap:6px;align-items:center;background:rgba(0,0,0,.5);border-radius:999px;padding:4px 14px;font:800 .9em var(--b);color:var(--ouro2);z-index:3;white-space:nowrap}
+.pulpito{position:absolute;bottom:0;width:120px;height:62px;background:#3a2414;border-top:4px solid var(--ouro);border-radius:8px 8px 0 0;transform:translateX(-50%)}
+.pulpito.p1{left:22%}.pulpito.p2{left:78%}
+.fala{position:absolute;top:22%;max-width:36%;background:var(--creme);color:#2a1420;border-radius:12px;padding:8px 12px;font:800 .9em/1.3 var(--b);z-index:4;animation:entra .25s var(--out)}
+.fala.L{left:calc(22% + 58px)}.fala.R{right:calc(22% + 58px)}
+.cabo{position:absolute;left:25%;right:25%;bottom:16px;height:10px;border-radius:999px;background:rgba(255,255,255,.12);z-index:3}
+.cabo i{position:absolute;left:calc(50% - 9px);top:-4px;width:18px;height:18px;border-radius:50%;background:var(--ouro);transition:transform .5s var(--io)}
+.voto{position:absolute;top:calc(28% + var(--i)*30px);font:800 .78em var(--b);padding:2px 10px;border-radius:999px;background:rgba(0,0,0,.6);color:var(--ouro2);animation:entra .25s var(--out);z-index:3}
+.voto.L{left:5%}.voto.R{right:5%}
+.hp{position:absolute;top:46px;width:26%;height:10px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden}
+.hp.hL{left:8%}.hp.hR{right:8%}
+.hp i{display:block;height:100%;background:var(--ok);transform-origin:left;transition:transform .4s var(--io)}.hp.hR i{transform-origin:right}
+.luz{position:absolute;top:-20px;width:160px;height:320px;background:linear-gradient(180deg,rgba(255,215,122,.2),transparent 80%);clip-path:polygon(40% 0,60% 0,100% 100%,0 100%)}
+.luz.l1{left:calc(25% - 80px)}.luz.l2{left:calc(75% - 80px)}
+@media(max-width:560px){.arena{height:230px}.fala{max-width:44%;font-size:.8em}.pulpito{width:84px}}
 /* pódio */
 .pod{display:flex;gap:14px;align-items:flex-end;justify-content:center;margin:10px 0 18px}
 .pod div{background:var(--bg2);border-radius:24px 24px 10px 10px;padding:14px;text-align:center;min-width:130px;flex:1;max-width:240px;box-shadow:0 0 0 1px var(--line) inset;display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -252,7 +297,7 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 @media(max-width:560px){
   #bug,#stage{padding-left:16px;padding-right:16px}
   #lower{margin:0 16px 16px;grid-template-columns:minmax(0,1fr);border-radius:20px}#lt{border-radius:20px}
-  .lothead{flex-direction:column;text-align:center}.lotart{width:124px;height:124px}.lotart svg{width:108px;height:108px}
+  .lothead{flex-direction:column;text-align:center}
   .at{grid-template-columns:76px minmax(0,1fr) 30px 44px;gap:8px}
   .open .wts{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pod div{min-width:0;padding:10px 6px}.pod .p1{padding-bottom:30px}.pod .av{width:44px;height:44px}
@@ -948,57 +993,161 @@ const sideHTML=(t,est)=>`<div class="side" style="--tc:${COLS[charFor(t.name).co
 function keyDuel(A,B,mid,x){
   if(x&&x.ev[0]&&x.ev[0].t==='rod'){const e=[...x.ev].sort((p,q)=>q.pts-p.pts)[0];return `Embate que mais vale: ${mode().attrs[e.k]} (${e.pts} pontos), ${e.pa} x ${e.pb}.`;}
   if(mid==='futebol')return `Duelo-chave: ${A.ps[3].nome} (ataque ${A.ps[3].attrs[0]}) contra o goleiro ${B.ps[0].nome} (${B.ps[0].attrs[1]}); do outro lado, ${B.ps[3].nome} contra ${A.ps[0].nome}.`;
-  if(mid==='mma'){const j=[0,1,2,3].sort((p,q)=>Math.abs(ov(A.ps[p])-ov(B.ps[p]))-Math.abs(ov(A.ps[q])-ov(B.ps[q])))[0];return `Luta mais equilibrada: ${A.ps[j].nome} x ${B.ps[j].nome}, no peso ${A.ps[j].pos.toLowerCase()}.`}
-  const k=[0,1,2,3].sort((p,q)=>W[q]-W[p])[0],a=bestBy(A,k),b=bestBy(B,k);
-  return `Rodada que mais vale: ${mode().attrs[k]} (${Math.max(1,Math.round(W[k]*10))} pontos), ${a.nome} ${a.attrs[k]} x ${b.nome} ${b.attrs[k]}.`;
+  const j=[0,1,2,3].sort((p,q)=>Math.abs(ov(A.ps[p])-ov(B.ps[p]))-Math.abs(ov(A.ps[q])-ov(B.ps[q])))[0];
+  return `Luta mais equilibrada: ${A.ps[j].nome} x ${B.ps[j].nome}, no peso ${A.ps[j].pos.toLowerCase()}.`;
 }
+
+/* ---------- ANIMAÇÕES POR MODALIDADE (desenhadas a partir do log do motor; não mudam o resultado) ---------- */
+const peca=(p,cls,s)=>`<div class="pc ${cls}">${fotoMini(p,s)}<small>${esc(p.nome)}</small></div>`;
+const arena=()=>$('#arena');
+function juice(nivel){ // impacto proporcional: 'p' pequeno, 'g' grande (tremida + clarão + pausa curta)
+  const a=arena();if(!a||skipAnim||reduced())return Promise.resolve();
+  a.classList.remove('tremeP','tremeG');void a.offsetWidth;a.classList.add(nivel==='g'?'tremeG':'tremeP');
+  if(nivel==='g'){const f=document.createElement('i');f.className='flash';a.appendChild(f);setTimeout(()=>f.remove(),300);}
+  return wait(nivel==='g'?150:70);
+}
+function carimbo(txt,cls=''){const a=arena();if(!a)return;a.querySelectorAll('.carimbo').forEach(x=>x.remove());a.insertAdjacentHTML('beforeend',`<div class="carimbo ${cls}">${esc(txt)}</div>`);}
+function moveBola(xp,yp,ms){const a=arena(),b=a&&a.querySelector('.bola');if(!b)return;b.style.transitionDuration=(skipAnim?0:fastAnim?ms/2:ms)+'ms';b.style.transform=`translate(${a.clientWidth*xp/100-8}px,${a.clientHeight*yp/100-8}px)`;}
+const FRASES={
+ filosofos:[['Se a premissa é falsa, a conclusão cai.','Defina seus termos primeiro.','Isso é uma falácia clássica.'],['Plateia, vocês ouviram isso?','Permita-me reformular, com elegância.','Belas palavras, pouca substância.'],['E se a pergunta estiver errada?','Proponho um conceito novo.','Ninguém tinha visto por esse ângulo.'],['Pode atacar, eu sigo de pé.','Já ouvi objeções piores.','Respondo a todas, uma por uma.']],
+ ficticios:[['Sente o peso disso!','Isso foi só o aquecimento.','Agora é pra valer!'],['Já previ seu próximo passo.','Caiu na minha armadilha.','Plano B, C e D prontos.'],['Ainda estou de pé.','Pode bater mais forte.','Não vou cair.'],['A torcida está comigo!','Olha quem chegou.','Isso é carisma.']]
+};
+
+async function animaChance(x,e,A,B,marca){
+  const T=e.side==='a'?A:B,D=e.side==='a'?B:A,dir=e.side==='a'?1:-1,X=v=>dir===1?v:100-v;
+  const pas=T.ps[2],sho=T.ps[e.shooter],gk=D.ps[0];
+  arena().className='arena campo';
+  arena().innerHTML=`<svg class="linhas" viewBox="0 0 600 280" preserveAspectRatio="none" aria-hidden="true"><rect x="6" y="6" width="588" height="268"/><path d="M300 6V274"/><circle cx="300" cy="140" r="42"/><rect x="6" y="80" width="70" height="120"/><rect x="524" y="80" width="70" height="120"/></svg>
+    <i class="gol ${dir===1?'gR':'gL'}"></i>
+    <div class="pc" style="left:${X(42)}%;top:58%">${fotoMini(pas,46)}<small>${esc(pas.nome)}</small></div>
+    <div class="pc atk" style="left:${X(72)}%;top:34%">${fotoMini(sho,52)}<small>${esc(sho.nome)}</small></div>
+    <div class="pc gk ${e.res==='defesa'?'pula':''}" style="left:${X(91)}%;top:50%">${fotoMini(gk,48)}<small>${esc(gk.nome)}</small></div><i class="bola"></i>`;
+  moveBola(X(42),58,0);await wait(700);
+  moveBola(X(72),34,650);await wait(800);
+  if(e.res==='gol'){
+    moveBola(X(98),48,260);await wait(280);arena().querySelector('.gol').classList.add('rede');
+    await juice('g');marca();carimbo('Gol!','ouro');await wait(1700);
+  }else{
+    arena().querySelector('.gk').classList.add('salta');moveBola(X(90),46,280);await wait(300);
+    await juice('p');moveBola(X(82),8,420);carimbo('Defesa!');await wait(1500);
+  }
+}
+async function animaLuta(x,e,A,B,marca){
+  const fa=A.ps[e.j],fb=B.ps[e.j],wL=e.win==='a';
+  arena().className='arena octo';
+  arena().innerHTML=`<svg class="linhas" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><polygon points="215,14 385,14 505,90 505,190 385,266 215,266 95,190 95,90"/></svg>
+    <div class="cat">Peso ${esc(fa.pos.toLowerCase())}</div>
+    <div class="pc L" style="left:30%;top:50%">${fotoMini(fa,96)}<small>${esc(fa.nome)}</small></div>
+    <div class="pc R" style="left:70%;top:50%">${fotoMini(fb,96)}<small>${esc(fb.nome)}</small></div>`;
+  const L=arena().querySelector('.pc.L'),R=arena().querySelector('.pc.R'),W=wL?L:R,P=wL?R:L;
+  const golpe=async(el,forte)=>{el.classList.remove('golpe','golpeF');void el.offsetWidth;el.classList.add(forte?'golpeF':'golpe');await wait(170);await juice(forte?'g':'p');};
+  await wait(700);
+  for(const el of [L,R,L,R]){await golpe(el,false);await wait(330);}
+  if(e.how==='nocaute'){
+    await golpe(W,true);P.classList.add('caido');marca();carimbo('Nocaute','al');
+    for(const n of ['1','2','3']){arena().insertAdjacentHTML('beforeend',`<b class="conta">${n}</b>`);await wait(380);arena().querySelectorAll('.conta').forEach(c=>c.remove());}
+    await wait(900);
+  }else if(e.how==='finalização'){
+    L.classList.add('agarraL');R.classList.add('agarraR');await wait(1100);
+    for(let i=0;i<3;i++){P.classList.remove('tap');void P.offsetWidth;P.classList.add('tap');await wait(320);}
+    await juice('p');marca();carimbo('Finalização','al');await wait(1500);
+  }else{
+    for(let j=0;j<e.cards.length;j++){const c=e.cards[j],w=c[0]>c[1]?fa.nome:fb.nome;
+      arena().insertAdjacentHTML('beforeend',`<div class="juiz" style="--i:${j}">Juiz ${j+1}: ${Math.max(...c)}-${Math.min(...c)} ${esc(w)}</div>`);await wait(750);}
+    W.classList.add('braco');marca();carimbo('Decisão');await wait(1500);
+  }
+}
+async function animaRodada(x,e,A,B,mid,marca){
+  const m=mode(),pa=A.ps.find(p=>p.nome===e.pa)||A.ps[0],pb=B.ps.find(p=>p.nome===e.pb)||B.ps[0],wL=e.win==='a';
+  const tipo=mid==='filosofos'?'debate':mid==='banda'?'show':'batalha';
+  arena().className='arena '+tipo;
+  const esq=tipo==='show'?`<div class="pc L" style="left:25%;top:56%">${av(A.name,78)}<small>${esc(A.name)}</small></div>`:`<div class="pc L" style="left:22%;top:56%">${fotoMini(pa,88)}<small>${esc(pa.nome)}</small></div>`;
+  const dir=tipo==='show'?`<div class="pc R" style="left:75%;top:56%">${av(B.name,78)}<small>${esc(B.name)}</small></div>`:`<div class="pc R" style="left:78%;top:56%">${fotoMini(pb,88)}<small>${esc(pb.nome)}</small></div>`;
+  arena().innerHTML=`${tipo==='show'?'<i class="luz l1"></i><i class="luz l2"></i>':''}${tipo==='debate'?'<i class="pulpito p1"></i><i class="pulpito p2"></i>':''}
+    <div class="tema">${attrIcon(mid,e.k,18)} ${esc(m.attrs[e.k])} · vale ${e.pts}</div>${esq}${dir}
+    ${tipo==='batalha'?'<div class="hp hL"><i></i></div><div class="hp hR"><i></i></div>':''}
+    <div class="cabo"><i></i></div>`;
+  const L=arena().querySelector('.pc.L'),R=arena().querySelector('.pc.R'),cabo=arena().querySelector('.cabo i');
+  await wait(600);
+  if(tipo==='debate'||tipo==='batalha'){
+    const fr=FRASES[mid][e.k],s=(x.a*7+x.b*3+e.k)%3;
+    for(const [el,lado,f] of [[L,'L',fr[s]],[R,'R',fr[(s+1)%3]]]){
+      if(tipo==='batalha'){el.classList.remove('golpe');void el.offsetWidth;el.classList.add('golpe');await juice('p');}
+      arena().insertAdjacentHTML('beforeend',`<div class="fala ${lado}">${esc(f)}</div>`);await wait(1500);
+      arena().querySelectorAll('.fala').forEach(b=>b.remove());
+    }
+  }
+  // três jurados (ou setores da plateia): cada voto puxa o cabo de guerra
+  const votos=wL?[...Array(e.votos).fill('a'),...Array(3-e.votos).fill('b')]:[...Array(e.votos).fill('b'),...Array(3-e.votos).fill('a')];
+  const ordem=[votos[1],votos[2],votos[0]];let pos=50,hpL=100,hpR=100;
+  for(let q=0;q<3;q++){
+    pos+=ordem[q]==='a'?-15:15;cabo.style.transform=`translateX(${(pos-50)/100*cabo.parentNode.clientWidth}px)`;
+    if(tipo==='batalha'){if(ordem[q]==='a')hpR-=30;else hpL-=30;arena().querySelector('.hL i').style.transform=`scaleX(${hpL/100})`;arena().querySelector('.hR i').style.transform=`scaleX(${hpR/100})`;await juice('p');}
+    arena().insertAdjacentHTML('beforeend',`<div class="voto ${ordem[q]==='a'?'L':'R'}" style="--i:${q}">${tipo==='show'?'Plateia':'Jurado'} ${q+1}</div>`);
+    await wait(700);
+  }
+  (wL?L:R).classList.add('braco');(wL?R:L).classList.add('apaga');marca();await juice(e.pts>=4?'g':'p');
+  carimbo(`+${e.pts} ${wL?A.name:B.name}`,'ouro');await wait(1500);
+}
+function preLegend(x,e){
+  const A=R.teams[x.a],B=R.teams[x.b];
+  if(e.t==='chance')return `${e.min}' ${e.side==='a'?A.name:B.name} chega ao ataque…`;
+  if(e.t==='luta')return `${A.ps[e.j].nome} x ${B.ps[e.j].nome}, peso ${A.ps[e.j].pos.toLowerCase()}`;
+  return `${mode().attrs[e.k]}: ${e.pa} x ${e.pb}`;
+}
+async function animaEvento(x,e,A,B,mid,marca){
+  if(e.t==='chance')return animaChance(x,e,A,B,marca);
+  if(e.t==='luta')return animaLuta(x,e,A,B,marca);
+  return animaRodada(x,e,A,B,mid,marca);
+}
+
 async function drawLeague(){
   const id=++animId,m=mode(),mid=S.modes[S.round],lg=R.lg;skipAnim=false;fastAnim=false;
   $('#tv').dataset.mode=mid;
   lower('Em campo',`Critério: ${R.crit.titulo} · Agora: acompanhe os jogos`);
   await scene('jogo',`<div class="panel dk"><p>O narrador está se aquecendo…</p></div>`);
   if(R.narrP){const j=await Promise.race([R.narrP,sleep(15000).then(()=>null)]);R.res.narr=mergeNarr(j,lg);R.narrP=null;}
-  const narr=R.res.narr,art=p=>fotoMini(p,104);
-  await scene('jogo',`<div class="lgwrap"><div class="panel dk match"><div class="vs"><div id="sideA"></div><div class="sc"><div class="mi" id="mi"></div><div class="num"><b id="ga">0</b><span>×</span><b id="gb">0</b></div><div class="un">${m.un}</div></div><div id="sideB"></div></div><div class="hl" id="hl"></div></div>
-  <div class="panel dk mini"><b>Tabela</b><table id="mt"></table></div></div>
+  const narr=R.res.narr,resumo=lg.matches.length>3;
+  await scene('jogo',`<div class="lgwrap"><div class="panel dk match"><div class="vs"><div id="sideA"></div><div class="sc"><div class="mi" id="mi"></div><div class="num"><b id="ga">0</b><span>×</span><b id="gb">0</b></div><div class="un">${m.un}</div></div><div id="sideB"></div></div>
+  <div id="arena" class="arena"></div><div class="hl" id="hl"></div></div>
+  <div class="panel dk mini"><b>Tabela</b><table id="mt"></table>${resumo?'<p class="mut" style="font-size:.85em">Com 4 times, cada jogo mostra só os melhores momentos.</p>':''}</div></div>
   <div class="cap" id="cap">Os times entram…</div>
   <p class="row"><button class="btn s" onclick="fastAnim=!fastAnim;this.textContent=fastAnim?'Velocidade normal':'Acelerar'">Acelerar</button><button class="btn s" onclick="skipAnim=true">Pular animação</button></p>`);
   const cap=t=>{const e=$('#cap');if(!e)return;e.textContent=t;e.classList.remove('in');void e.offsetWidth;e.classList.add('in')};
   const drawTab=k=>{const e=$('#mt');if(e)e.innerHTML=tableAfter(lg,k).map((x,p)=>`<tr><td>${p+1}º</td><td>${av(R.teams[x.i].name,22)}</td><td>${esc(R.teams[x.i].name)}</td><td><b>${x.pts}</b></td></tr>`).join('')};
-  const duel=(pl,pr,wl,tag,nl,nr)=>`<div class="duel"><div class="${wl===true?'win':wl===false?'lose':''}">${pl}<small>${esc(nl)}</small></div><b class="vsb">x</b><div class="${wl===false?'win':wl===true?'lose':''}">${pr}<small>${esc(nr)}</small></div></div><div class="tag">${tag}</div>`;
+  const pop=()=>{for(const i2 of ['ga','gb']){const n=$('#'+i2);if(n){n.classList.remove('pop');void n.offsetWidth;n.classList.add('pop')}}};
   drawTab(0);
   for(let mi=0;mi<lg.matches.length;mi++){
     if(id!==animId)return;
     const x=lg.matches[mi],A=R.teams[x.a],B=R.teams[x.b],pr=x.prob||{a:.5,b:.5,d:0};let sa=0,sb=0;
     $('#sideA').innerHTML=sideHTML(A);$('#sideB').innerHTML=sideHTML(B);$('#ga').textContent=0;$('#gb').textContent=0;
     $('#mi').textContent=`Jogo ${mi+1} de ${lg.matches.length}`;
+    arena().className='arena vazia';arena().innerHTML='';
     $('#hl').innerHTML=`<div class="pre"><div class="bar3"><i class="ba" style="width:${pr.a*100}%"></i><i class="bd" style="width:${pr.d*100}%"></i><i class="bb" style="width:${pr.b*100}%"></i></div>
       <div class="row" style="justify-content:space-between"><b>${esc(A.name)} ${Math.round(pr.a*100)}%</b>${pr.d>.005?`<span class="mut">empate ${Math.round(pr.d*100)}%</span>`:''}<b>${Math.round(pr.b*100)}% ${esc(B.name)}</b></div>
       <p class="mut" style="margin:.6em 0 0">${esc(keyDuel(A,B,mid,x))}</p></div>`;
     cap(`${A.name} contra ${B.name}: a chance de cada um antes do jogo`);await wait(3400);
-    const defesas=x.ev.filter(e=>e.t==='chance'&&e.res==='defesa').slice(0,2);
+    $('#hl').innerHTML='';
+    // o que é mostrado: futebol = gols e até 2 defesas; MMA = as 4 lutas; rodadas = as 4. No resumo (4 times): só gols, finalizações e as 2 rodadas que mais valem.
+    // no máximo ~3 lances animados por jogo; o resto entra direto no placar
+    const golsV=x.ev.filter(e=>e.t==='chance'&&e.res==='gol').slice(0,3);
+    const defesas=x.ev.filter(e=>e.t==='chance'&&e.res==='defesa').slice(0,resumo||golsV.length>=3?0:1);
+    const topRod=[...x.ev].filter(e=>e.t==='rod').sort((p,q)=>q.pts-p.pts).slice(0,resumo?2:3);
     for(let k=0;k<x.ev.length;k++){
       if(id!==animId)return;
-      const e=x.ev[k],T=e.side==='a'?A:B,D=e.side==='a'?B:A;let h='',mostra=true;
-      if(e.t==='chance'){
-        if(e.res==='gol'){e.side==='a'?sa++:sb++}else mostra=defesas.includes(e);
-        h=duel(art(T.ps[e.shooter]),art(D.ps[0]),e.res==='gol',e.res==='gol'?'Gol!':'Defesa!',T.ps[e.shooter].nome,D.ps[0].nome);
-      }else if(e.t==='luta'){
-        e.win==='a'?sa++:sb++;
-        const nota=e.how==='decisão'?`Decisão ${e.cards.map(c=>Math.max(...c)+'-'+Math.min(...c)).join(' · ')}`:`${e.how==='nocaute'?'Nocaute':'Finalização'} no ${e.round}º round`;
-        h=duel(art(A.ps[e.j]),art(B.ps[e.j]),e.win==='a',nota,A.ps[e.j].nome,B.ps[e.j].nome);
-      }else{
-        e.win==='a'?sa+=e.pts:sb+=e.pts;
-        const pa=A.ps.find(p=>p.nome===e.pa)||A.ps[0],pb=B.ps.find(p=>p.nome===e.pb)||B.ps[0];
-        h=duel(art(pa),art(pb),e.win==='a',`${m.attrs[e.k]} · ${e.votos} de 3 jurados · +${e.pts}`,pa.nome,pb.nome);
-      }
-      if(!mostra){$('#ga').textContent=sa;$('#gb').textContent=sb;continue;}
-      $('#hl').innerHTML=h;$('#ga').textContent=sa;$('#gb').textContent=sb;
-      for(const id2 of ['ga','gb']){const n=$('#'+id2);n.classList.remove('pop');void n.offsetWidth;n.classList.add('pop')}
-      cap(narr.partidas?.[mi]?.[k]||legendLocal(x,e));await wait(2800);
+      const e=x.ev[k];
+      const soma=()=>{if(e.t==='chance'){if(e.res==='gol')e.side==='a'?sa++:sb++}else if(e.t==='luta'){e.win==='a'?sa++:sb++}else{e.win==='a'?sa+=e.pts:sb+=e.pts}};
+      const mostra=e.t==='chance'?(golsV.includes(e)||defesas.includes(e)):e.t==='luta'?(!resumo||e.how!=='decisão'):topRod.includes(e);
+      if(!mostra){soma();$('#ga').textContent=sa;$('#gb').textContent=sb;continue;}
+      cap(preLegend(x,e)); // antes: só quem enfrenta quem, sem contar o resultado
+      let marcou=false;const marca=()=>{if(marcou)return;marcou=true;soma();$('#ga').textContent=sa;$('#gb').textContent=sb;pop();};
+      await animaEvento(x,e,A,B,mid,marca);marca();
+      cap(narr.partidas?.[mi]?.[k]||legendLocal(x,e));await wait(1300);
+      if(id!==animId)return;
     }
     $('#sideA').innerHTML=sideHTML(A,x.win==='a'?'feliz':x.win==='b'?'triste':'neutro');$('#sideB').innerHTML=sideHTML(B,x.win==='b'?'feliz':x.win==='a'?'triste':'neutro');
     const w=x.win==='a'?A.name:x.win==='b'?B.name:null,pw=x.win==='a'?pr.a:x.win==='b'?pr.b:pr.d;
+    arena().className='arena vazia';arena().innerHTML='';
     $('#hl').innerHTML=`<div class="why"><b>Por que ${w?w+' venceu':'deu empate'}${pw<.35?' (zebra: tinha '+Math.round(pw*100)+'% de chance)':''}</b><ul>${(x.fatores||[]).map(f=>`<li>${esc(f)}</li>`).join('')}</ul></div>`;
     cap(w?`Fim de jogo: vitória de ${w}${x.dec?' (no desempate)':''}`:'Fim de jogo: empate');drawTab(mi+1);await wait(5200);
   }
