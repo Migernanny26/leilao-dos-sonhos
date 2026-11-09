@@ -6,6 +6,9 @@
   window.addEventListener('error',e=>errs.push(e.message));
   const W8=async(f,n=200)=>{for(let i=0;i<n;i++){if(f())return true;await sleep(100)}return false};
   const cena=()=>$('#tv').dataset.scene;
+  // quem compra escolhe a vaga; no saldão escolhe um dos nomes que sobraram
+  const vaga=async()=>{if(R.escolha){const e=R.escolha;ok(!!$('.vagab.livre')||openSlots(R.teams[e.ti])===1||isBot(R.teams[e.ti].name),'tela de escolher a vaga');escolherVaga(e.ti,melhorVaga(R.teams[e.ti],e.it));await W8(()=>$('#bid')||cena()!=='leilao',30);}};
+  const saldao=async()=>{for(let i=0;i<20;i++){await sleep(500);if(cena()!=='saldao')return;ok(!!$('.saldaob'),'saldão com escolha');pegarSaldao(R.saldao[0].ti,0);}};
   try{
     // 1. Motor da liga, em todos os modos e com 2, 3 e 4 times
     for(const mid of Object.keys(MODES)){
@@ -50,8 +53,9 @@
       while($('#bid')&&k<30){
         k++;const it=R.cur,ts=R.teams.map((t,i)=>i).filter(i=>canBid(R.teams[i],it));
         if(ts.length){const i=ts[k%ts.length];bid(i,Math.min(maxBid(R.teams[i]),Math.max(1,it.exp)));}
-        R.t=1;tick();await sleep(1950);
+        R.t=1;tick();await sleep(1950);await vaga();
       }
+      await saldao();
       ok(await W8(()=>cena()==='elenco'),`rodada ${r+1}: elencos fechados`);
       ok(R.teams.every(t=>t.slots.every(s=>s.pick)),`rodada ${r+1}: todo mundo com time completo`);
       ok(R.teams.every(t=>t.money>=0),`rodada ${r+1}: ninguém com saldo negativo`);
@@ -86,8 +90,9 @@
     let lancesBot=0,k=0;
     while($('#bid')&&k<30){
       k++;R.t=2;for(let q=0;q<12;q++){const antes=R.leader;botsAgem();if(R.leader!==antes&&isBot(R.teams[R.leader].name))lancesBot++;}
-      R.t=1;tick();await sleep(1950);
+      R.t=1;tick();await sleep(1950);await vaga();
     }
+    await saldao();
     ok(lancesBot>0,`bots deram lances sozinhos (${lancesBot})`);
     ok(await W8(()=>cena()==='elenco'),'bots: elencos fechados');
     const bots=R.teams.filter(t=>isBot(t.name));

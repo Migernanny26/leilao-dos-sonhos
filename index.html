@@ -216,6 +216,13 @@ table{border-collapse:collapse;width:100%} td,th{padding:8px 10px;border-bottom:
 .rj{border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.05);border-left:4px solid var(--line)}
 .rj.venceu{border-left-color:var(--ok)}.rj.perdeu{border-left-color:var(--al)}
 .rj ul{margin:.4em 0 0;padding-left:1.1em;font-size:.9em}.rjp{font:700 1.3em var(--d)}
+.vagas{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;max-width:900px;margin:10px auto}
+@media (max-width:640px){.vagas{grid-template-columns:1fr;justify-items:center}}
+.vagaop{min-width:0}.vagabts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.vagab{display:grid;justify-items:center;gap:4px;padding:14px 10px;border-radius:18px;border:2px solid var(--line);background:rgba(255,255,255,.04);color:inherit;font:inherit;cursor:pointer}
+.vagab b{font:700 1.8em var(--d);color:var(--ouro)}.vagab small{color:var(--mut);font-weight:700}
+.vagab.livre{border-color:var(--ouro)}.vagab.livre:hover:not(:disabled){background:rgba(242,179,61,.12)}.vagab.livre:active:not(:disabled){transform:scale(.97)}
+.vagab:disabled{opacity:.45;cursor:default}.saldaob b{font-size:1.1em;color:inherit}
 .elrs{display:grid;gap:2px;margin-top:10px}
 .elr{display:flex;align-items:center;gap:12px;padding:8px 2px;border-top:1px solid var(--line)}
 .eln{flex:1;min-width:0;display:grid;gap:2px}.eln b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.eln .pos{justify-self:start}
@@ -367,7 +374,7 @@ button.alheio,input:disabled{opacity:.45;cursor:not-allowed}
   <div id="bug"><span class="live">AO VIVO</span><b id="show">Leilão dos Sonhos</b><span id="rnd"></span></div>
   <main id="stage"></main>
   <footer id="lower"><div id="lt"><span id="lt-a">Boa noite!</span><span id="lt-b">Monte o time, defenda no tribunal</span></div>
-  <div id="ticker"><span>Cada lance sobe pelo menos 5% e reinicia o relógio para 4 segundos · Só dá lance quem ainda tem vaga na posição · Todos contra todos: vitória vale 3, empate 1 · Cada jogador tem 1 VAR por noite: +2 se melhorar a colocação, −1 se não mudar · Último colocado ganha 15% a mais de orçamento</span></div></footer>
+  <div id="ticker"><span>Cada lance sobe pelo menos 5% e reinicia o relógio para 4 segundos · Só dá lance quem ainda tem vaga livre · Quem compra escolhe em qual vaga o nome entra · Todos contra todos: vitória vale 3, empate 1 · Cada jogador tem 1 VAR por noite: +2 se melhorar a colocação, −1 se não mudar · Último colocado ganha 15% a mais de orçamento</span></div></footer>
 </div>
 <script>
 const $=s=>document.querySelector(s);
@@ -820,7 +827,7 @@ async function ai(model,prompt,max=3000){
   const m=t.match(/[\[{][\s\S]*[\]}]/);return JSON.parse(m[0]);
 }
 async function genPool(m,np){
-  const n=Math.ceil(4*np*1.4),per=Math.max(np+1,Math.ceil(n/4));
+  const per=Math.max(np+1,2*np);
   const arr=await ai(MODEL_POOL,`Gere ${per*4} nomes para o jogo de leilão "${m.tema}". Posições: ${m.slots.join(', ')} (exatamente ${per} por posição). ${S.fame==='conhecidos'?'Use só nomes muito famosos, que qualquer pessoa reconhece.':'Misture estrelas e nomes menos óbvios, todos conhecidos do público brasileiro.'} Evite figuras políticas e pessoas polêmicas. Para cada um dê uma ficha com ${m.attrs.join(', ')} (0 a 100, estimativas honestas baseadas em dados e fama reais), uma bio de 1 linha e um "visual" para desenhar uma caricatura parecida, usando só estas opções: pele (0 muito clara a 5 muito escura, ou "verde","azul","cinza","amarelo" para não humanos), cabelo (careca, raspado, curto, calvo_topo, tonsura, topete, franja, medio_liso, longo_liso, cacheado_curto, cacheado_longo, black_power, coque, rabo, moicano, espetado, peruca_classica, trancas), corCabelo (preto, castanho, loiro, ruivo, grisalho, branco, verde, azul, rosa), barba (nenhuma, bigode, bigode_grande, cavanhaque, barba_curta, barba_cheia, barba_longa, costeletas), oculos (nenhum, redondo, quadrado, escuro, monoculo), acessorio (nenhum, cartola, bone, bandana, faixa_cabeca, faixa_ninja, coroa_louros, coroa, capacete_alado, mascara_total, mascara_teia, mascara_olhos_pretos, capuz_morcego, chapeu_bruxo, chapeu_palha, fone, tiara, turbante, deerstalker, chapeu_coco, papakha, capuz_monge, mitra, capuz_antenas, elmo_robo), corAcessorio e camisa (cores hex; camisa pode ser "pele" para sem camisa). Use o visual mais icônico da pessoa. Responda SÓ JSON: [{"nome":"","pos":"","bio":"","attrs":[0,0,0,0],"visual":{"pele":1,"cabelo":"curto","corCabelo":"castanho","barba":"nenhuma","oculos":"nenhum","acessorio":"nenhum","corAcessorio":"#000000","camisa":"#7a1c40"}}]`,5000);
   const ok=arr.filter(p=>p&&p.nome&&m.slots.includes(p.pos)&&Array.isArray(p.attrs)&&p.attrs.length===4&&p.attrs.every(x=>typeof x==='number'));
   if(m.slots.some(s=>ok.filter(p=>p.pos===s).length<np+1))throw new Error('pool incompleto');
@@ -840,7 +847,11 @@ async function genCrit(m){
 
 /* ---------- ABERTURA DA RODADA ---------- */
 function openSlots(t){return t.slots.filter(s=>!s.pick).length}
-function canBid(t,it){return openSlots(t)>0&&t.slots.some(s=>!s.pick&&s.pos===it.pos)&&t.money-(openSlots(t)-1)>=1}
+function canBid(t,it){return openSlots(t)>0&&t.money-(openSlots(t)-1)>=1}
+// força do nome numa vaga: no futebol cada vaga usa um atributo (GOL e DEF defesa, MEI criação, ATA ataque); nos outros modos a vaga só define o adversário
+const ATR_VAGA={futebol:[1,1,2,0]};
+function forcaVaga(p,k){const a=(ATR_VAGA[S.modes[S.round]]||[])[k];return Math.round(a===undefined?ov(p):.6*p.attrs[a]+.4*ov(p));}
+function melhorVaga(t,p){let best=-1,bv=-1;t.slots.forEach((s,k)=>{if(s.pick)return;const v=forcaVaga(p,k)+(s.pos===p.pos?.5:0);if(v>bv){bv=v;best=k}});return best;}
 function maxBid(t){return t.money-(openSlots(t)-1)}
 async function startRound(){
   const m=mode();
@@ -857,7 +868,7 @@ async function startRound(){
   S.usedCrit.push(crit.titulo);W=crit.pesos;
   pool=pool.map(p=>({...p,ov:ov(p)})).sort((a,b)=>b.ov-a.ov);
   pool.forEach((p,i)=>{const pct=i/Math.max(1,pool.length-1);p.tier=pct<.15?'S':pct<.4?'A':pct<.75?'B':'C';p.exp=Math.round(36*Math.pow(1-pct,1.4)+2);});
-  const n=Math.min(pool.length,Math.ceil(4*S.players.length*1.4));
+  const n=Math.min(pool.length,4*S.players.length*2);
   let cut=[];
   for(const s of m.slots)cut.push(...pool.filter(p=>p.pos===s).slice(0,Math.ceil(n/4)));
   const lists={SA:shuffle(cut.filter(p=>p.tier==='S'||p.tier==='A')),B:shuffle(cut.filter(p=>p.tier==='B')),C:shuffle(cut.filter(p=>p.tier==='C'))};
@@ -918,7 +929,7 @@ function toggleBot(i){const n=$("#p"+i);if($("#bt"+i).checked&&!n.value.trim())n
 // quanto o nome vale para cada bot: preço justo, com ajuste por sinergia, escassez da posição e dinheiro por vaga
 function valoresBot(it){const v={};R.teams.forEach((t,i)=>{if(!isBot(t.name)||!canBid(t,it))return;
   const porVaga=t.money/openSlots(t),syn=tagsOf(it).some(g=>t.slots.some(s=>s.pick&&tagsOf(s.pick).includes(g)))?1.15:1;
-  const escassez=R.queue.filter(q=>q.pos===it.pos).length<2?1.25:1;
+  const escassez=R.queue.length<R.teams.reduce((a,x)=>a+openSlots(x),0)*1.2?1.25:1;
   let val=it.exp*(.8+Math.random()*.4)*syn*escassez;val=Math.min(val,porVaga*(it.tier==="S"?2:1.5),maxBid(t));
   v[i]=Math.max(1,Math.round(val));});return v;}
 // a cada segundo do relógio, um bot que ainda acha o nome barato pode cobrir o lance (mais provável no fim do relógio)
@@ -936,18 +947,55 @@ function tick(){
   if(R.t>0)return;
   R.locked=true;clearInterval(R.iv);
   if(R.leader===null){say('Ninguém quis. Vai pro saldão.');R.unsold.push(R.cur);}
-  else{const t=R.teams[R.leader],s=t.slots.find(s=>!s.pick&&s.pos===R.cur.pos);s.pick=R.cur;s.paid=R.bid;t.money-=R.bid;
+  else{const t=R.teams[R.leader];t.money-=R.bid;R.escolha={ti:R.leader,it:R.cur,paid:R.bid};
     $('#stamp').innerHTML=`<div class="stamp">VENDIDO<small>${av(t.name,30,'feliz')}${esc(t.name)} por ${R.bid}</small></div>`+
       (reduced()?'':Array.from({length:14},(_,k)=>{const a=k/14*Math.PI*2,r=120+Math.random()*90;return `<i class="coin" style="--x:${Math.round(Math.cos(a)*r)}px;--y:${Math.round(Math.sin(a)*r)}px;animation-delay:${k*12}ms"></i>`}).join(''));
-    const lw=$('#lotwrap');if(lw){lw.classList.remove('shake');void lw.offsetWidth;lw.classList.add('shake')}salaParcial({vendido:$('#stamp').innerHTML});say('');}
+    const lw=$('#lotwrap');if(lw){lw.classList.remove('shake');void lw.offsetWidth;lw.classList.add('shake')}salaParcial({vendido:$('#stamp').innerHTML});say('');
+    const livres=openSlots(t),e=R.escolha;
+    if(livres===1||isBot(t.name))setTimeout(()=>escolherVaga(e.ti,melhorVaga(t,e.it)),1900);else setTimeout(mostraVagas,1500);
+    return;}
   setTimeout(nextItem,1900);
+}
+async function mostraVagas(){
+  const e=R.escolha;if(!e)return;const t=R.teams[e.ti],p=e.it,m=mode(),av_=ATR_VAGA[S.modes[S.round]];
+  lower(t.name+' comprou '+p.nome,'Agora: '+t.name+' escolhe em qual vaga ele entra');
+  await scene('leilao',`${tbHTML('Escolha a vaga em')}<div class="vagas"><div class="vagacarta">${cardHTML(p)}</div><div class="vagaop"><h2 style="margin:0">${esc(t.name)}, onde ${esc(p.nome)} entra?</h2>
+  <p class="mut" style="margin:.3em 0 1em">Comprado por ${e.paid}. Posição de origem: ${esc(p.pos)}.${av_?' A força muda conforme a vaga.':' A vaga define contra quem ele enfrenta.'}</p>
+  <div class="vagabts">${t.slots.map((s,k)=>s.pick?`<button class="vagab" disabled><span class="pos">${esc(s.pos)}</span><small>${esc(s.pick.nome)}</small></button>`:`<button class="vagab livre" onclick="escolherVaga(${e.ti},${k})"><span class="pos">${esc(s.pos)}</span><b>${forcaVaga(p,k)}</b><small>${av_?esc(m.attrs[av_[k]]):'força'}${s.pos===p.pos?' · posição dele':''}</small></button>`).join('')}</div></div></div>`);
+  if(R.escolha===e)tbStart(12,()=>escolherVaga(e.ti,melhorVaga(t,p)));
+}
+function escolherVaga(i,k){
+  const e=R.escolha;if(!e||e.ti!==i)return;const s=R.teams[i].slots[k];if(!s||s.pick)return;
+  s.pick=e.it;s.paid=e.paid;R.escolha=null;tbStop();nextItem();
 }
 function endAuction(){
   const used=new Set(R.teams.flatMap(t=>t.slots.filter(s=>s.pick).map(s=>s.pick.nome)));
-  for(const t of R.teams)for(const s of t.slots)if(!s.pick){
-    const c=shuffle(R.pool.filter(p=>p.pos===s.pos&&!used.has(p.nome)))[0];
-    if(c){const price=t.money>=1?1:0;s.pick=c;s.paid=price;t.money-=price;used.add(c.nome);s.saldao=true;}
+  R.saldao=[];
+  R.teams.forEach((t,ti)=>t.slots.forEach((s,k)=>{if(s.pick)return;
+    if(isBot(t.name)){const c=[...R.pool].filter(p=>!used.has(p.nome)).sort((a,b)=>forcaVaga(b,k)-forcaVaga(a,k))[0];if(c){pegaSaldao(ti,k,c);used.add(c.nome)}}
+    else R.saldao.push({ti,k});}));
+  proximoSaldao();
+}
+function pegaSaldao(ti,k,c){const t=R.teams[ti],s=t.slots[k],price=t.money>=1?1:0;s.pick=c;s.paid=price;t.money-=price;s.saldao=true;}
+// o saldão: quem ficou com vaga vazia escolhe entre 3 nomes que sobraram (os melhores para aquela vaga, com um pouco de sorte)
+async function proximoSaldao(){
+  const used=new Set(R.teams.flatMap(t=>t.slots.filter(s=>s.pick).map(s=>s.pick.nome)));
+  while(R.saldao.length){const v=R.saldao[0];
+    const sobra=[...R.pool].filter(p=>!used.has(p.nome)).sort((a,b)=>forcaVaga(b,v.k)-forcaVaga(a,v.k));
+    if(!sobra.length){R.saldao=[];break;}
+    R.saldaoOps=shuffle(sobra.slice(0,5)).slice(0,3);const t=R.teams[v.ti],pos=t.slots[v.k].pos;
+    lower('Saldão','Agora: '+t.name+' escolhe quem completa a vaga de '+pos);
+    await scene('saldao',`${tbHTML('O saldão fecha em')}<h2>Saldão: ${esc(t.name)} completa a vaga de ${esc(pos)}</h2><p class="mut">Sobrou vaga, então cada nome sai por 1 moeda. Escolha um:</p>
+    <div class="vagabts">${R.saldaoOps.map((p,j)=>`<button class="vagab livre saldaob" onclick="pegarSaldao(${v.ti},${j})">${fotoMini(p,56)}<b>${esc(p.nome)}</b><small>${esc(p.pos)} · força ${forcaVaga(p,v.k)} nesta vaga</small></button>`).join('')}</div>`);
+    tbStart(15,()=>pegarSaldao(v.ti,0));return;
   }
+  fecharElencos();
+}
+function pegarSaldao(ti,j){
+  const v=R.saldao&&R.saldao[0];if(!v||v.ti!==ti||!R.saldaoOps||!R.saldaoOps[j])return;
+  tbStop();pegaSaldao(ti,v.k,R.saldaoOps[j]);R.saldao.shift();R.saldaoOps=null;proximoSaldao();
+}
+function fecharElencos(){
   R.teams.forEach(t=>{t.ps=t.slots.map(s=>s.pick||EMPTY)});
   const m=mode(),mid=S.modes[S.round];
   // a liga é decidida agora (semente fixa); a narração da IA roda em segundo plano durante as apostas
@@ -1123,7 +1171,7 @@ function tableAfter(lg,k){
   return t.sort((x,y)=>y.pts-x.pts||(y.gf-y.ga)-(x.gf-x.ga)||y.gf-x.gf||y.force-x.force||x.i-y.i);
 }
 const bestBy=(T,k)=>[...T.ps].sort((a,b)=>b.attrs[k]-a.attrs[k])[0];
-const teamTxt=t=>`${t.name} (personagem que ${descChar(t.name)}): ${t.ps.map(p=>`${p.nome} [${p.pos}] ${p.attrs.join('/')}`).join('; ')}`;
+const teamTxt=t=>`${t.name} (personagem que ${descChar(t.name)}): ${t.ps.map((p,k)=>`${p.nome} [${mode().slots[k]}] ${p.attrs.join('/')}`).join('; ')}`;
 const critTxt=()=>`Critério da rodada: "${R.crit.titulo}" (${R.crit.desc}). Pesos por atributo (${mode().attrs.join('/')}): ${W.map(w=>Math.round(w*100)+'%').join('/')}.`;
 function legendLocal(m,e){
   const A=R.teams[m.a],B=R.teams[m.b],T=e.side==='a'?A:B,D=e.side==='a'?B:A;
@@ -1184,7 +1232,7 @@ function keyDuel(A,B,mid,x){
   if(x&&x.ev[0]&&x.ev[0].t==='rod'){const e=[...x.ev].sort((p,q)=>q.pts-p.pts)[0];return `Embate que mais vale: ${mode().attrs[e.k]} (${e.pts} pontos), ${e.pa} x ${e.pb}.`;}
   if(mid==='futebol')return `Duelo-chave: ${A.ps[3].nome} (ataque ${A.ps[3].attrs[0]}) contra o goleiro ${B.ps[0].nome} (${B.ps[0].attrs[1]}); do outro lado, ${B.ps[3].nome} contra ${A.ps[0].nome}.`;
   const j=[0,1,2,3].sort((p,q)=>Math.abs(ov(A.ps[p])-ov(B.ps[p]))-Math.abs(ov(A.ps[q])-ov(B.ps[q])))[0];
-  return `Luta mais equilibrada: ${A.ps[j].nome} x ${B.ps[j].nome}, no peso ${A.ps[j].pos.toLowerCase()}.`;
+  return `Luta mais equilibrada: ${A.ps[j].nome} x ${B.ps[j].nome}, no peso ${mode().slots[j].toLowerCase()}.`;
 }
 
 /* ---------- ANIMAÇÕES POR MODALIDADE (desenhadas a partir do log do motor; não mudam o resultado) ---------- */
@@ -1253,7 +1301,7 @@ async function animaLuta(x,e,A,B,marca){
   const fa=A.ps[e.j],fb=B.ps[e.j],wL=e.win==='a';
   arena().className='arena octo';
   arena().innerHTML=`<svg class="linhas" viewBox="0 0 600 280" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><polygon points="215,14 385,14 505,90 505,190 385,266 215,266 95,190 95,90"/></svg>
-    <div class="cat">Peso ${esc(fa.pos.toLowerCase())}</div>
+    <div class="cat">Peso ${esc(mode().slots[e.j].toLowerCase())}</div>
     <div class="pc L" style="left:30%;top:50%">${fotoMini(fa,96)}<small>${esc(fa.nome)}</small></div>
     <div class="pc R" style="left:70%;top:50%">${fotoMini(fb,96)}<small>${esc(fb.nome)}</small></div>`;
   const L=arena().querySelector('.pc.L'),R=arena().querySelector('.pc.R'),W=wL?L:R,P=wL?R:L;
@@ -1309,7 +1357,7 @@ async function animaRodada(x,e,A,B,mid,marca){
 function preLegend(x,e){
   const A=R.teams[x.a],B=R.teams[x.b];
   if(e.t==='chance')return `${e.min}' ${e.side==='a'?A.name:B.name} chega ao ataque…`;
-  if(e.t==='luta')return `${A.ps[e.j].nome} x ${B.ps[e.j].nome}, peso ${A.ps[e.j].pos.toLowerCase()}`;
+  if(e.t==='luta')return `${A.ps[e.j].nome} x ${B.ps[e.j].nome}, peso ${mode().slots[e.j].toLowerCase()}`;
   return `${mode().attrs[e.k]}: ${e.pa} x ${e.pb}`;
 }
 async function animaEvento(x,e,A,B,mid,marca){
@@ -1555,6 +1603,8 @@ function salaAcaoRecebida(de,nomeSrv,d){
   if(d.a==='bump'&&cena==='leilao'&&inteiro(d.i,0,9)===i)return bump(i,inteiro(d.d,1,100));
   if(d.a==='lance'&&cena==='leilao'&&inteiro(d.i,0,9)===i)return bid(i,inteiro(d.v,1,10000));
   if(d.a==='aposta'&&cena==='apostas'&&Array.isArray(d.linha)){d.linha.slice(0,R.teams.length).forEach((v,ti)=>{const el=$(`#b_${i}_${ti}`);if(el)el.value=inteiro(v,0,R.fich?R.fich[i]:6)});return;}
+  if(d.a==='vaga'&&cena==='leilao'&&inteiro(d.i,0,9)===i)return escolherVaga(i,inteiro(d.k,0,9));
+  if(d.a==='saldao'&&cena==='saldao'&&inteiro(d.i,0,9)===i)return pegarSaldao(i,inteiro(d.j,0,9));
   if(d.a==='var'&&cena==='veredito'&&inteiro(d.i,0,9)===i)return varCall(i);
   if(R.varCaller===i&&cena==='var'){
     if(d.a==='varStart'){const b=$('#vstart');if(b&&!b.disabled)varStart();return;}
@@ -1590,7 +1640,7 @@ function enviarPerfil(){
   salaManda({t:'acao',dados:{a:'perfil',nome:SALA.nome,char:S.draft[0]}});
 }
 // o que o anfitrião desenhou chega como HTML: só passam as tags e os atributos que o jogo usa
-const ON_OK=[/^bump\(\d,\d+\)$/,/^bid\(\d,\+\$\('#c\d'\)\.value\)$/,/^if\(event\.key==='Enter'\)bid\(\d,\+this\.value\)$/,/^varCall\(\d\)$/,/^varStart\(\)$/,/^reviewVar\(\)$/,
+const ON_OK=[/^escolherVaga\(\d,\d\)$/,/^pegarSaldao\(\d,\d\)$/,/^bump\(\d,\d+\)$/,/^bid\(\d,\+\$\('#c\d'\)\.value\)$/,/^if\(event\.key==='Enter'\)bid\(\d,\+this\.value\)$/,/^varCall\(\d\)$/,/^varStart\(\)$/,/^reviewVar\(\)$/,
   /^skipAnim=true$/,/^fastAnim=!fastAnim;this\.textContent=fastAnim\?'Velocidade normal':'Acelerar'$/,/^this\.parentNode\.classList\.add\('tem'\)$/,/^this\.remove\(\)$/];
 function sanitiza(html){
   const doc=new DOMParser().parseFromString('<body>'+String(html||'')+'</body>','text/html');
@@ -1608,7 +1658,7 @@ function salaMeu(times){return(times||[]).indexOf(SALA.nome)}
 function salaAjustaControles(d){
   const eu=salaMeu(d.times);
   document.querySelectorAll('#stage button').forEach(b=>{
-    const oc=b.getAttribute('onclick')||'';const m=oc.match(/^(?:bump|bid|varCall)\((\d)/);
+    const oc=b.getAttribute('onclick')||'';const m=oc.match(/^(?:bump|bid|varCall|escolherVaga|pegarSaldao)\((\d)/);
     const meu=m?+m[1]===eu:/^(varStart|reviewVar)\(\)$/.test(oc)?d.varCaller===eu&&eu>=0:/Anim/.test(oc);
     if(!oc||!meu){b.disabled=true;b.removeAttribute('onclick');b.classList.add('alheio')}
   });
@@ -1656,6 +1706,8 @@ function salaParcialJa(p){
 function salaModoJogador(){ // os botões do jogador viram pedidos ao anfitrião
   window.bump=(i,d)=>salaManda({t:'acao',dados:{a:'bump',i,d}});
   window.bid=(i,v)=>salaManda({t:'acao',dados:{a:'lance',i,v}});
+  window.escolherVaga=(i,k)=>salaManda({t:'acao',dados:{a:'vaga',i,k}});
+  window.pegarSaldao=(i,j)=>salaManda({t:'acao',dados:{a:'saldao',i,j}});
   window.varCall=i=>salaManda({t:'acao',dados:{a:'var',i}});
   window.varStart=()=>{salaManda({t:'acao',dados:{a:'varStart'}});const b=$('#vstart');if(b)b.disabled=true};
   window.reviewVar=()=>{const t=$('#vtext');if(t)salaManda({t:'acao',dados:{a:'defesa',txt:t.value.slice(0,240)}});setTimeout(()=>salaManda({t:'acao',dados:{a:'enviarVar'}}),150)};
